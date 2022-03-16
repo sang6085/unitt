@@ -1,0 +1,304 @@
+{
+	"common": {
+		"app_name": "Paperless",
+		"creator": "©2020 Proudly Made by UNIT Corp",
+		"all": "All",
+		"none": "--",
+		"version": "v{{version}}",
+		"dnd_upload": "Drag and drop file here, or click to select file",
+		"dnd_upload_multiple": "Drag and drop some files here, or click to select files",
+		"advance_search": "Advance search",
+		"collapse": "Collapse",
+		"search_placeholder": "Search ..."
+	},
+	"language": {
+		"language": "Language",
+		"english": "English",
+		"vietnamese": "Vietnamese"
+	},
+	"theme": {
+		"theme1": "Theme 1",
+		"theme2": "Theme 2",
+		"theme3": "Theme 3"
+	},
+	"menu": {
+		"error_permission_denied": "Permission Denied",
+		"dashboard": "Dashboard",
+		"serviceRequest": "Service Request(s)",
+		"profile": "My Profile",
+		"tasks": "Task(s)",
+		"healthDeclaration": "Health Declaration",
+		"notifications": "Notifications",
+		"themeSettings": "Theme Settings",
+		"invitation": "Invitation",
+		"visitor_log": "Visitor Log",
+		"employee_history": "Employee Log",
+		"event_management": "Events",
+		"contact_person": "Employees",
+		"visitors_management": "Visitors",
+		"roles_management": "Role",
+		"company_config": "General",
+		"branch_management": "Branch",
+		"device_management": "Devices",
+		"employee_management": "Employee",
+		"company_building": "Company Building",
+		"email_templates": "Email Templates",
+		"sms_template": "SMS Template",
+		"office": "Office",
+		"email_reports": "Email Logs",
+		"not_found": "Not Found",
+		"attendance_list": "Attendance list",
+		"integrations": "Integrations",
+		"register": "Register"
+	},
+	"button": {
+		"save": "Save",
+		"ok": "OK",
+		"cancel": "Cancel",
+		"close": "Close",
+		"refresh": "Refresh",
+		"return": "Return",
+		"reject": "Reject",
+		"approve": "Approve",
+		"search": "Search",
+		"apply": "Apply",
+		"back": "Back",
+		"confirm": "Confirm",
+		"add": "Add",
+		"edit": "Edit",
+		"clear": "Clear",
+		"delete": "Delete",
+		"download": "Download",
+		"change_password": "Change password",
+		"logout": "Logout",
+		"setting": "Setting",
+		"live": "Live",
+		"add_question": "Add new question",
+		"column": "Columns",
+		"filters": "Filters",
+		"density": "Density",
+		"export": "Export",
+		"hide_all": "Hide All",
+		"show_all": "Show All",
+		"create_acc":"Create account"
+	},
+	"message": {
+		"save_success": "Save success",
+		"update_success": "Update success",
+		"delete_success": "Delete success",
+		"upload_success": "Upload success",
+		"download_error": "Download error",
+		"loading": "Loading ...",
+		"please_wait": "Please wait ...",
+		"confirm_pass_fail": "Retype password is not correct",
+		"change_password_success": "Change password successfully",
+		"wrong_password": "Username or password is not correct!",
+		"page_not_found": "Sorry, the page you visited does not exist.",
+		"require_password": "must be between 6 and 20 characters.",
+		"wrong_current_password": "Current password is not correct!"
+	},
+	"error": {
+		"-99": "[Code -99] Error",
+		"error": "Error",
+		"field_required": "Please fill this field !!!",
+		"notstrong": "Not strong",
+		"strong" : "Strong"
+	},
+	"table": {
+		"body": {
+			"no_match": "Sorry, no matching records found",
+			"tool_tip": "Sort"
+		},
+		"pagination": {
+			"next": "Next Page",
+			"previous": "Previous Page",
+			"rows_per_page": "Rows per page:",
+			"display_rows": "of",
+			"jump_to_page": "Jump to Page:"
+		},
+		"toolbar": {
+			"search": "Search",
+			"download_csv": "Download CSV",
+			"print": "Print",
+			"view_columns": "View Columns",
+			"filter_table": "Filter Table"
+		},
+		"filter": {
+			"all": "All",
+			"title": "FILTERS",
+			"reset": "RESET"
+		},
+		"viewColumns": {
+			"title": "Show Columns",
+			"title_aria": "Show/Hide Table Columns"
+		},
+		"selectedRows": {
+			"text": "row(s) selected",
+			"delete": "Delete",
+			"delete_aria": "Delete Selected Rows"
+		},
+		"action": "Action"
+	},
+	"login": {
+		"login": "Login",
+		"classic_instruction": "Type username and password",
+		"username": "Username",
+		"password": "Password",
+		"remember": "Remember",
+		"btn_login": "Sign in",
+		"other_login": "or",
+		"login_with_microsoft": "Sign in with Microsoft"
+	},
+	"dashboard": {
+		"breadcrumb": "Dashboard",
+		"chart_1": "Invite visitor",
+		"chart_2": "Visitor came",
+		"chart_3": "Checked In",
+		"chart_4": "Checked Out"
+	},
+	"user_setting": {
+		"setting": "Settings",
+		"dashboard": "Dashboard",
+		"theme": "Theme"
+	},
+	"account_settings": {
+		"account": "Account Information",
+		"password": "Change Password",
+		"firstname": "First Name",
+		"lastname": "Last Name",
+		"phone": "Phone Number",
+		"current_passwd": "Current Password",
+		"new_passwd": "New Password",
+		"retype_passwd": "Retype Password"
+	},
+	"table_alert": {
+		"error": "No Data!",
+		"setting": "Setting"
+	} ,
+	"healthy_declaration": {
+		"question": "Question",
+		"type": "Type",
+		"option": "Option",
+		"subType": "Sub type",
+		"required": "Required",
+		"hidden": "Hidden",
+		"language_vi": "Vietnamese",
+		"language_en": "English"
+	},
+	"theme": {
+		"choose_mode": "Choose mode",
+		"choose_color": "Choose color",
+		"custom_color": "Custom color",
+		"custom_nav": "Custom Navbar",
+		"font_family": "Font Family",
+		"default_nav_theme": "Default Navbar Theme",
+		"dark": "Dark",
+		"light": "Light",
+		"blue": "Blue",
+		"red": "Red",
+		"cyan": "Cyan",
+		"green": "Green",
+		"orange": "Orange"
+	},
+	"visitorLog": {
+		"fullname": "Full Name",
+		"phonenumber": "Phone Number",
+		"signin": "Sign In",
+		"contact_name": "Contact Name",
+		"branch_name": "Branch Name"
+	},
+	"emailTemplates": {
+		"code": "Code",
+		"template_name": "Template Name",
+		"type": "Type",
+		"status": "Status",
+		"createdDate": "Created Date",
+		"createdBy": "Created By",
+		"subject": "Subject",
+		"active": "Active",
+		"inactive": "Inactive"
+	},
+	"menu_group":{
+		"name": "Name",
+		"Status": "Status",
+		"Action": "Action",
+		"Visit":"Check" 
+	},
+	"layout":{
+		"chooselayout": "Choose Layout",
+		"boxed": "Boxed sidebar",
+		"collapsed" : "Collapse sidebar",
+		"topNav": "Top sidebar"
+	},
+	
+	"alert":{
+		"error":"Error",
+		"status":"Status"
+	},
+	"function": {
+		"fn_branch": "Branch",
+		"fn_buildingcompany": "Building Company",
+		"fn_checkinflow": "Checkin Flow",
+		"fn_cleanface": "Clean Face",
+		"fn_company": "Company",
+		"fn_configuration": "Configuration",
+		"fn_contactperson": "Contact Person",
+		"fn_deparment": "Department",
+		"fn_device": "Device",
+		"fn_emailconfig": "Email Config",
+		"fn_emailtemplate": "Email Template",
+		"fn_functiongroup": "Function Group",
+		"fn_group": "Group",
+		"fn_healthdeclaration": "Health Declaration",
+		"fn_language": "Language",
+		"fn_menu": "Menu",
+		"fn_menugroup": "Menu Group",
+		"fn_role": "Role",
+		"fn_smstemplate": "SMS Template",
+		"fn_surveylist": "Survey List",
+		"fn_systemsetting": "System Setting",
+		"fn_template": "Template",
+		"fn_touchless": "Touchless",
+		"fn_event": "Event",
+		"fn_visit": "Visit",
+		"fn_visitlog": "Vitsit Log",
+		"fn_auditlogs": "Audit Log",
+		"fn_landingpage": "Landing Page",
+		"fn_usergroup": "User Group",
+		"fn_employee": "Employee",
+		"fn_employeelog": "Employee Log",
+		"fn_invitation": "Invitation",
+		"fn_attendancesettings": "Attendance Settings",
+		"fn_employeeattendance": "Employee Attendance",
+		"fn_employeedevice": "Employee Device",
+		"fn_employeeinfo": "Employee Info",
+		"fn_userbranch": "User Branch"
+	},
+	"employee":{
+		"employyepaccount": "Employee Accounts",
+		"avt":"Avatar",
+		"name":"Employee Name",
+		"phone": "Number Phone",
+		"email": "Email",
+		"jobtitle": "Job title",
+		"department": "Department",
+		"site": "Site",
+		"search":"Search",
+		"type":"Search for a user",
+		"actions": "Actions"
+	},
+	"swal":{
+		"cancel": "Cancel",
+		"confirm":"Ok",
+		"warning": "Warning",
+		"confirmAnswer": "You are sure?",
+		"success": "Successful",
+		"error": "Error",
+		"info":"Notification",
+		"question": "Question"
+	},
+	
+	"message_error": {
+		"error_permission_denied": "Permission denied kindly contact your administrator!"
+	}
+}

@@ -1,0 +1,309 @@
+{
+	"common": {
+		"app_name": "Paperless",
+		"creator": "©2020 Tự hào được thực hiện bởi UNIT Corp",
+		"all": "Tất cả",
+		"none": "--",
+		"version": "v{{version}}",
+		"dnd_upload": "Kéo và thả tập tin vào vùng này, hoặc nhấn chuột để chọn tập tin",
+		"dnd_upload_multiple": "Kéo và các tập tin vào vùng này, hoặc nhấn chuột để chọn các tập tin",
+		"advance_search": "Tìm kiếm nâng cao",
+		"collapse": "Thu gọn",
+		"search_placeholder": "Tìm kiếm ..."
+	},
+	"language": {
+		"language": "Ngôn ngữ",
+		"english": "Tiếng Anh",
+		"vietnamese": "Tiếng Việt"
+	},
+	"theme": {
+		"theme1": "Giao diện 1",
+		"theme2": "Giao diện 2",
+		"theme3": "Giao diện 3"
+	},
+	"menu": {
+		"error_permission_denied": "Từ chối quyền truy cập",
+		"dashboard": "Trang chủ",
+		"serviceRequest": "Danh sách yêu cầu dịch vụ",
+		"profile": "Hồ sơ của tôi",
+		"tasks": "Danh sách tác vụ",
+		"healthDeclaration": "Khai báo y tế",
+		"notifications": "Thông báo",
+		"themeSettings": "Cài đặt Theme",
+		"invitation": "Thư mời",
+		"visitor_log": "Lịch sử khách mời",
+		"employee_history": "Lịch sử nhân viên",
+		"event_management": "Sự kiện",
+		"contact_person": "Nhân viên",
+		"visitors_management": "Khách mời",
+		"roles_management": "Phân quyền",
+		"company_config": "Thông tin chung",
+		"branch_management": "Cấu hình check-in",
+		"device_management": "Thiết bị",
+		"employee_management": "Quản lý nhân viên",
+		"company_building": "Trụ sở",
+		"email_templates": "Mẫu Email",
+		"sms_template": "Mẫu SMS",
+		"office": "Văn phòng",
+		"email_reports": "Lịch sử Email",
+		"not_found": "Không tìm thấy",
+		"attendance_list": "Danh sách tham dự",
+		"integrations": "Tích hợp", 
+		"register": "Đăng ký"
+	},
+	"button": {
+		"save": "Lưu",
+		"ok": "Đồng ý",
+		"cancel": "Huỷ",
+		"close": "Đóng",
+		"refresh": "Làm mới",
+		"return": "Trả về",
+		"reject": "Từ chối",
+		"approve": "Duyệt",
+		"search": "Tìm kiếm",
+		"apply": "Cập nhật",
+		"back": "Quay về",
+		"confirm": "Xác nhận",
+		"add": "Thêm mới",
+		"edit": "Chỉnh sửa",
+		"clear": "Xoá",
+		"delete": "Xoá",
+		"download": "Tải xuống",
+		"change_password": "Đổi mật khẩu",
+		"logout": "Đăng xuất",
+		"setting": "Cài đặt",
+		"live": "Trực tuyến",
+		"add_question": "Thêm câu hỏi mới",
+		"column": "Cột",
+		"filters": "Bộ lọc",
+		"density": "Tỉ trọng",
+		"export": "Xuất file",
+		"hide_all": "Ẩn tất cả",
+		"show_all": "Hiện tất cả",
+		"create_acc":"Tạo"
+	},
+	"message": {
+		"save_success": "Lưu thành công",
+		"update_success": "Cập nhật thành công",
+		"delete_success": "Xoá thành công",
+		"upload_success": "Tải lên thành công",
+		"download_error": "Tải xuống thất bại",
+		"loading": "Đang tải ...",
+		"please_wait": "Vui lòng chờ ...",
+		"confirm_pass_fail": "Nhập lại mật khẩu không khớp",
+		"change_password_success": "Thay đổi mật khẩu thành công",
+		"wrong_password": "Thông tin đăng nhập chưa đúng!",
+		"page_not_found": "Xin lỗi, trang bạn đã truy cập không tồn tại.",
+		"require_password": "phải từ 6 đến 20 ký tự.",
+		"wrong_current_password": "Mật khẩu hiện tại chưa đúng!"
+	},
+	"error": {
+		"-99": "[Mã -99] Lỗi",
+		"error": "Lỗi",
+		"field_required": "Đây là trường bắt buộc !!!",
+		"notstrong": "Mật khẩu yếu",
+		"strong" : "Mạnh"
+	},
+	"table": {
+		"body": {
+			"no_match": "Xin lỗi, không tìm thấy thông tin phù hợp",
+			"tool_tip": "Sắp xếp"
+		},
+		"pagination": {
+			"next": "Trang tiếp theo",
+			"previous": "Trang trước",
+			"rows_per_page": "Số hàng trên mỗi trang:",
+			"display_rows": "của",
+			"jump_to_page": "Chuyển đến trang:"
+		},
+		"toolbar": {
+			"search": "Tìm kiếm",
+			"download_csv": "Tải xuống CSV",
+			"print": "In",
+			"view_columns": "Hiển thị cột",
+			"filter_table": "Điều kiện lọc"
+		},
+		"filter": {
+			"all": "Tất cả",
+			"title": "BỘ LỌC",
+			"reset": "CÀI LẠI"
+		},
+		"viewColumns": {
+			"title": "Hiển thị các cột",
+			"title_aria": "Hiển thị / Ẩn các Cột của Bảng"
+		},
+		"selectedRows": {
+			"text": "số hàng được chọn",
+			"delete": "Xoá",
+			"delete_aria": "Xoá các hàng được chọn"
+		},
+		"action": "Hành động"
+	},
+	"login": {
+		"login": "Đăng nhập",
+		"classic_instruction": "Điền tên đăng nhập và mật khẩu",
+		"username": "Tên đăng nhập",
+		"password": "Mật khẩu",
+		"remember": "Ghi nhớ đăng nhập",
+		"btn_login": "Đăng nhập",
+		"other_login": "Hoặc",
+		"login_with_microsoft": "Tài khoản Microsoft"
+	},
+	"change_password": {
+		"change_password": "Đổi mật khẩu",
+		"old_password": "Mật khẩu hiện tại",
+		"new_password": "Mật khẩu mới",
+		"confirm_password": "Xác nhận mật khẩu mới"
+	},
+	"dashboard": {
+		"breadcrumb": "Bảng điều khiển",
+		"chart_1": "Khách dự kiến",
+		"chart_2": "Khách đến dự",
+		"chart_3": "Checked In",
+		"chart_4": "Checked Out"
+	},
+	"user_setting": {
+		"setting": "Cài đặt",
+		"dashboard": "Bảng điều khiển",
+		"theme": "Chủ đề giao diện"
+	},
+	"account_settings": {
+		"account": "Thông tin tài khoản",
+		"password": "Thay đổi mật khẩu",
+		"firstname": "Tên",
+		"lastname": "Họ",
+		"phone": "Số điện thoại",
+		"current_passwd": "Mật khẩu hiện tại",
+		"new_passwd": "Mật khẩu mới",
+		"retype_passwd": "Xác nhận mật khẩu"
+	},
+	"table_alert": {
+		"error": "Không có dữ liệu!",
+		"setting": "Cài đặt"
+	},
+	"healthy_declaration": {
+		"question": "Câu hỏi",
+		"type": "Loại",
+		"option": "Lựa chọn",
+		"subType": "Định dạng",
+		"required": "Bắt buộc nhập",
+		"hidden": "Ẩn",
+		"language_vi": "Tiếng việt",
+		"language_en": "Tiếng anh"
+	},
+	"theme": {
+		"choose_mode": "Chọn chế độ",
+		"choose_color": "Chọn màu",
+		"custom_color": "Tùy chỉnh màu",
+		"custom_nav": "Tùy chỉnh thanh điều hướng",
+		"font_family": "Kiểu chữ",
+		"default_nav_theme": "Thành điều hướng mặc định",
+		"dark": "Tối",
+		"light": "Sáng",
+		"blue": "Lam",
+		"red": "Đỏ",
+		"cyan": "Lục lam",
+		"green": "Lục",
+		"orange": "Cam"
+	},
+	"visitorLog": {
+		"fullname": "Tên đầy đủ",
+		"phonenumber": "Số điện thoại",
+		"signin": "Ngày đăng ký",
+		"contact_name": "Tên liên hệ",
+		"branch_name": "Tên chi nhánh"
+	},
+	"emailTemplates": {
+		"code": "Mã",
+		"template_name": "Tên mẫu",
+		"type": "Loại",
+		"status": "Trạng thái",
+		"createdDate": "Ngày tạo",
+		"createdBy": "Người tạo",
+		"subject": "Tiêu đề",
+		"active": "Hoạt động",
+		"inactive": "Không hoạt động"
+	},
+	"menu_group":{
+		"name": "Tên",
+		"Status": "Trạng thái",
+		"Action": "Hành động",
+		"Visit":"Truy cập"
+	},
+	"layout":{
+		"chooselayout": "Chọn bố cục",
+		"boxed": "Thanh chọn dạng hộp",
+		"collapsed" : "Thanh chọn đóng mở",
+		"topNav": "Thanh chọn phía trên"
+	},
+	"alert":{
+		"error":"Lỗi",
+		"status":"Trạng thái lỗi"
+	},
+	"function": {
+		"fn_branch": "Branch",
+		"fn_buildingcompany": "Building Company",
+		"fn_checkinflow": "Checkin Flow",
+		"fn_cleanface": "Clean Face",
+		"fn_company": "Company",
+		"fn_configuration": "Configuration",
+		"fn_contactperson": "Contact Person",
+		"fn_deparment": "Department",
+		"fn_device": "Device",
+		"fn_emailconfig": "Email Config",
+		"fn_emailtemplate": "Email Template",
+		"fn_functiongroup": "Function Group",
+		"fn_group": "Group",
+		"fn_healthdeclaration": "Health Declaration",
+		"fn_language": "Language",
+		"fn_menu": "Menu",
+		"fn_menugroup": "Menu Group",
+		"fn_role": "Role",
+		"fn_smstemplate": "SMS Template",
+		"fn_surveylist": "Survey List",
+		"fn_systemsetting": "System Setting",
+		"fn_template": "Template",
+		"fn_touchless": "Touchless",
+		"fn_event": "Event",
+		"fn_visit": "Visit",
+		"fn_visitlog": "Vitsit Log",
+		"fn_auditlogs": "Audit Log",
+		"fn_landingpage": "Landing Page",
+		"fn_usergroup": "User Group",
+		"fn_employee": "Employee",
+		"fn_employeelog": "Employee Log",
+		"fn_invitation": "Invitation",
+		"fn_attendancesettings": "Attendance Settings",
+		"fn_employeeattendance": "Employee Attendance",
+		"fn_employeedevice": "Employee Device",
+		"fn_employeeinfo": "Employee Info",
+		"fn_userbranch": "User Branch"
+	},
+	"employee":{
+		"employyepaccount": "Tài khoản nhân viên",
+		"avt":"Ảnh đại diện",
+		"name":"Tên nhân viên",
+		"phone": "Số điện thoại",
+		"email": "Email",
+		"jobtitle": "Chức danh",
+		"department": "Bộ phận",
+		"site": "Địa điểm",
+		"search":"Tìm kiếm",
+		"type":"Tìm kiếm",
+		"actions": "Hành động"
+	},
+	"swal":{
+		"cancel": "Hủy",
+		"confirm":"Xác nhận",
+		"warning": "Cảnh báo",
+		"confirmAnswer": "Bạn chắc chứ?",
+		"success": "Thành công",
+		"error": "Lỗi",
+		"info":"Thông báo",
+		"question": "Tiếp tục?"
+	},
+
+	"message_error": {
+		"error_permission_denied": "Quyền bị từ chối, vui lòng liên hệ với quản trị viên của bạn!"
+	}
+}
