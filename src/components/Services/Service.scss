@@ -1,0 +1,27 @@
+.container-service {
+  display: grid;
+  grid-template-columns: auto auto auto;
+
+  .service{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .icon-service {
+    width: 58px;
+    height: 58px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 40px;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  .icon-service:hover{
+    transform: scale(1.2); 
+    transition: 350ms;
+  }
+}

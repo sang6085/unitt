@@ -1,0 +1,184 @@
+{
+	"common": {
+		"app_name": "Paperless",
+		"creator": "©2020 Proudly Made by UNIT Corp",
+		"all": "All",
+		"none": "--",
+		"version": "v{{version}}",
+		"dnd_upload": "Drag and drop file here, or click to select file",
+		"dnd_upload_multiple": "Drag and drop some files here, or click to select files",
+		"advance_search": "Advance search",
+		"collapse": "Collapse",
+		"search_placeholder": "Search ..."
+	},
+	"language": {
+		"english": "English",
+		"vietnamese": "Vietnamese"
+	},
+	"theme": {
+		"theme1": "Theme 1",
+		"theme2": "Theme 2",
+		"theme3": "Theme 3"
+	},
+	"menu": {
+		"dashboard": "Dashboard",
+		"serviceRequest": "Service Request(s)",
+		"accountSettings": "Account Settings",
+		"tasks": "Task(s)",
+		"healthDeclaration": "Health Declaration"
+	},
+	"button": {
+		"save": "Save",
+		"ok": "OK",
+		"cancel": "Cancel",
+		"close": "Close",
+		"refresh": "Refresh",
+		"return": "Return",
+		"reject": "Reject",
+		"approve": "Approve",
+		"search": "Search",
+		"apply": "Apply",
+		"back": "Back",
+		"confirm": "Confirm",
+		"clear": "Clear",
+		"delete": "Delete",
+		"download": "Download",
+		"change_password": "Change password",
+		"logout": "Logout",
+		"setting": "Setting",
+		"live": "Live",
+		"add_question": "Add new question",
+		"seeall": "Sell all",
+		"month": "Month",
+		"week": "Week",
+		"new" :"New",
+		"filter": "Filter",
+		"add": "Add",
+		"follow": "Follow"
+	},
+	"message": {
+		"save_success": "Save success",
+		"update_success": "Update success",
+		"delete_success": "Delete success",
+		"upload_success": "Upload success",
+		"download_error": "Download error",
+		"loading": "Loading ...",
+		"please_wait": "Please wait ...",
+		"confirm_pass_fail": "Retype password is not correct",
+		"change_password_success": "Change password successfully",
+		"wrong_password": "Username or password is not correct!",
+		"page_not_found": "Sorry, the page you visited does not exist.",
+		"require_password": "must be between 6 and 20 characters.",
+		"wrong_current_password": "Current password is not correct!"
+	},
+	"error": {
+		"-99": "[Code -99] Error",
+		"error": "Error",
+		"field_required": "Please fill this field !!!"
+	},
+	"table": {
+		"body": {
+			"no_match": "Sorry, no matching records found",
+			"tool_tip": "Sort"
+		},
+		"pagination": {
+			"next": "Next Page",
+			"previous": "Previous Page",
+			"rows_per_page": "Rows per page:",
+			"display_rows": "of",
+			"jump_to_page": "Jump to Page:"
+		},
+		"toolbar": {
+			"search": "Search",
+			"download_csv": "Download CSV",
+			"print": "Print",
+			"view_columns": "View Columns",
+			"filter_table": "Filter Table"
+		},
+		"filter": {
+			"all": "All",
+			"title": "FILTERS",
+			"reset": "RESET"
+		},
+		"viewColumns": {
+			"title": "Show Columns",
+			"title_aria": "Show/Hide Table Columns"
+		},
+		"selectedRows": {
+			"text": "row(s) selected",
+			"delete": "Delete",
+			"delete_aria": "Delete Selected Rows"
+		},
+		"action": "Action"
+	},
+	"login": {
+		"login": "Login",
+		"classic_instruction": "Type username and password",
+		"username": "Username",
+		"password": "Password",
+		"remember": "Remember",
+		"btn_login": "LOGIN",
+		"other_login": "or",
+		"login_with_microsoft": "Sign in with Microsoft"
+	},
+	"dashboard": {
+		"breadcrumb": "Dashboard",
+		"chart_1": "Duty rate",
+		"chart_2": "Inquiry in day",
+		"chart_3": "Inquiry in month",
+		"chart_4": "Top duty in department",
+		"pagevisit": "Page visit",
+		"social": "Social traffic",
+		"activity": "Activity feed",
+		"table": "Light Table",
+		"team":"Team member",
+		"todolist": "To do List",
+		"progress": "Progress track",
+		"sales": "Sales value",
+		"total": "Total orders",
+		"overview": "OVERVIEW",
+		"performance": "PERFORMANCE",
+		"TOTAL TRAFFIC": "TOTAL TRAFFIC",
+		"NEW USERS":"NEW USERS",
+		"SALES": "SALES",
+		"PERFORMANCE": "PERFORMANCE",
+		"Since last month": "Since last month",
+		"default" :"Default"
+	},
+	"user_setting": {
+		"setting": "Settings",
+		"dashboard": "Dashboard",
+		"theme": "Theme"
+	},
+	"account_settings": {
+		"account": "Account Information",
+		"password": "Change Password",
+		"firstname": "First Name",
+		"lastname": "Last Name",
+		"phone": "Phone Number",
+		"current_passwd": "Current Password",
+		"new_passwd": "New Password",
+		"retype_passwd": "Retype Password"
+	},
+	"table_alert": {
+		"error": "No Data!",
+		"setting": "Setting"
+	} ,
+	"healthy_declaration": {
+		"question": "Question",
+		"type": "Type",
+		"option": "Option",
+		"subType": "Sub type",
+		"required": "Required",
+		"hidden": "Hidden",
+		"language_vi": "Vietnamese",
+		"language_en": "English"
+	},
+	"menusetting":{
+		"profile": "My Profile",
+		"setting": "Setting",
+		"support": "Support",
+		"activity" : "Activity",
+		"logout": "Log out"
+	}
+}

@@ -1,0 +1,19 @@
+.container-baseLayout {
+  display: flex;
+  .drawer-menu {
+    max-width: 240px;
+  }
+  .main {
+    // background-color: rgb(224, 224, 224);
+    min-height: 100vh;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .sidebar {
+    display: none;
+  }
+  .menuSidebar {
+    display: none !important;
+  }
+}

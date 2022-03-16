@@ -1,0 +1,190 @@
+{
+	"common": {
+		"app_name": "Paperless",
+		"creator": "©2020 Tự hào được thực hiện bởi UNIT Corp",
+		"all": "Tất cả",
+		"none": "--",
+		"version": "v{{version}}",
+		"dnd_upload": "Kéo và thả tập tin vào vùng này, hoặc nhấn chuột để chọn tập tin",
+		"dnd_upload_multiple": "Kéo và các tập tin vào vùng này, hoặc nhấn chuột để chọn các tập tin",
+		"advance_search": "Tìm kiếm nâng cao",
+		"collapse": "Thu gọn",
+		"search_placeholder": "Tìm kiếm ..."
+	},
+	"language": {
+		"english": "Tiếng Anh",
+		"vietnamese": "Tiếng Việt"
+	},
+	"theme": {
+		"theme1": "Giao diện 1",
+		"theme2": "Giao diện 2",
+		"theme3": "Giao diện 3"
+	},
+	"menu": {
+		"dashboard": "Trang chủ",
+		"serviceRequest": "Danh sách yêu cầu dịch vụ",
+		"accountSettings": "Cài Đặt Tài Khoản",
+		"tasks": "Danh sách tác vụ",
+		"healthDeclaration": "Khai báo y tế"
+	},
+	"button": {
+		"save": "Lưu",
+		"ok": "Đồng ý",
+		"cancel": "Huỷ",
+		"close": "Đóng",
+		"refresh": "Làm mới",
+		"return": "Trả về",
+		"reject": "Từ chối",
+		"approve": "Duyệt",
+		"search": "Tìm kiếm",
+		"apply": "Cập nhật",
+		"back": "Quay về",
+		"confirm": "Xác nhận",
+		"clear": "Xoá",
+		"delete": "Xoá",
+		"download": "Tải xuống",
+		"change_password": "Đổi mật khẩu",
+		"logout": "Đăng xuất",
+		"setting": "Cài đặt",
+		"live": "Trực tuyến",
+		"add_question": "Thêm câu hỏi mới",
+		"seeall": "Xem tất cả",
+		"month": "Tháng",
+		"week": "Tuần",
+		"new" :"Mới",
+		"add": "Thêm",
+		"filter": "Lọc",
+		"follow": "Theo dõi"
+	},
+	"message": {
+		"save_success": "Lưu thành công",
+		"update_success": "Cập nhật thành công",
+		"delete_success": "Xoá thành công",
+		"upload_success": "Tải lên thành công",
+		"download_error": "Tải xuống thất bại",
+		"loading": "Đang tải ...",
+		"please_wait": "Vui lòng chờ ...",
+		"confirm_pass_fail": "Nhập lại mật khẩu không khớp",
+		"change_password_success": "Thay đổi mật khẩu thành công",
+		"wrong_password": "Thông tin đăng nhập chưa đúng!",
+		"page_not_found": "Xin lỗi, trang bạn đã truy cập không tồn tại.",
+		"require_password": "phải từ 6 đến 20 ký tự.",
+		"wrong_current_password": "Mật khẩu hiện tại chưa đúng!"
+	},
+	"error": {
+		"-99": "[Mã -99] Lỗi",
+		"error": "Lỗi",
+		"field_required": "Đây là trường bắt buộc !!!"
+	},
+	"table": {
+		"body": {
+			"no_match": "Xin lỗi, không tìm thấy thông tin phù hợp",
+			"tool_tip": "Sắp xếp"
+		},
+		"pagination": {
+			"next": "Trang tiếp theo",
+			"previous": "Trang trước",
+			"rows_per_page": "Số hàng trên mỗi trang:",
+			"display_rows": "của",
+			"jump_to_page": "Chuyển đến trang:"
+		},
+		"toolbar": {
+			"search": "Tìm kiếm",
+			"download_csv": "Tải xuống CSV",
+			"print": "In",
+			"view_columns": "Hiển thị cột",
+			"filter_table": "Điều kiện lọc"
+		},
+		"filter": {
+			"all": "Tất cả",
+			"title": "BỘ LỌC",
+			"reset": "CÀI LẠI"
+		},
+		"viewColumns": {
+			"title": "Hiển thị các cột",
+			"title_aria": "Hiển thị / Ẩn các Cột của Bảng"
+		},
+		"selectedRows": {
+			"text": "số hàng được chọn",
+			"delete": "Xoá",
+			"delete_aria": "Xoá các hàng được chọn"
+		},
+		"action": "Hành động"
+	},
+	"login": {
+		"login": "Đăng nhập",
+		"classic_instruction": "Điền tên đăng nhập và mật khẩu",
+		"username": "Tên đăng nhập",
+		"password": "Mật khẩu",
+		"remember": "Ghi nhớ đăng nhập",
+		"btn_login": "ĐĂNG NHẬP",
+		"other_login": "Hoặc",
+		"login_with_microsoft": "Tài khoản Microsoft"
+	},
+	"change_password": {
+		"change_password": "Đổi mật khẩu",
+		"old_password": "Mật khẩu hiện tại",
+		"new_password": "Mật khẩu mới",
+		"confirm_password": "Xác nhận mật khẩu mới"
+	},
+	"dashboard": {
+		"breadcrumb": "Bảng điều khiển",
+		"chart_1": "Tỉ lệ tác vụ",
+		"chart_2": "Inquiry trong ngày",
+		"chart_3": "Inquiry trong tháng",
+		"chart_4": "Top tác vụ của chi nhánh",
+		"pagevisit": "Truy cập trang",
+		"social": "Lượt truy cập mạng xã hội",
+		"activity": "Hoạt động",
+		"table" : "Bảng",
+		"team":"Thành viên",
+		"todolist": "Danh sách công việc",
+		"progress": "Theo dõi tiến trình",
+		"sales": "Giá trị bán",
+		"total": "Tổng đơn hàng",
+		"overview": "Tổng quát",
+		"performance": "Thực hiện",
+		"TOTAL TRAFFIC": "Tổng truy cập",
+		"NEW USERS":"Người dùng mới",
+		"SALES": "Bán",
+		"PERFORMANCE": "Hiệu suất",
+		"Since last month": "Từ tháng trước",
+		"default" :"Mặc định"
+	},
+	"user_setting": {
+		"setting": "Cài đặt",
+		"dashboard": "Bảng điều khiển",
+		"theme": "Chủ đề giao diện"
+	},
+	"account_settings": {
+		"account": "Thông tin tài khoản",
+		"password": "Thay đổi mật khẩu",
+		"firstname": "Tên",
+		"lastname": "Họ",
+		"phone": "Số điện thoại",
+		"current_passwd": "Mật khẩu hiện tại",
+		"new_passwd": "Mật khẩu mới",
+		"retype_passwd": "Xác nhận mật khẩu"
+	},
+	"table_alert": {
+		"error": "Không có dữ liệu!",
+		"setting": "Cài đặt"
+	},
+	"healthy_declaration": {
+		"question": "Câu hỏi",
+		"type": "Loại",
+		"option": "Lựa chọn",
+		"subType": "Định dạng",
+		"required": "Bắt buộc nhập",
+		"hidden": "Ẩn",
+		"language_vi": "Tiếng việt",
+		"language_en": "Tiếng anh"
+	},
+	"menusetting":{
+		"profile": "Hồ sơ của tôi",
+		"setting": "Cài đặt",
+		"support": "Hỗ trợ",
+		"activity" : "Hoạt động",
+		"logout": "Đăng xuất"
+	}
+}

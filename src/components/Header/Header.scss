@@ -1,0 +1,116 @@
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+.search {
+  margin-left: 30px;
+  flex: 1;
+  display: block;
+  @media screen and (max-width: 572px) {
+    display: none !important;
+  }
+}
+.showBsZoomIn {
+  display: none;
+  @media screen and (max-width: 572px) {
+    display: block !important;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .menuHeader {
+    display: block !important;
+  }
+}
+.dropdown-notify {
+  margin-top: 3px;
+  border-radius: 5px;
+  display: none;
+  width: 420px;
+  min-height: 371px;
+  position: absolute;
+  margin-left: -390px;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+.dropdown:hover .dropdown-notify {
+  display: block;
+}
+
+.dropdown-service {
+  margin-top: 3px;
+  border-radius: 5px;
+  display: none;
+  position: absolute;
+  height: 238px;
+  margin-left: -290px;
+  width: 320px;
+  background-color: #00012ad0;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown:hover .dropdown-service {
+  display: block;
+}
+
+.dropdown-avatar {
+  margin-top: 3px;
+  border-radius: 5px;
+  display: none;
+  position: absolute;
+  min-height: 200px;
+  margin-left: -70px;
+  width: 180px;
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+
+@media only screen and (max-width: 572px) {
+  .dropdown-notify {
+    width: 445px;
+    margin-left: -102px;
+  }
+  .dropdown-service {
+    width: 445px;
+    margin-left: -152px;
+  }
+  .dropdown-avatar {
+    width: 445px;
+    margin-left: -402px;
+  }
+}
+
+
+.dropdown:hover .dropdown-avatar {
+  display: block;
+}
+
+.action-setting {
+  width: 100%;
+  padding-left: 20px;
+  margin-top: 15px;
+  cursor: pointer;
+}
+.action-logout {
+  border-top: 0.1px solid #dfdfdf;
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  margin-top: 10px;
+  cursor: pointer;
+  height: 50px;
+}
+
+@media screen and (max-width: 991px) {
+  .nameUser {
+    display: none;
+  }
+}
