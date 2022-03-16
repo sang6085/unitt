@@ -1,14 +1,27 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { ThemesProvider } from "./contexts/ThemeContext";
+import { store } from "./stores/Store";
+import { Provider } from "react-redux";
+import api from "./api/APIInterceptor";
+import { ErrorBoundary } from "./contexts/ErrorBoundaryContext";
+
+api.interceptor(store);
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ErrorBoundary>
+      <Provider store={store}>
+        <ThemesProvider>
+          <App />
+        </ThemesProvider>
+      </Provider>
+    </ErrorBoundary>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function
