@@ -1,10 +1,10 @@
 import { Menu } from "@mui/material";
-import React from "react";
+import { ReactNode } from "react";
 
 interface IMenu {
   anchorEl: null | HTMLElement;
   handleClose: () => void;
-  children: React.ReactNode;
+  children: ReactNode;
   hiddenPadding?: boolean;
 }
 

@@ -17,7 +17,6 @@ import {
   Tooltip,
 } from "@mui/material";
 import { TabContext, TabPanel, TabList } from "@mui/lab";
-import React from "react";
 import { useTranslation } from "react-i18next";
 import {
   searchEmployee,
@@ -26,42 +25,51 @@ import {
   getMemberById,
   deleteMember,
   insertMember,
-} from "../../services/PermissionService";
+} from "services/PermissionService";
 import BeenhereIcon from "@mui/icons-material/Beenhere";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useTheme } from "../../contexts/ThemeContext";
+import { useTheme } from "contexts/ThemeContext";
+import {
+  useState,
+  useEffect,
+  Fragment,
+  ChangeEvent,
+  SyntheticEvent,
+} from "react";
+import { useStyles } from "pages/Role/RoleStyle";
 
 const vertical = "top";
 const horizontal = "right";
 const Role = () => {
   const { t } = useTranslation();
+  const classes = useStyles();
   const themeContext = useTheme();
-  const [refreshEdit, setRefreshEdit] = React.useState<boolean>(false);
-  const [open, setOpen] = React.useState<boolean>(false);
-  const [message, setMessage] = React.useState<string>("");
+  const [refreshEdit, setRefreshEdit] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
 
-  const [idPermission, setIdPermission] = React.useState<number>(1001);
-  const [indexPermission, setIndexPermission] = React.useState<number>(0);
-  const [valueTab, setValueTab] = React.useState("1");
-  const [group, setGroup] = React.useState<
+  const [idPermission, setIdPermission] = useState<number>(1001);
+  const [indexPermission, setIndexPermission] = useState<number>(0);
+  const [valueTab, setValueTab] = useState("1");
+  const [group, setGroup] = useState<
     {
       permissionId: number;
       permissionName: string;
       totalPermissionCount: number;
     }[]
   >([]);
-  const [functionFetures, setFunctionFetures] = React.useState<any>([]);
-  const [membersList, setMembersList] = React.useState<any>([]);
-  const [members, setMembers] = React.useState<any>([]);
-  const [searchText, setSearchText] = React.useState<string>("");
+  const [functionFeatures, setFunctionFeatures] = useState<any>([]);
+  const [membersList, setMembersList] = useState<any>([]);
+  const [members, setMembers] = useState<any>([]);
+  const [searchText, setSearchText] = useState<string>("");
 
-  React.useEffect(() => {
+  useEffect(() => {
     getGroupByCompanyId().subscribe((response: any) => {
       setGroup(handleSortArray(response.data.data));
     });
     getFunction(idPermission).subscribe((response: any) => {
-      setFunctionFetures(response.data.data);
+      setFunctionFeatures(response.data.data);
     });
     getMemberById(idPermission).subscribe((response: any) => {
       if (response.data) {
@@ -72,12 +80,14 @@ const Role = () => {
     });
   }, [idPermission, refreshEdit]);
 
-  React.useEffect(() => {
-    searchEmployee({ keyword: searchText, pageIndex: 1, pageSize: 10 }).subscribe(
-      (response: any) => {
-        setMembersList(response.data.data);
-      }
-    );
+  useEffect(() => {
+    searchEmployee({
+      keyword: searchText,
+      pageIndex: 1,
+      pageSize: 10,
+    }).subscribe((response: any) => {
+      setMembersList(response.data.data);
+    });
   }, [searchText]);
 
   const handleShowAlert = (message: string) => {
@@ -85,7 +95,10 @@ const Role = () => {
     setOpen(true);
   };
 
-  const handleCloseAlert = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
+  const handleCloseAlert = (
+    event: SyntheticEvent | MouseEvent,
+    reason?: string
+  ) => {
     if (reason === "clickaway") {
       return;
     }
@@ -104,11 +117,11 @@ const Role = () => {
     setSearchText("");
   };
 
-  const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
+  const handleChangeTab = (event: SyntheticEvent, newValue: string) => {
     setValueTab(newValue);
   };
 
-  const handleOnChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOnChangeSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchText(event.target.value as string);
   };
 
@@ -133,18 +146,34 @@ const Role = () => {
     }).subscribe((response: any) => {
       if (response.data.success) {
         setRefreshEdit(!refreshEdit);
-        handleShowAlert("Deleled a member successfully!");
+        handleShowAlert("Deleted a member successfully!");
       }
     });
+  };
+
+  const renderPermissionItem = (permissionItem: string) => {
+    if (permissionItem === "C") {
+      return "Create";
+    } else if (permissionItem === "R") {
+      return "View";
+    } else if (permissionItem === "U") {
+      return "Edit";
+    } else {
+      return "Delete";
+    }
   };
 
   return (
     <Box>
       <Box>
-        <Grid container spacing={2} sx={{ minWidth: 1100 }}>
+        <Grid container spacing={2}>
           <Grid item xl={3} lg={4} xs={8}>
-            <Paper sx={{ p: 3, minWidth: 250, height: "100%" }}>
-              <Typography component="h1" variant="h6" sx={{ ml: "15px", mb: 1 }}>
+            <Paper className={classes.boxLeft}>
+              <Typography
+                component="h1"
+                variant="h6"
+                className={classes.titleLeft}
+              >
                 Permissions
               </Typography>
               <MenuList dense>
@@ -153,9 +182,14 @@ const Role = () => {
                     key={item.permissionId}
                     sx={{
                       mb: 1,
-                      color: item.permissionId === idPermission ? themeContext.colorTheme : "none",
+                      color:
+                        item.permissionId === idPermission
+                          ? themeContext.colorTheme
+                          : "none",
                     }}
-                    onClick={() => handleChangePermission(item.permissionId, index)}
+                    onClick={() =>
+                      handleChangePermission(item.permissionId, index)
+                    }
                   >
                     <ListItemText>{item.permissionName}</ListItemText>
                     <Typography
@@ -163,7 +197,9 @@ const Role = () => {
                       color="text.secondary"
                       sx={{
                         color:
-                          item.permissionId === idPermission ? themeContext.colorTheme : "none",
+                          item.permissionId === idPermission
+                            ? themeContext.colorTheme
+                            : "none",
                       }}
                     >
                       {item.totalPermissionCount}
@@ -174,50 +210,59 @@ const Role = () => {
             </Paper>
           </Grid>
           <Grid item xl={9} lg={8} xs={8}>
-            <Paper sx={{ p: 3, minWidth: 600, height: "100%" }}>
-              <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                <BeenhereIcon sx={{ fontSize: 28, mr: 1, color: "#2196f3" }} />
+            <Paper className={classes.boxRight}>
+              <Box
+                className={classes.itemsCenter}
+              >
+                <BeenhereIcon className={classes.BeenhereIcon} />
                 <Typography component="h1" variant="h6">
                   {group && group[indexPermission]?.permissionName}
                 </Typography>
               </Box>
-              <Box sx={{ width: "100%", typography: "body1" }}>
+              <Box>
                 <TabContext value={valueTab}>
                   <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                    <TabList onChange={handleChangeTab} aria-label="lab API tabs example">
+                    <TabList
+                      onChange={handleChangeTab}
+                      aria-label="lab API tabs example"
+                    >
                       <Tab label="Roles" value="1" />
                       <Tab label="Members" value="2" />
                     </TabList>
                   </Box>
-                  <TabPanel value="1" style={{ paddingLeft: 0, paddingRight: 0 }}>
-                    <Typography component="h1" variant="h6" sx={{ mb: 2 }}>
+                  <TabPanel
+                    value="1"
+                  >
+                    <Typography component="h1" variant="h6">
                       Features
                     </Typography>
-                    {functionFetures.map((item: any, index: number) => (
+                    {functionFeatures.map((item: any, index: number) => (
                       <Box
                         key={index}
-                        sx={{ mb: 1, display: "flex", flexDirection: "row", alignItems: "center" }}
+                        className={classes.itemsCenter}
                       >
-                        <Typography component="span" sx={{ fontSize: 15, fontWeight: 700, mr: 2 }}>
+                        <Typography
+                          component="span"
+                          className={classes.txtPermission}
+                        >
                           {item.functionName
                             ? t(`function.${item.functionName.toLowerCase()}`)
                             : null}
                         </Typography>
                         {item.id !== 0 ? (
-                          <Typography component="span" sx={{ fontSize: 15, color: "#9e9e9e" }}>
+                          <Typography
+                            component="span"
+                            className={classes.titleMode}
+                          >
                             {item.permission
                               .split(",")
                               .map((permissionItem: string, index: number) => (
-                                <React.Fragment key={index}>
-                                  {permissionItem === "C"
-                                    ? "Create"
-                                    : permissionItem === "R"
-                                    ? "View"
-                                    : permissionItem === "U"
-                                    ? "Edit"
-                                    : "Delete"}
-                                  {item.permission.split(",").length !== index + 1 && ", "}
-                                </React.Fragment>
+                                <Fragment key={index}>
+                                  {renderPermissionItem(permissionItem)}
+
+                                  {item.permission.split(",").length !==
+                                    index + 1 && ", "}
+                                </Fragment>
                               ))}
                           </Typography>
                         ) : null}
@@ -231,16 +276,14 @@ const Role = () => {
                         fullWidth
                         options={membersList ?? []}
                         autoHighlight
-                        getOptionLabel={(option: any) => option?.name + " -- " + option?.email}
+                        getOptionLabel={(option: any) =>
+                          option?.name + " -- " + option?.email
+                        }
                         onChange={(event: any, newValue: string | null) =>
                           handleAddMember(newValue)
                         }
                         renderOption={(props, option: any) => (
-                          <Box
-                            component="li"
-                            sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-                            {...props}
-                          >
+                          <Box component="li" {...props}>
                             {option?.name + " -- " + option?.email}
                           </Box>
                         )}
@@ -259,29 +302,33 @@ const Role = () => {
                         )}
                       />
                     </FormControl>
-                    <Typography component="h3" sx={{ mx: 2, fontSize: 14, mt: 1 }}>
+                    <Typography component="h3">
                       {members.length} result(s):
                     </Typography>
                     <MenuList sx={{ px: 2 }}>
                       {members.map((item: any, index: number) => (
-                        <MenuItem key={index} sx={{ pl: 0, pr: 1 }}>
+                        <MenuItem key={index}>
                           <ListItemIcon>
                             {item.avatar_file_name ? (
                               <img
                                 src={item.avatar_file_name}
                                 alt=""
-                                style={{ width: 40, height: 40, marginRight: 8, borderRadius: 8 }}
+                                className={classes.avatar}
                               />
                             ) : (
-                              <AccountBoxIcon sx={{ fontSize: 40, mr: 1 }} />
+                              <AccountBoxIcon />
                             )}
                           </ListItemIcon>
                           <ListItemText>{item.username}</ListItemText>
                           <ListItemText>{item.email}</ListItemText>
                           <Typography variant="body2" color="text.secondary">
-                            <Tooltip title="Delete" arrow onClick={() => handleDelMember(item.id)}>
+                            <Tooltip
+                              title="Delete"
+                              arrow
+                              onClick={() => handleDelMember(item.id)}
+                            >
                               <IconButton aria-label="delete" size="small">
-                                <DeleteIcon sx={{ color: "#ff0000b8", fontSize: 22 }} />
+                                <DeleteIcon className={classes.actionIcon} />
                               </IconButton>
                             </Tooltip>
                           </Typography>
@@ -298,10 +345,9 @@ const Role = () => {
       <Snackbar
         open={open}
         autoHideDuration={6000}
-        //onClose={handleCloseAlert}
         anchorOrigin={{ vertical, horizontal }}
       >
-        <Alert onClose={handleCloseAlert} severity="success" sx={{ width: "100%" }}>
+        <Alert onClose={handleCloseAlert} severity="success">
           {message}
         </Alert>
       </Snackbar>

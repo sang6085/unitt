@@ -1,4 +1,4 @@
-import { FAKE_SCHEDULE_DATA } from "./fake-data";
+import { FAKE_SCHEDULE_DATA } from "services/fake-data";
 
 export const getSchedule = () => {
   return new Promise((resolve) => {

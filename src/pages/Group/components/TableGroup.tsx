@@ -1,35 +1,31 @@
-import React from "react";
-import MUIDataTable from "mui-datatables";
-import { getAllGroup } from "../../../services/MenuGroupService";
+import { getAllGroup } from "services/MenuGroupService";
 import { Box, CircularProgress, Radio } from "@mui/material";
 import { useTranslation } from "react-i18next";
-// import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { makeStyles } from "@mui/styles";
+import {useStyles} from "pages/Group/PermissionFeatureStyles"
+import TableComponent from "components/Table/Table";
+import { cancelToken } from "api/common";
+import { useEffect, useState, Fragment, ChangeEvent } from "react";
 interface IGroupComponent {
-  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
   valueGroup: any;
   valueSelect: any;
 }
 
-const useStyles = makeStyles({
-  table: {
-    "& .tss-1h5wt30-MUIDataTableSearch-searchIcon": {
-      display: "none",
-    },
-  },
-});
-
 const GroupComponent = (props: IGroupComponent) => {
   const { t } = useTranslation();
-  const [dataTableGroup, setDataTableGroup] = React.useState([]);
+  const [dataTableGroup, setDataTableGroup] = useState([]);
   const classes = useStyles();
 
-  React.useEffect(() => {
+  useEffect(() => {
     getAllGroup().subscribe((res: any) => {
       if (res.data.success) {
         setDataTableGroup(res.data.data);
       }
     });
+    return () => {
+      //CancelToken in componentWillUnmount
+      cancelToken();
+    }
   }, []);
 
   const columnsTableGroup: any = [
@@ -38,7 +34,7 @@ const GroupComponent = (props: IGroupComponent) => {
       label: "#",
       options: {
         customBodyRender: (value: any, tableMeta: any) => {
-          return <Box sx={{ marginLeft: 2 }}>{tableMeta.rowIndex + 1}</Box>;
+          return <Box ml={2} >{tableMeta.rowIndex + 1}</Box>;
         },
       },
     },
@@ -72,17 +68,19 @@ const GroupComponent = (props: IGroupComponent) => {
   ];
 
   const optionsTableGroup: any = {
+    filterType: "checkbox",
     download: false,
+    responsive: "standard",
     print: false,
     filter: false,
     search: true,
-    viewColumns: false,
-    pagination: false,
+    viewColumns: true,
+    sort: false,
+    rowHover: false,
     selectableRows: "none",
-    expandableRows: false,
     renderExpandableRow: (rowData: any, rowMeta: any) => {
       // console.log(rowData, rowMeta);
-      return <React.Fragment></React.Fragment>;
+      return <Fragment></Fragment>;
     },
     textLabels: {
       body: {
@@ -95,8 +93,8 @@ const GroupComponent = (props: IGroupComponent) => {
 
   return (
     <Box className={classes.table}>
-      <MUIDataTable
-        title="Group"
+      <TableComponent
+        title={t('menu_manager.group')}
         data={dataTableGroup}
         columns={columnsTableGroup}
         options={optionsTableGroup}

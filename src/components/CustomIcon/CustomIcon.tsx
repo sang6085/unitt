@@ -11,13 +11,13 @@ import {
   SettingsOutlined,
 } from "@mui/icons-material";
 
-interface CustomIconProps {
+interface ICustomIconProps {
   type: string;
   style?: any;
   color?: string | "";
 }
 
-export const CustomIcon: FC<CustomIconProps> = (props) => {
+export const CustomIcon: FC<ICustomIconProps> = (props) => {
   const { type, color } = props;
   let com = <SettingsOutlined />;
   if (type === "dashboard") {

@@ -1,17 +1,21 @@
-import { Box, InputAdornment, TextField } from "@mui/material";
+import { Box, FormLabel, InputAdornment, TextField } from "@mui/material";
 import React from "react";
 import { getError } from "./utils";
+
 
 const BaseInput: React.FC<any> = (props) => {
   const { id, required, schema, value, onChange, rawErrors } = props;
   return (
     <Box sx={{ py: 1 }}>
+      <FormLabel>
+        {schema.title}
+      </FormLabel>
       <TextField
         id={id}
         error={!!(rawErrors && rawErrors.length)}
         disabled={schema.disabled}
-        label={schema.title}
         required={required}
+        size="small"
         value={value || ""}
         onChange={(event) => onChange(event.target.value || null)}
         autoComplete="nope"

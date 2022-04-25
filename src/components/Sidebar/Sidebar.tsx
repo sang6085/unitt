@@ -2,160 +2,38 @@ import {
   Box,
   Collapse,
   Icon,
-  IconButton,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
+  MenuItem as MenuItemMui,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import logo40 from "../../assets/logo/unitsmall.png";
-import logo from "../../assets/logo/unitwhite.png";
-import AdjustIcon from "@mui/icons-material/Adjust";
-import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
-import { hasChildren } from "../../utils/utils";
-import { makeStyles } from "@mui/styles";
-import { Link, useLocation } from "react-router-dom";
+import logo40 from "assets/logo/unitsmall.png";
+import logo from "assets/logo/unitwhite.png";
+import { hasChildren } from "utils/utils";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import AcUnitIcon from "@mui/icons-material/AcUnit";
-import { colors } from "../../utils/colors";
+import { colors } from "configs/consts";
 import { loadCSS } from "fg-loadcss";
-import { CommonStyles } from "../../utils/styles";
-
+import { useStyles } from "components/Sidebar/SidebarStyle";
+import Footer from "components/Footer/Footer";
 interface IBoxedSidebar {
   headerHeight: number;
   drawerWidth?: number;
   listMenu: any;
   pageName?: string;
   open: boolean;
-  handleDrawerOpen: any;
-  handleDrawerClose: any;
-  handleMenu?: any;
 }
-const useStyles: any = makeStyles({
-  itemButton: {
-    // background: "blue !important"
-    marginBottom: "10px !important",
-  },
-  boxMenu: {
-    overflowY: "hidden",
-    display: "flex",
-    flexDirection: "column",
-    flex: 1,
-    background: colors.bgColorMenu,
-  },
-  boxMenuClose: {
-    overflowY: "hidden",
-    background: colors.bgColorMenu,
-  },
-  dashboard: {
-    //fontWeight: 500,
-    fontSize: "14px !important",
-  },
-  logoOpen: {
-    display: "flex",
-    alignItems: "center",
-    height: "4.0625rem",
-    backgroundColor: colors.bgColorHeader,
-    boxShadow: "0 1px 1px 1px rgb(18 106 211 / 8%)",
-    paddingLeft: "15px",
-  },
-  logoClose: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "4.0625rem",
-    backgroundColor: colors.bgColorHeader,
-    boxShadow: "0 1px 1px 1px rgb(18 106 211 / 8%)",
-    paddingLeft: "10px",
-  },
-  nameDB: {
-    //fontWeight: "bold",
-    fontSize: "13px",
-  },
-  linkMenu: {
-    color: colors.sidebarColor,
-    //fontWeight: 500,
-    display: "block",
-    "&:hover": {
-      color: colors.bgColorHeader,
-    },
-  },
-  linkMenuActive: {
-    color: `${colors.bgColorHeader} !important`,
-    //fontWeight: 500,
-    "&:hover": {
-      color: colors.bgColorHeader,
-    },
-  },
-  iconMenu: {
-    display: "flex",
-    marginRight: "10px",
-    minWidth: "35px !important",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "35px !important",
-    height: "35px !important",
-    color: colors.sidebarColor,
-    "& .MuiSvgIcon-root": {
-      fontSize: "16px !important",
-    },
-  },
-
-  icon: {
-    fontSize: "8px !important",
-    marginLeft: 13,
-  },
-  iconToggle: {
-    fontSize: "20px !important",
-  },
-  itemTitleText: {
-    fontSize: "13px !important",
-  },
-  itemText: {
-    "& .css-qd1o9i-MuiTypography-root": { fontWeight: 300, textTransform: 'capitalize' },
-  },
-  itemSecondsText: {
-    "& .MuiTypography-root": {
-      marginLeft: "-10px !important",
-      textTransform: 'capitalize'
-    },
-    // "& .css-qd1o9i-MuiTypography-root": {
-    //   fontWeight: 300,
-    // },
-  },
-  titleDashboard: {
-    marginLeft: "20px !important",
-  },
-  iconDefault: {
-    color: colors.defaultColor,
-  },
-
-  collapseMenu: {
-    borderLeft: `3px solid ${colors.bgColorHeader}`,
-    "& .css-1uuza9g-MuiListItem-root": {
-      color: `${colors.bgColorHeader} !important`,
-    },
-
-    "& .MuiSvgIcon-root": {
-      color: colors.bgColorHeader,
-    },
-    "& .icon": {
-      color: colors.bgColorHeader,
-    },
-  },
-  collapseMenuNone: {
-    paddingLeft: "3px",
-  },
-});
 
 const MenuItem = ({ item, open }: any) => {
   const Component = hasChildren(item) ? MultiLevel : SingleLevel;
 
   return (
-    <Box sx={{ overflowY: "scroll", overflowX: "hidden" }}>
+    <Box>
       <Component item={item} open={open} />
     </Box>
   );
@@ -164,27 +42,33 @@ const MenuItem = ({ item, open }: any) => {
 const SingleLevel = ({ item, open }: any) => {
   const classes = useStyles();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const getPathName = location.pathname.slice(1).split("/")[0];
+
+  const isActive = () => {
+    if (item.path === location.pathname || item.path === `/${getPathName}`) {
+      return true;
+    }
+    return false;
+  };
+
+  const navigateOn = (url: string) => {
+    navigate(url);
+  };
+
   return (
-    <Link
-      to={item.type !== "first" ? item.path : ""}
-      className={
-        item.path === location.pathname
-          ? classes.linkMenuActive
-          : classes.linkMenu
-      }
-    >
-      <ListItem
-        sx={{
-          overflowX: "hidden",
-          display: "flex",
-          justifyContent: "left",
-          px: open ? 1 : 3.7,
-        }}
-        className={classes.listItem}
+    <Box pr={0}>
+      <MenuItemMui
+        className={isActive()? classes.menuItemActive: classes.menuItemNoActive}
+        onClick={() => navigateOn(item.path)}
+        dense={true}
       >
         {open || item.type === "first" ? (
           <ListItemIcon
-            className={item.type === "first" ? classes.iconMenu : ""}
+            className={
+              item.type === "first" ? classes.iconMenu : classes.noIcon
+            }
           >
             {item.type === "seconds" ? (
               <></>
@@ -199,73 +83,93 @@ const SingleLevel = ({ item, open }: any) => {
           className={
             item.type !== "first" ? classes.itemSecondsText : classes.itemText
           }
+          sx={{ textAlign: open ? "left" : "center" }}
           primary={open ? item.title : item.title.charAt(0)}
         />
-      </ListItem>
-    </Link>
+      </MenuItemMui>
+    </Box>
   );
 };
 
 const MultiLevel = ({ item, open }: any) => {
-  const classes = useStyles();
+  const classes = useStyles({ open });
   const { items: children } = item;
   const [openDrop, setOpenDrop] = useState(false);
   const location = useLocation();
+
   useEffect(() => {
     item.items.forEach((item: any) => {
       if (item.path === location.pathname) {
-        setOpenDrop(true);
+        setOpenDrop(false);
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   const handleClick = () => {
     setOpenDrop((prev) => !prev);
   };
+
   const isActive = (arr: any) => {
     let result = false;
+    const getPathName = location.pathname.slice(1).split("/")[0];
 
     arr.forEach((item: any) => {
-      if (item.path === location.pathname) {
+      if (item.path === location.pathname || item.path === `/${getPathName}`) {
         result = true;
       }
     });
     return result;
   };
-  return (
-    <Box
-      className={
-        isActive(item.items) && openDrop
-          ? classes.collapseMenu
-          : classes.collapseMenuNone
+
+  const handleExpand = () => {
+    if (open && openDrop) {
+      return <ExpandLess className={classes.iconToggle} />;
+    } else if (open && openDrop === false) {
+      return <ExpandMore className={classes.iconToggle} />;
+    }
+  };
+
+  const handleSecondsMenu = (item: any) => {
+    if (item.type !== "seconds") {
+      if (item.icon === "") {
+        return <AcUnitIcon className={classes.iconDefault} />;
+      } else {
+        return (
+          <Box className="icon" sx={{ pt: "4px" }}>
+            <Icon
+              baseClassName="far"
+              className={item.icon}
+              sx={{
+                fontSize: 20,
+                color: isActive(item.items)
+                  ? colors.bgColorHeader
+                  : colors.sidebarColor,
+              }}
+            />
+          </Box>
+        );
       }
-    >
+    }
+  };
+
+  return (
+    <Box>
       <ListItem
-        sx={{
-          overflowX: "hidden",
-          px: open ? 1 : 4,
-          color: colors.sidebarColor,
-          cursor: "pointer",
-          paddingLeft: "8px",
-        }}
+        className={
+          isActive(item.items)
+            ? classes.listItemActive
+            : classes.listItemNoActive
+        }
         onClick={handleClick}
       >
         {open || item.type === "first" ? (
-          <ListItemIcon className={item.type === "first" && classes.iconMenu}>
-            {item.type === "seconds" ? (
-              // <Brightness1Icon className={classes.icon} />
-              <></>
-            ) : item.icon === "" ? (
-              <AcUnitIcon className={classes.iconDefault} />
-            ) : (
-              <Box className="icon" sx={{ pt: "4px" }}>
-                <Icon
-                  baseClassName="far"
-                  className={item.icon}
-                  style={{ fontSize: 20 }}
-                />
-              </Box>
-            )}
+          <ListItemIcon
+            className={
+              item.type === "first" ? classes.iconMenu : classes.noIcon
+            }
+          >
+            {handleSecondsMenu(item)}
           </ListItemIcon>
         ) : null}
 
@@ -275,13 +179,7 @@ const MultiLevel = ({ item, open }: any) => {
           }
           primary={open ? item.title : ""}
         />
-        {open && openDrop ? (
-          <ExpandLess className={classes.iconToggle} />
-        ) : open && openDrop === false ? (
-          <ExpandMore className={classes.iconToggle} />
-        ) : (
-          <></>
-        )}
+        {handleExpand()}
       </ListItem>
       <Collapse in={openDrop} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
@@ -296,10 +194,9 @@ const MultiLevel = ({ item, open }: any) => {
 
 const Sidebar = (props: IBoxedSidebar) => {
   const classes = useStyles();
-  const styles = CommonStyles();
   const open = props.open;
 
-  React.useEffect(() => {
+  useEffect(() => {
     const node = loadCSS(
       "https://use.fontawesome.com/releases/v5.14.0/css/all.css"
     );
@@ -309,84 +206,48 @@ const Sidebar = (props: IBoxedSidebar) => {
   }, []);
 
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        background: colors.bgColorMenu,
-        overflow: "hidden",
-      }}
-    >
-      <Box className={open ? classes.logoOpen : classes.logoClose}>
-        {open ? (
-          <Link to="/">
-            <img
-              src={logo}
-              alt="logo"
-              style={{ width: 120 }}
-            />{" "}
-          </Link>
-        ) : (
-          <img src={logo40} alt="logo" style={{ width: 40 }} />
-        )}
-        <Box
-          sx={{
-            display: "flex",
-            flex: 1,
-            alignItems: "center",
-            ml: 2,
-            justifyContent: "end",
-            flexGrow: 1,
-            overflowY: "auto",
-          }}
-        >
-          {props.handleMenu === "close" ? (
-            props.open && (
-              <IconButton onClick={() => props.handleDrawerOpen()}>
-                <CircleOutlinedIcon className={styles.icons} />
-              </IconButton>
-            )
+    <Fragment>
+      <Box className={classes.wrapperHeader}>
+        {/* Header Sidebar */}
+        <Box className={open ? classes.logoOpen : classes.logoClose}>
+          {open ? (
+            <Link to="/">
+              <img src={logo} alt="logo" width={120} />
+            </Link>
           ) : (
-            <IconButton onClick={() => props.handleDrawerClose()}>
-              <AdjustIcon className={styles.icons} />
-            </IconButton>
+            <img src={logo40} alt="logo" width={40} />
           )}
         </Box>
+        {/* End Header Sidebar */}
+        <Box className={classes.wrapperListMenu}>
+          {props.listMenu.map((item: any, key: any) => (
+            <Box key={key}>
+              {item.name ? (
+                <Typography
+                  variant={"caption"}
+                  className={
+                    open
+                      ? classes.sideBarHeaderOpen
+                      : classes.sideBarHeaderClose
+                  }
+                >
+                  {props.open ? item.name : "..."}
+                </Typography>
+              ) : (
+                ""
+              )}
+              <Box px={open ? 2 : 1.5}>
+                <MenuItem key={key} item={item} open={open} />
+              </Box>
+            </Box>
+          ))}
+        </Box>
       </Box>
-      <Box
-        sx={{
-          overflowX: "hidden",
-          display: "flex",
-          flexDirection: "column",
-          flex: 1,
-          background: colors.bgColorMenu,
-          paddingTop: "20px",
-          height: "calc(100vh - 4.0625rem)",
-          // pb: "63px",
-        }}
-      >
-        {props.listMenu.map((item: any, key: any) => (
-          <Box key={key}>
-            {item.name ? (
-              <Typography
-                variant={"caption"}
-                sx={{
-                  pl: 0.6,
-                  mx: 2,
-                  mb: 1.5,
-                  color: "rgba(113,142,177,.6)",
-                }}
-              >
-                {props.open ? item.name : "..."}
-              </Typography>
-            ) : (
-              ""
-            )}
-            <MenuItem key={key} item={item} open={open} />
-          </Box>
-        ))}
-      </Box>
-    </Box>
+      <Footer open={open} />
+    </Fragment>
   );
 };
 
 export default Sidebar;
+
+

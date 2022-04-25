@@ -1,5 +1,5 @@
-import api from "../api/common";
-interface RequestBodyInsert {
+import api from "api/common";
+interface IRequestBodyInsert {
   menuId: [number];
 }
 
@@ -15,7 +15,7 @@ export const getAllMenu = () => {
   return api.get(`${process.env.REACT_APP_PREFIX_API3}/get-all-menu`)
 };
 
-export const insertByGroupId = (id: number, requestBody: RequestBodyInsert) => {
+export const insertByGroupId = (id: number, requestBody: IRequestBodyInsert) => {
   return api.post(
     `${process.env.REACT_APP_PREFIX_API}/api/v1/MenuGroup/insert/${id}`,
     requestBody

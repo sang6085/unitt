@@ -4,54 +4,28 @@ import { useAppSelector } from "../../stores/Store";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import { useStyles } from "./PageTitleStyles";
 
 const PageTitle = () => {
   const { t } = useTranslation();
+  const classes = useStyles();
   const navigate = useNavigate();
   const baseState = useAppSelector((state) => state.base);
 
   return (
-    <Stack
-      direction="row"
-      alignItems="center"
-      sx={{
-        px: 3,
-        width: "100%",
-        height: 65,
-        position: "fixed",
-        background: "#f0f6ff",
-        zIndex: 200,
-      }}
-    >
-      <Typography
-        variant="h5"
-        sx={{
-          pr: 2,
-          borderRight: "1px solid #CBD9EB",
-          fontWeight: 300,
-          textTransform: "capitalize",
-        }}
-      >
+    <Stack direction="row" alignItems="center" className={classes.boxArea}>
+      <Typography variant="h6" className={classes.currentPage}>
         {baseState?.pageUrl?.length &&
-          t(
-            baseState?.pageUrl[baseState?.pageUrl?.length - 1]?.title as string
-          )}
+          t(baseState?.pageUrl[baseState?.pageUrl?.length - 1]?.title as string)}
       </Typography>
 
-      <IconButton
-        onClick={() => navigate("/dashboard")}
-        sx={{ ml: 2, pt: "11px" }}
-      >
-        <HomeOutlinedIcon fontSize="small" sx={{ color: "#839bb3" }} />
+      <IconButton onClick={() => navigate("/dashboard")} className={classes.button}>
+        <HomeOutlinedIcon fontSize="small" className={classes.iconColor} />
       </IconButton>
 
       <Stack direction="row" alignItems="center">
         {baseState?.pageUrl?.map((item, index) => (
-          <Typography
-            variant="body2"
-            sx={{ px: "3px", mt: "5px", fontWeight: 400, color: "#839bb3" }}
-            key={index}
-          >
+          <Typography variant="body2" className={classes.titleHeader} key={index}>
             {item?.url ? (
               <Link to={item?.url}>- {t(item?.title as string)}</Link>
             ) : (

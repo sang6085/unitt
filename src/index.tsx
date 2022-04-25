@@ -1,14 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
-import { ThemesProvider } from "./contexts/ThemeContext";
-import { store } from "./stores/Store";
+import "index.css";
+import App from "App";
+import reportWebVitals from "reportWebVitals";
+import { ThemesProvider } from "contexts/ThemeContext";
+import { store } from "stores/Store";
 import { Provider } from "react-redux";
-import api from "./api/APIInterceptor";
-import { ErrorBoundary } from "./contexts/ErrorBoundaryContext";
-
+import api from "api/APIInterceptor";
+import { ErrorBoundary } from "contexts/ErrorBoundaryContext";
 api.interceptor(store);
 
 ReactDOM.render(

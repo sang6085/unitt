@@ -1,10 +1,13 @@
-import { Box, Grid, Button, TextField, Switch, FormLabel, Paper, Stack } from "@mui/material";
-import React from "react";
+import { Box, Grid, TextField, Switch, FormLabel, Paper, Stack, Typography, Divider } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { getMenuById } from "../../services/MenuService";
+import { getMenuById } from "services/MenuService";
 import { useTranslation } from "react-i18next";
 import { useLocation, useParams } from "react-router";
-import Progress from "../../components/Loading/Loading";
+import Progress from "components/Loading/Loading";
+import { useStyles } from "pages/MenuManager/MenuStyles";
+import { cancelToken } from "api/common";
+import ButtonComponent from "components/Button/Button";
+import { useState, useEffect } from "react";
 
 interface IFormInput {
   id: number | string;
@@ -16,13 +19,14 @@ interface IFormInput {
 
 const MenuForm = () => {
   const { t } = useTranslation();
-  const [loading, setLoading] = React.useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const location = useLocation();
+  const classes = useStyles()
   const { id } = useParams();
   const mode = location.pathname.slice(1).split("/")[1];
-  const [status, setStatus] = React.useState<boolean>(false);
+  const [status, setStatus] = useState<boolean>(false);
 
-  const { register, handleSubmit, setValue } = useForm<IFormInput>({
+  const { register, handleSubmit, setValue, reset } = useForm<IFormInput>({
     defaultValues: {
       id: "",
       code: "",
@@ -32,7 +36,7 @@ const MenuForm = () => {
     },
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     setLoading(true);
     if ((id && mode === "view") || mode === "edit") {
       getMenuById(Number(id)).subscribe((res: any) => {
@@ -53,6 +57,10 @@ const MenuForm = () => {
       setValue("isActive", false);
       setLoading(false);
     }
+    return () => {
+      //CancelToken in componentWillUnmount
+      cancelToken();
+    }
   }, [id, mode, setValue]);
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
@@ -60,17 +68,19 @@ const MenuForm = () => {
   return (
     <Box>
       {!loading ? (
-        <Paper  sx={{ p: 4 }} >
+        <Paper className={classes.paper} >
           <form onSubmit={handleSubmit(onSubmit)}>
             <Box>
+              <Typography variant="h6">Detail</Typography>
+              <Divider sx={{ mt: 1, mb: 2 }} />
               <Grid container spacing={3}>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                   <Box>
                     <FormLabel>ID</FormLabel>
                     <TextField {...register("id")} type="text" size="small" fullWidth disabled />
                   </Box>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                   <Box>
                     <FormLabel>{t("menu_manager.code")}</FormLabel>
                     <TextField
@@ -82,7 +92,7 @@ const MenuForm = () => {
                     />
                   </Box>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                   <Box>
                     <FormLabel>{t("menu_manager.sort")}</FormLabel>
                     <TextField
@@ -94,7 +104,7 @@ const MenuForm = () => {
                     />
                   </Box>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                   <Box>
                     <FormLabel>Url:</FormLabel>
                     <TextField
@@ -107,7 +117,7 @@ const MenuForm = () => {
                   </Box>
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                   <Stack direction="column">
                     <FormLabel>{t("menu_manager.status")}</FormLabel>
                     <Switch
@@ -120,13 +130,13 @@ const MenuForm = () => {
               </Grid>
             </Box>
             {mode !== "view" ? (
-              <Stack direction="row" justifyContent={"center"} mt={2}>
-                <Button type="reset" variant="outlined" sx={{ mx: 1 }}>
+              <Stack direction="row" justifyContent={"flex-end"} mt={2}>
+                <ButtonComponent onClick={() => reset()} variant="contained" color="secondary" className={classes.btnAction}>
                   {t("button.reset")}
-                </Button>
-                <Button type="submit" variant="contained" sx={{ mx: 1 }}>
+                </ButtonComponent>
+                <ButtonComponent type="submit" variant="contained" className={classes.btnAction}>
                   {t("button.save")}
-                </Button>
+                </ButtonComponent>
               </Stack>
             ) : null}
           </form>

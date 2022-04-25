@@ -1,6 +1,6 @@
 // import axios from "axios";
 
-import api from "../api/common";
+import api from "api/common";
 
 export interface IRequestSearch {
   templateName?: string;

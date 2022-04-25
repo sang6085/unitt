@@ -8,6 +8,6 @@ export const CommonStyles = makeStyles({
   },
   icons: {
     color: "#fff",
-    fontSize: 26,
+    fontSize: "24px !important",
   },
 });

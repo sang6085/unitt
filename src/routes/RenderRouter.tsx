@@ -1,37 +1,45 @@
 import { FC, lazy, Suspense } from "react";
 import { useRoutes } from "react-router-dom";
 // import WrapperRouteComponent from "./WrapperRouteComponent";
-import Register from "../pages/Register/Register";
-import Login from "../pages/Login/Login";
+import Register from "pages/Register/Register";
+import Login from "pages/Login/Login";
 import RouteComponent from "./RouteComponent";
 
-import UserDetail from "../pages/UserManager/UserDetail";
-import UserList from "../pages/UserManager/UserList";
-import Outlet from "../components/Outlet/Outlet";
+import Outlet from "components/Outlet/Outlet";
+import EmailDetail from "pages/EmailManager/EmailDetail";
+import DynamicForm from "pages/DynamicForm/DynamicForm";
 
-const NotFound = lazy(() => import("../pages/NotFound/NotFound"));
-const Dashboard = lazy(() => import("../pages/DashBoard/DashBoard"));
-const EmailTemplate = lazy(() => import("../pages/EmailTemplate/EmailTemplate"));
-const VisitorLog = lazy(() => import("../pages/VisitorLog/VisitorLog"));
-const Schedule = lazy(() => import("../pages/Schedule/Schedule"));
-const HealthDeclaration = lazy(() => import("../pages/HealthDeclaration/HealthDeclaration"));
-const EmailLogsForm = lazy(() => import("../pages/EmailLogsForm/EmailLogsForm"));
-const EventsManagement = lazy(() => import("../pages/EventsManagement/EventsManagement"));
-const MenuManager = lazy(() => import("../pages/MenuManager/MenuList"));
-const MenuDetail = lazy(() => import("../pages/MenuManager/MenuDetail"));
-const PermissionFeatures = lazy(() => import("../pages/Group/PermissionFeatures"));
-const Role = lazy(() => import("../pages/Role/Role"));
-const Visitors = lazy(() => import("../pages/Visitors/Visitors"));
-const Employee = lazy(() => import("../pages/Employee/Employee"));
-const ErrorPermissionDenied = lazy(() => import("../pages/Error/PermissionDenied"));
-const Feature = lazy(() => import("../pages/Feature/FeatureList"));
-const FeatureDetail = lazy(() => import("../pages/Feature/FeatureDetail"));
-const PermissionManager = lazy(() => import("../pages/Permission/PermissionList"));
-const GroupManager = lazy(() => import("../pages/GroupManager/GroupList"));
-const PermissionDetails = lazy(() => import("../pages/Permission/PermissionDetails"));
-const GroupDetails = lazy(() => import("../pages/GroupManager/GroupDetails"));
-const AccountSettings = lazy(() => import("../pages/AccountSettings/AccountSettings"));
-
+const NotFound = lazy(() => import("pages/NotFound/NotFound"));
+const Dashboard = lazy(() => import("pages/DashBoard/DashBoard"));
+const EmailTemplate = lazy(() => import("pages/EmailTemplate/EmailTemplate"));
+const VisitorLog = lazy(() => import("pages/VisitorLog/VisitorLog"));
+const Schedule = lazy(() => import("pages/Schedule/Schedule"));
+const HealthDeclaration = lazy(() => import("pages/HealthDeclaration/HealthDeclaration"));
+const EmailLogsForm = lazy(() => import("pages/EmailLogsForm/EmailLogsForm"));
+const EventsManagement = lazy(() => import("pages/EventsManagement/EventsManagement"));
+const MenuManager = lazy(() => import("pages/MenuManager/MenuList"));
+const MenuDetail = lazy(() => import("pages/MenuManager/MenuDetail"));
+const PermissionFeatures = lazy(() => import("pages/Group/PermissionFeatures"));
+const Role = lazy(() => import("pages/Role/Role"));
+const Visitors = lazy(() => import("pages/Visitors/Visitors"));
+const Employee = lazy(() => import("pages/Employee/Employee"));
+const ErrorPermissionDenied = lazy(() => import("pages/Error/PermissionDenied"));
+const Feature = lazy(() => import("pages/Feature/FeatureList"));
+const FeatureDetail = lazy(() => import("pages/Feature/FeatureDetail"));
+const PermissionManager = lazy(() => import("pages/Permission/PermissionList"));
+const GroupManager = lazy(() => import("pages/GroupManager/GroupList"));
+const PermissionDetails = lazy(() => import("pages/Permission/PermissionDetails"));
+const GroupDetails = lazy(() => import("pages/GroupManager/GroupDetails"));
+const AccountSettings = lazy(() => import("pages/AccountSettings/AccountSettings"));
+const UserDetail = lazy(() => import("pages/UserManager/UserDetail"));
+const UserList = lazy(() => import("pages/UserManager/UserList"));
+const JobList = lazy(() => import("pages/JobManager/JobList"));
+const JobDetail = lazy(() => import("pages/JobManager/JobDetail"));
+const JobLogsList = lazy(() => import("pages/JobLogs/JobLogsList"));
+const JobLogsDetail = lazy(() => import("pages/JobLogs/JobLogsDetail"));
+const EmailList = lazy(() => import("pages/EmailManager/EmailList"));
+const SystemSetting = lazy(() =>import("pages/SystemSetting/SystemSettingList"))
+const SystemSettingDetails = lazy(() => import('pages/SystemSetting/SystemSettingDetail'))
 const routeList: any = [
   {
     path: "/login",
@@ -62,7 +70,7 @@ const routeList: any = [
       },
 
       {
-        path: "account/edit/:userId",
+        path: "user-manager/edit/:userId",
         element: (
           <RouteComponent
             element={<UserDetail />}
@@ -72,7 +80,7 @@ const routeList: any = [
                
               {
                 title: "menu.user_detail",
-                url: "/account/list"
+                url: "/user-manager"
               },
               {
                 title: "detail.edit",
@@ -82,7 +90,7 @@ const routeList: any = [
         ),
       },
       {
-        path: "account/view/:userId",
+        path: "user-manager/view/:userId",
         element: (
           <RouteComponent
             element={<UserDetail />}
@@ -92,7 +100,7 @@ const routeList: any = [
                
               {
                 title: "menu.user_detail",
-                url: "/account/list"
+                url: "/user-manager"
               },
               {
                 title: "detail.view",
@@ -102,7 +110,7 @@ const routeList: any = [
         ),
       },
       {
-        path: "account/add",
+        path: "user-manager/add",
         element: (
           <RouteComponent
             element={<UserDetail />}
@@ -112,7 +120,7 @@ const routeList: any = [
                
               {
                 title: "menu.user_manager",
-                url: "/account/list"
+                url: "/user-manager"
               },
               {
                 title: "detail.create",
@@ -122,7 +130,7 @@ const routeList: any = [
         ),
       },
       {
-        path: "account/list",
+        path: "user-manager",
         element: (
           <RouteComponent
             element={<UserList />}
@@ -132,6 +140,111 @@ const routeList: any = [
                
               {
                 title: "menu.user_manager",
+              },
+            ]}
+          />
+        ),
+      },
+      {
+        path: "job-manager",
+        element: (
+          <RouteComponent
+            element={<JobList />}
+            titleId="menu.job_manager"
+            routeName={"FN_DASHBOARD"}
+            pageUrl={[
+              
+              {
+                title: "menu.job_manager",
+              },
+            ]}
+          />
+        ),
+      },
+      {
+        path: "job-manager/edit/:id",
+        element: (
+          <RouteComponent
+            element={<JobDetail />}
+            titleId="menu.job_manager"
+            routeName={"FN_DASHBOARD"}
+            pageUrl={[
+              {
+                title: "menu.job_manager",
+                url: "/job-manager"
+              },
+              {
+                title: "detail.edit",
+              },
+            ]}
+          />
+        ),
+      },
+      {
+        path: "jobLogs",
+        element: (
+          <RouteComponent
+            element={<JobLogsList />}
+            titleId="menu.job_logs_manager"
+            routeName={"FN_DASHBOARD"}
+            pageUrl={[
+               
+              {
+                title: "menu.job_logs_manager",
+              },
+            ]}
+          />
+        ),
+      },
+      {
+        path: "jobLogs/add",
+        element: (
+          <RouteComponent
+            element={<JobLogsDetail />}
+            titleId="menu.job_logs_manager"
+            routeName={"FN_DASHBOARD"}
+            pageUrl={[
+              {
+                title: "menu.job_logs_manager",
+                url: "/jobLogs"
+              },
+              {
+                title: "detail.create",
+              },
+            ]}
+          />
+        ),
+      },
+      {
+        path: "email-manager",
+        element: (
+          <RouteComponent
+            element={<EmailList />}
+            titleId="menu.email_manager"
+            routeName={"FN_DASHBOARD"}
+            pageUrl={[
+               
+              {
+                title: "menu.email_manager",
+              },
+            ]}
+          />
+        ),
+      },
+      {
+        path: "email-manager/edit/:id",
+        element: (
+          <RouteComponent
+            element={<EmailDetail />}
+            titleId="menu.email_manager"
+            routeName={"FN_DASHBOARD"}
+            pageUrl={[
+              {
+                title: "menu.email_manager",
+                url: "/email-manager"
+              },
+              {
+                title: "detail.edit",
               },
             ]}
           />
@@ -392,6 +505,70 @@ const routeList: any = [
         ),
       },
       {
+        path: "system-settings",
+        element: (
+          <RouteComponent
+            element={<SystemSetting />}
+            titleId="system_settings.system_setting"
+            routeName={"FN_DASHBOARD"}
+            pageUrl={[
+              {
+                title: "system_settings.system_setting",
+              },
+            ]}
+          />
+        ),
+      },
+      {
+        path: "system-settings/view/:id",
+        element: (
+          <RouteComponent
+            element={<SystemSettingDetails />}
+            titleId="system_settings.system_setting"
+            routeName={"FN_DASHBOARD"}
+            pageUrl={[
+              {
+                title: "system_settings.system_setting",
+              },
+            ]}
+          />
+        ),
+      },
+      {
+        path: "system-settings/create",
+        element: (
+          <RouteComponent
+            element={<SystemSettingDetails />}
+            titleId="system_settings.system_setting"
+            routeName={"FN_DASHBOARD"}
+            pageUrl={[
+              {
+                title: "menu.feature",
+                url: "/system-settings"
+              },
+              {
+                title: "detail.create",
+              },
+            ]}
+          />
+        ),
+      },
+      {
+        path: "system-settings/edit/:id",
+        element: (
+          <RouteComponent
+            element={<SystemSettingDetails />}
+            titleId="system_settings.system_setting"
+            routeName={"FN_DASHBOARD"}
+            pageUrl={[
+              {
+                title: "system_settings.system_setting",
+              },
+            ]}
+          />
+        ),
+      },
+      {
         path: "features",
         element: (
           <RouteComponent
@@ -631,6 +808,21 @@ const routeList: any = [
               },
               {
                 title: "detail.create",
+              },
+            ]}
+          />
+        ),
+      },
+      {
+        path: "dynamic-form",
+        element: (
+          <RouteComponent
+            element={<DynamicForm />}
+            titleId="menu.dynamic_form"
+            routeName={"FN_DASHBOARD"}
+            pageUrl={[
+              {
+                title: "menu.dynamic_form",
               },
             ]}
           />

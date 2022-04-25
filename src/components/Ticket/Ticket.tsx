@@ -1,6 +1,6 @@
 import { Box, Checkbox, Typography, FormControlLabel } from "@mui/material";
 import React from "react";
-import "./Ticket.scss";
+import "components/Ticket/Ticket.scss";
 
 interface ITicket {
   serial: number | string;

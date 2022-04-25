@@ -6,35 +6,29 @@ import {
   TextField,
 } from "@mui/material";
 import { Box, styled } from "@mui/system";
-import React from "react";
+import { Ref, ReactElement, forwardRef, FC } from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import { useTheme } from "../../contexts/ThemeContext";
-import { makeStyles } from "@mui/styles";
+import { useTheme } from "contexts/ThemeContext";
 import { useTranslation } from "react-i18next";
+import { useStyles } from "components/Search/SearchStyle";
 
 interface IPSearch {
   open: boolean;
   onClose: any;
 }
 
-const useStyles = makeStyles({
-  textfield: {
-    "& fieldset": {
-      border: "none",
-    },
-  },
-})
 
-const Transition = React.forwardRef(function Transition(
+
+const Transition = forwardRef(function Transition(
   props: any & {
-    children: React.ReactElement<any, any>;
+    children: ReactElement<any, any>;
   },
-  ref: React.Ref<unknown>
+  ref: Ref<unknown>
 ) {
   return <Slide direction="down" ref={ref} {...props}/>;
 });
 
-const Search: React.FC<IPSearch> = ({ open, onClose }) => {
+const Search: FC<IPSearch> = ({ open, onClose }) => {
   const classes = useStyles()
   const {t} = useTranslation()
   const useThemeContext = useTheme();
@@ -78,12 +72,7 @@ const Search: React.FC<IPSearch> = ({ open, onClose }) => {
       aria-describedby="alert-dialog-slide-description"
     >
       <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: 100,
-        }}
+        className={classes.itemsCenter}
       >
         <TextField
           className={classes.textfield}
@@ -92,14 +81,14 @@ const Search: React.FC<IPSearch> = ({ open, onClose }) => {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <SearchIcon sx={{ fontSize: 26 }} />
+                <SearchIcon className={classes.searchIcon} />
               </InputAdornment>
             ),
           }}
         />
         <Button
           variant="contained"
-          sx={{ mx: 5, height: 40, borderRadius: "8px", textTransform: "none", minWidth: 100}}
+          className={classes.btnSearch}
         >
           {t(`button.search`)}
         </Button>

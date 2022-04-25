@@ -1,26 +1,26 @@
 import { IconButton, MenuItem, Tooltip } from "@mui/material";
-import React from "react";
 import CheckIcon from "@mui/icons-material/Check";
 import { useTranslation } from "react-i18next";
-import { Languages, LocalStorageKey } from "../../configs/consts";
-
-import { useAppDispatch } from "../../stores/Store";
+import { Languages, LocalStorageKey } from "configs/consts";
+import {useState, FC } from "react";
+import { useAppDispatch } from "stores/Store";
 import LanguageIcon from "@mui/icons-material/Language";
 
-import { setLocale } from "../../pages/BaseLayout/BaseSlice";
-import Menu from "../Menu/Menu";
-import { colors } from "../../utils/colors";
-import { CommonStyles } from "../../utils/styles";
+import { setLocale } from "pages/BaseLayout/BaseSlice";
+import Menu from "components/Menu/Menu";
+import { CommonStyles } from "utils/styles";
+import { useStyles } from "components/ChangeLanguage/ChangeLanguageStyles";
 
-const ChangeLanguage: React.FC = () => {
+const ChangeLanguage: FC = () => {
   const { t, i18n } = useTranslation();
   const dispatch = useAppDispatch();
   const styles = CommonStyles();
-  const [language, setLanguage] = React.useState(
+  const classes = useStyles();
+  const [language, setLanguage] = useState(
     parseInt(localStorage.getItem(LocalStorageKey.LANGUAGE) ?? "1")
   );
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -40,28 +40,24 @@ const ChangeLanguage: React.FC = () => {
   return (
     <>
       <Tooltip title={t(`header.language`) as string}>
-        <IconButton onClick={handleClick} sx={{ mx: 1 }}>
+        <IconButton onClick={handleClick} className={classes.iconBtn}>
           <LanguageIcon className={styles.icons} />
         </IconButton>
       </Tooltip>
-      <Menu
-        anchorEl={anchorEl}
-        handleClose={handleClose}
-      >
-        {Languages.map((item: any, index: any) => (
+      <Menu anchorEl={anchorEl} handleClose={handleClose}>
+        {Languages.map((item: any, index: number) => (
           <MenuItem
             key={index}
             onClick={() => {
               changeLanguage(item);
               handleClose();
             }}
-            sx={{ color: colors.primaryColor }}
             value={language.toString()}
           >
             {language === item.id ? (
-              <CheckIcon sx={{ color: "green", mr: 0.5 }} />
+              <CheckIcon className={classes.checked} />
             ) : (
-              <CheckIcon sx={{ opacity: 0, mr: 0.5 }} />
+              <CheckIcon className={classes.uncheck} />
             )}{" "}
             {t(`language.${item.name}`)}
           </MenuItem>

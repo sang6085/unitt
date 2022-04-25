@@ -1,5 +1,5 @@
-import api from "../api/common";
-export interface RequestVisitorLogs {
+import api from "api/common";
+export interface IRequestVisitorLogs {
   email?: string;
   fullName?: string;
   phoneNumber?: string;
@@ -27,13 +27,13 @@ export const getDashboardInfo = (requestBody: number[]) => {
   });
 };
 
-export const getVisitorLogs = (requestBody: RequestVisitorLogs) => {
+export const getVisitorLogs = (requestBody: IRequestVisitorLogs) => {
   return api.get(
    `${process.env.REACT_APP_PREFIX_API3}/get-visitor-logs`
   );
 };
 
-export const downloadVisitorLogs = (requestBody: RequestVisitorLogs) => {
+export const downloadVisitorLogs = (requestBody: IRequestVisitorLogs) => {
   return api.post(
     `${process.env.REACT_APP_PREFIX_API}/api/v1/visit/log/download`,
     requestBody,

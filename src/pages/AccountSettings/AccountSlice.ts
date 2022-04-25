@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk, createEntityAdapter } from "@reduxjs/toolkit";
-import { BaseResponse } from "../../api/common";
-import { UserInfo, UserProfile } from "./AccountInterface";
+import { IBaseResponse } from "api/common";
+import { IUserInfo, IUserProfile } from "pages/AccountSettings/AccountInterface";
 
 const usersAdapter = createEntityAdapter();
 
 interface IProfileSlice {
-    info?: UserInfo;
+    info?: IUserInfo;
     loading: boolean;
 }
 
@@ -26,7 +26,7 @@ const initialState: IProfileSlice  = usersAdapter.getInitialState({
 
 // Action
 
-export const setProfile: any = createAsyncThunk("profile/setProfile", (data: UserInfo, { rejectWithValue }) => {
+export const setProfile: any = createAsyncThunk("profile/setProfile", (data: IUserInfo, { rejectWithValue }) => {
   try{
     return data;
   }catch{
@@ -40,7 +40,7 @@ export const clearProfile: any = createAsyncThunk("profile/clearProfile", () => 
 
 export const updateProfile: any = createAsyncThunk(
   "user/updateProfile",
-  (newProfile: BaseResponse<UserProfile>) => {
+  (newProfile: IBaseResponse<IUserProfile>) => {
     return newProfile.data;
   }
 );

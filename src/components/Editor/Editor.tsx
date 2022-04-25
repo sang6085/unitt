@@ -38,6 +38,8 @@ const EditorComponent = (props: IEditor) => {
       init={{ 
         height: 400,
         menubar: false,
+        branding: false,
+        content_style: "body { background-color: #f4f5fa}",
         plugins: "example | image code",
         toolbar:
           "code | example undo redo | styleselect | fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | uploadImage| emailTemplate ",

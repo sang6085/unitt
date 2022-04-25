@@ -1,4 +1,5 @@
 import { makeStyles } from "@mui/styles";
+import { colors } from "configs/consts";
 
 const txt_gray = "#8898aa";
 const blue = "#0a48b3";
@@ -10,17 +11,12 @@ export const useStyles = makeStyles({
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        backgroundColor: "#f0f6ff"
+        backgroundColor: colors.bgPrimary
     },
     btnLogin: {
         transition: "transform .3s !important",
         color: "#fff !important",
         padding: "8px 50px!important",
-        borderRadius: '40px !important',
-        backgroundImage: `linear-gradient(${310}deg, rgb(${33}, ${82}, ${255}), rgb(${33}, ${212}, ${253})) !important`,
-        "&:hover": {
-            transform: `scale(${1.05})`,
-        },
     },
     layout: {
         display: "flex",
@@ -55,16 +51,6 @@ export const useStyles = makeStyles({
         fontWeight: 600,
         color: blue,
         fontSize: 14,
-
-        "&:hover": {
-            color: "#000",
-            marginTop: -1,
-            boxShadow: "-3px 7px 10px rgb(50 50 93 / 11%), 0 1px 3px rgb(0 0 0 / 8%)",
-        },
-
-        "&:active": {
-            background: "#9e9e9e30",
-        },
     },
 
     textfield: {
@@ -99,4 +85,58 @@ export const useStyles = makeStyles({
             color: "gray",
         },
     },
+    boxImg:{
+        marginTop: "16px",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+    },
+    boxContent:{
+        paddingLeft: '32px',
+        paddingRight: '32px',
+        display: "flex",
+        flexGrow: 1,
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    wrapperImg:{
+        paddingLeft: "32px",
+        paddingRight: "32px",
+        paddingBottom: "16px",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+    }, 
+    logoImg: {
+        marginRight: "12px"
+    }, 
+    wrapperTitleHeader: {
+        display: "flex", 
+        justifyContent: "center", 
+        marginBottom: "16px !important"
+    },
+    titleHeader: {
+        color: "#8898aa", 
+        fontSize: "15px"
+    },
+    errValidation:{
+        color: "red", 
+        fontSize: "13px" 
+    },
+    itemsCenter: {
+        display: "flex", 
+        alignItems: "center"
+    },
+    pb: {
+        paddingBottom: " 20px"
+    },
+    wrapperFooter: {
+        display: "flex",
+    },
+    titleFooter: {
+        display: "flex", 
+        flexGrow: 1 
+    }
 });

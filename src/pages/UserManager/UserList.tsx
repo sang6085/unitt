@@ -1,37 +1,37 @@
 import {
   Box,
-  Button,
   CircularProgress,
-  Grid,
   IconButton,
   Tooltip,
 } from "@mui/material";
-import React from "react";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
-import Confirm from "../../components/Confirm/Confirm";
-import { getAccountListMock } from "../../services/AccountService";
+import Confirm from "components/Confirm/Confirm";
 import { useTranslation } from "react-i18next";
 import { IUserSearch, User } from "./UserInterface";
 import { SubmitHandler } from "react-hook-form";
-import TableComponent from "../../components/Table/Table";
-import { CommonStyles } from "../../utils/styles";
-import StatusCard from "../../components/StatusCard/StatusCard";
+import TableComponent from "components/Table/Table";
+import { CommonStyles } from "utils/styles";
+import StatusCard from "components/StatusCard/StatusCard";
+import { cancelToken } from "api/common";
+import Button from "components/Button/Button";
+import { getAccountList } from "services/AccountService";
+import { useState, useEffect, FC } from "react";
 
-const UserList: React.FC = () => {
+const UserList: FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const styles = CommonStyles();
 
-  const [accounts, setAccounts] = React.useState<User[]>([]);
-  const [total, setTotal] = React.useState<number>(0);
+  const [accounts, setAccounts] = useState<User[]>([]);
+  const [total, setTotal] = useState<number>(0);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [page, setPage] = React.useState<number>(1);
+  const [page, setPage] = useState<number>(1);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [pageSize, setPageSize] = React.useState<number>(10);
-  const [loading, setLoading] = React.useState<boolean>(true);
+  const [pageSize, setPageSize] = useState<number>(10);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const onSubmit: SubmitHandler<IUserSearch> = (data) => console.log(data);
 
@@ -126,25 +126,28 @@ const UserList: React.FC = () => {
   const options: any = {
     filterType: "checkbox",
     download: false,
-    responsive: "simple",
+    responsive: "standard",
     print: false,
     filter: false,
     count: total,
+    serverSide:true,
     search: false,
-    viewColumns: false,
+    viewColumns: true,
     sort: false,
-    rowHover: false,
     selectableRows: "none",
     rowsPerPageOptions: [10, 20, 30],
-    onPageChange: (page: number) => {
+    onChangePage: (page: number) => {
       setAccounts([]);
       setLoading(true);
       setPage(page + 1);
     },
-    onRowsPerPageChange: (pageSize: number) => {
+    onChangeRowsPerPage: (pageSize: number) => {
       setAccounts([]);
       setLoading(true);
       setPageSize(pageSize);
+      console.log(pageSize);
+      
+      
     },
     textLabels: {
       body: {
@@ -154,25 +157,25 @@ const UserList: React.FC = () => {
   };
 
   const changeEditPage = (tableMeta: any) => {
-    navigate(`/account/edit/${accounts[tableMeta.rowIndex].id}`);
+    navigate(`/user-manager/edit/${accounts[tableMeta.rowIndex].id}`);
   };
 
   const changeCreatePage = () => {
-    navigate(`/account/add`);
+    navigate(`/user-manager/add`);
   };
 
   const changeDetailPage = (tableMeta: any) => {
-    navigate(`/account/view/${accounts[tableMeta.rowIndex].id}`);
+    navigate(`/user-manager/view/${accounts[tableMeta.rowIndex].id}`);
   };
 
-  const [isOpenConfirm, setIsOpenConfirm] = React.useState<boolean>(false);
+  const [isOpenConfirm, setIsOpenConfirm] = useState<boolean>(false);
 
   const onChangeConfirm: (value: boolean) => void = (value) => {
     setIsOpenConfirm(value);
   };
 
-  React.useEffect(() => {
-    getAccountListMock().subscribe((resInfo: any) => {
+  useEffect(() => {
+    getAccountList().subscribe((resInfo: any) => {
       if (resInfo.data.success) {
         setAccounts(resInfo.data.data);
         setLoading(false);
@@ -180,55 +183,53 @@ const UserList: React.FC = () => {
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {
+      //CancelToken in componentWillUnmount
+      cancelToken()
+    }
   }, [page, pageSize]);
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <Box className="add-btn">
-          <Button variant="contained" onClick={changeCreatePage}>
-            {t("button.add")}
-          </Button>
-        </Box>
-      </Grid>
-      <Grid item xs={12}>
-        <Box sx={{ display: "table", tableLayout: "fixed", width: "100%" }}>
-          <TableComponent
-            title=""
-            data={accounts}
-            columns={mainColumns}
-            options={options}
-            filter={true}
-            formData={[
-              {
-                label: t("user_manager.username"),
-                name: "username",
-              },
-              {
-                label: t("user_manager.full_name"),
-                name: "fullName",
-              },
-              {
-                label: t("user_manager.email"),
-                name: "email",
-              },
-              {
-                label: t("user_manager.position"),
-                name: "position",
-              },
-              {
-                label: t("user_manager.organization"),
-                name: "organization",
-              },
-              {
-                label: t("user_manager.phone_number"),
-                name: "phoneNumber",
-              },
-            ]}
-            handleFilter={onSubmit}
-          />
-        </Box>
-      </Grid>
+    <Box>
+      <Box className="add-btn">
+        <Button variant="contained" onClick={changeCreatePage}>
+          {t("button.add")}
+        </Button>
+      </Box>
+      <TableComponent
+        title={t("user_manager.search_results")}
+        data={accounts}
+        columns={mainColumns}
+        options={options}
+        filter={true}
+        formData={[
+          {
+            label: t("user_manager.username"),
+            name: "username",
+          },
+          {
+            label: t("user_manager.full_name"),
+            name: "fullName",
+          },
+          {
+            label: t("user_manager.email"),
+            name: "email",
+          },
+          {
+            label: t("user_manager.position"),
+            name: "position",
+          },
+          {
+            label: t("user_manager.organization"),
+            name: "organization",
+          },
+          {
+            label: t("user_manager.phone_number"),
+            name: "phoneNumber",
+          },
+        ]}
+        handleFilter={onSubmit}
+      />
       {isOpenConfirm && (
         <Confirm
           isOpen={isOpenConfirm}
@@ -237,7 +238,7 @@ const UserList: React.FC = () => {
           content={t("confirm_delete.warning_delete")}
         />
       )}
-    </Grid>
+    </Box>
   );
 };
 export default UserList;

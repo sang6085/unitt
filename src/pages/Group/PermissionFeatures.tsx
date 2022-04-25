@@ -1,24 +1,26 @@
-import { Button } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
-import { insertByGroupId } from "../../services/MenuGroupService";
+import { insertByGroupId } from "services/MenuGroupService";
 import { useTranslation } from "react-i18next";
-import GroupComponent from "./components/TableGroup";
-import MenuComponent from "./components/TableMenu";
+import GroupComponent from "pages/Group/components/TableGroup";
+import MenuComponent from "pages/Group/components/TableMenu";
+import { useStyles } from "pages/Group/PermissionFeatureStyles";
+import ButtonComponent from "components/Button/Button";
+import { useState, ChangeEvent } from "react";
 
 const Group = () => {
   const { t } = useTranslation();
-  const [valueSelect, setValueSelect] = React.useState<any>();
-  const [valueGroup, setValueGroup] = React.useState<any>();
-  const [valueMenu, setValueMenu] = React.useState<any>([]);
-  const [arr, setArr] = React.useState<any>([]);
+  const [valueSelect, setValueSelect] = useState<any>();
+  const [valueGroup, setValueGroup] = useState<any>();
+  const [valueMenu, setValueMenu] = useState<any>([]);
+  const [arr, setArr] = useState<any>([]);
   const updateArrFunc = (array: any) => setArr(array);
+  const classes = useStyles();
 
   const handleChangeMenuValue = (data: any) => {
     setValueMenu(data);
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValueGroup(event.target.id as any);
     setValueSelect(event.target.value as any);
   };
@@ -34,26 +36,19 @@ const Group = () => {
   return (
     <Box>
       <Box className="add-btn">
-        <Button variant="contained" onClick={() => handleSave(arr)}>
+        <ButtonComponent variant="contained" onClick={() => handleSave(arr)}>
           {t(`button.save`)}
-        </Button>
+        </ButtonComponent>
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          paddingBottom: 10,
-        }}
-      >
-        <Box sx={{ width: "33%" }}>
+      <Box className={classes.content}>
+        <Box className={classes.tableGroup} >
           <GroupComponent
             handleChange={handleChange}
             valueGroup={valueGroup}
             valueSelect={valueSelect}
           />
         </Box>
-        <Box sx={{ width: "63%" }}>
+        <Box className={classes.tableMenu} >
           <MenuComponent
             updateArrFunc={updateArrFunc}
             valueMenu={valueMenu}

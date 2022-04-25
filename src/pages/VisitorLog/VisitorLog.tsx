@@ -1,30 +1,25 @@
 import { Box, CircularProgress } from "@mui/material";
-import React from "react";
-import { downloadVisitorLogs, getVisitorLogs } from "../../services/VisitorLogService";
-import TableComponent from "../../components/Table/Table";
-// import ViewWeekIcon from "@mui/icons-material/ViewWeek";
-// import FilterListIcon from "@mui/icons-material/FilterList";
-// import TableRowsIcon from "@mui/icons-material/TableRows";
-// import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
-// import MenuComponent from "../../components/Menu/Menu";
+import { downloadVisitorLogs, getVisitorLogs } from "services/VisitorLogService";
+import TableComponent from "components/Table/Table";
 import { useTranslation } from "react-i18next";
 import { ErrorBoundary } from "react-error-boundary";
-import FallBackComponent from "../../components/FallBackComponent/FallBackComponent";
-import { errorHandle } from "../../utils/helper";
+import FallBackComponent from "components/FallBackComponent/FallBackComponent";
+import { errorHandle } from "utils/helper";
+import { useState, useEffect } from "react";
 
 const VistorLog = () => {
   const { t } = useTranslation();
 
-  const [data, setData] = React.useState<any>([]);
-  const [page, setPage] = React.useState<number>(1);
-  const [pageSize, setPageSize] = React.useState<number>(10);
-  const [total, setTotal] = React.useState<number>();
-  const [order, setOrder] = React.useState<{ orderBy: string; isDesc: boolean }>({
+  const [data, setData] = useState<any>([]);
+  const [page, setPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(10);
+  const [total, setTotal] = useState<number>();
+  const [order, setOrder] = useState<{ orderBy: string; isDesc: boolean }>({
     orderBy: "sign_in",
     isDesc: false,
   });
-  const [loading, setLoading] = React.useState<boolean>(true);
-  const [columnsOption, setColumnsOption] = React.useState<any>([
+  const [loading, setLoading] = useState<boolean>(true);
+  const [columnsOption, setColumnsOption] = useState<any>([
     {
       name: "email",
       label: "Email",
@@ -61,7 +56,7 @@ const VistorLog = () => {
     },
   ]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function getLogs() {
       getVisitorLogs({
         fromDate: "2021-08-01T10:21:14.000Z",

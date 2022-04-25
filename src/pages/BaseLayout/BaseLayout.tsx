@@ -1,14 +1,19 @@
-import * as React from "react";
+import { useEffect, useState, ReactNode, FC, Fragment } from "react";
 import { styled, Theme, CSSObject } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
+import DrawerMobile from "@mui/material/Drawer";
+import MuiAppBar, {
+  AppBarProps as MuiIAppBarProps,
+} from "@mui/material/AppBar";
 import CssBaseline from "@mui/material/CssBaseline";
-// import { menu } from "../../components/Sidebar/menu";
-import Sidebar from "../../components/Sidebar/Sidebar";
-import HeaderComponent from "../../components/Header/Header";
-import { menu } from "../../configs/consts";
-import { useLocation } from "react-router";
+import Sidebar from "components/Sidebar/Sidebar";
+import HeaderComponent from "components/Header/Header";
+import { menu } from "configs/consts";
+import { Stack } from "@mui/material";
+import { useStyles } from "pages/BaseLayout/BaseLayoutStyles";
+import { useAuth } from "contexts/AuthContext";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const openedMixin = (theme: Theme, dw: any): CSSObject => ({
   width: dw,
@@ -29,14 +34,14 @@ const closedMixin = (theme: Theme, dw: any): CSSObject => ({
   width: `calc(${dw}px + 1px)`,
 });
 
-interface AppBarProps extends MuiAppBarProps {
+interface IAppBarProps extends MuiIAppBarProps {
   open?: boolean;
   drawerwidth: number;
 }
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
-})<AppBarProps>(({ theme, open, drawerwidth }) => ({
+})<IAppBarProps>(({ theme, open, drawerwidth }) => ({
   boxShadow: "none",
   ...(open && {
     marginLeft: drawerwidth,
@@ -44,7 +49,7 @@ const AppBar = styled(MuiAppBar, {
   }),
   ...(!open && {
     marginLeft: drawerwidth,
-    width: `calc(100% - ${drawerwidth}px - 1px)`,
+    width: `calc(100% - ${drawerwidth}px)`,
   }),
 }));
 
@@ -54,7 +59,7 @@ interface DrawerProps {
 }
 
 interface IBaseLayout {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 const Drawer = styled(MuiDrawer, {
@@ -82,20 +87,43 @@ const WrapperMain = styled(Box, {
   width: "100%",
 }));
 
-const BaseLayout: React.FC<IBaseLayout> = (props) => {
+export const sidebarWidthOpen = 250;
+export const sidebarWidthClose = 60;
+
+const BaseLayout: FC<IBaseLayout> = (props) => {
+  const classes = useStyles();
   const { children } = props;
-  const { pathname } = useLocation();
+  const auth = useAuth();
 
   const status = localStorage.getItem("statusSidebar");
 
-  const [openMenu, setOpenMenu] = React.useState(status || "open");
-  const [openTemp, setOpenTemp] = React.useState<boolean>(
-    status === "open" ? true : false
-  );
+  const [openMenu, setOpenMenu] = useState(status || "open");
+  const [openTemp, setOpenTemp] = useState<boolean>(false);
 
-  const drawerwidth = openMenu === "open" || openTemp ? 250 : 60;
+  const mobileOpen = useMediaQuery("(max-width:992px)");
+  const [isMobile, setIsMobile] = useState<boolean>(false);
 
-  const marginLeft = openMenu === "open" ? 250 : 60;
+  const handleDrawerWidth = () => {
+    if (mobileOpen) {
+      return sidebarWidthOpen;
+    } else
+      return openMenu === "open" || openTemp
+        ? sidebarWidthOpen
+        : sidebarWidthClose;
+  };
+
+  const handleMarginLeft = () => {
+    if (mobileOpen) {
+      return -1;
+    } else return openMenu === "open" ? sidebarWidthOpen : sidebarWidthClose;
+  };
+  const drawerwidth = handleDrawerWidth();
+
+  const marginLeft = handleMarginLeft();
+
+  const hasAccessMenu = () => {
+    return !!auth.accessMenu.length; // get access menu from user id
+  };
 
   const handleDrawerOpen = () => {
     setOpenMenu("open");
@@ -103,8 +131,12 @@ const BaseLayout: React.FC<IBaseLayout> = (props) => {
   };
 
   const handleDrawerClose = () => {
-    setOpenMenu("close");
-    localStorage.setItem("statusSidebar", "close");
+    if (mobileOpen) {
+      setIsMobile(true);
+    } else {
+      setOpenMenu("close");
+      localStorage.setItem("statusSidebar", "close");
+    }
   };
 
   const handleHoverOn = () => {
@@ -118,57 +150,85 @@ const BaseLayout: React.FC<IBaseLayout> = (props) => {
       setOpenTemp(false);
     }
   };
+  const handleDrawerToggle = () => {
+    setIsMobile(!isMobile);
+  };
 
-  return (
-    <React.Fragment>
-      {pathname === "/login" || pathname === "/register" ? (
-        <Box>{children}</Box>
-      ) : (
-        <Box sx={{ display: "flex", background: "#f0f6ff" }}>
-          <CssBaseline />
-          <AppBar
-            position="fixed"
-            open={openMenu === "open" || openTemp}
-            sx={{ background: "none", zIndex: 999 }}
-            drawerwidth={marginLeft}
-          >
-            <HeaderComponent />
-          </AppBar>
-          <Drawer
-            variant="permanent"
-            open={openMenu === "open" || openTemp}
-            drawerwidth={drawerwidth}
-            onMouseEnter={() => handleHoverOn()}
-            onMouseLeave={() => handleHoverOut()}
-            sx={{
-              "& .css-13tlj9j-MuiPaper-root-MuiDrawer-paper": {
-                borderRight: "inherit",
-                position: "initial",
-              },
+  useEffect(() => {
+    setIsMobile(false);
+  }, [mobileOpen]);
 
-              position: "fixed",
-              zIndex: 1000,
-            }}
-          >
-            <Sidebar
-              headerHeight={200}
-              listMenu={menu}
+  const renderLayout = () => {
+    if (auth.loading) {
+    } else {
+      if (!hasAccessMenu()) {
+        return <Box>{children}</Box>;
+      } else {
+        return (
+          <Stack direction="row">
+            <CssBaseline />
+            <AppBar
+              position="fixed"
               open={openMenu === "open" || openTemp}
-              handleDrawerOpen={handleDrawerOpen}
-              handleDrawerClose={handleDrawerClose}
-              handleMenu={openMenu}
-            />
-          </Drawer>
-          <WrapperMain
-            open={openMenu === "open" || openTemp}
-            drawerwidth={marginLeft}
-          >
-            {children}
-          </WrapperMain>
-        </Box>
-      )}
-    </React.Fragment>
-  );
+              drawerwidth={marginLeft}
+              className={
+                openMenu === "open"
+                  ? classes.transitionAppBarOpen
+                  : classes.transitionAppBarClose
+              }
+            >
+              <HeaderComponent
+                open={openMenu === "open" || openTemp}
+                handleDrawerOpen={handleDrawerOpen}
+                handleDrawerClose={handleDrawerClose}
+                handleMenu={openMenu}
+                mobileOpen={mobileOpen}
+              />
+            </AppBar>
+            {mobileOpen ? (
+              <DrawerMobile
+                variant="temporary"
+                open={isMobile}
+                onClose={handleDrawerToggle}
+                ModalProps={{
+                  keepMounted: true,
+                }}
+                className={classes.sidebarWidthOpen}
+              >
+                <Sidebar headerHeight={200} listMenu={menu} open={true} />
+              </DrawerMobile>
+            ) : (
+              <Drawer
+                variant="permanent"
+                open={openMenu === "open" || openTemp}
+                drawerwidth={drawerwidth}
+                onMouseEnter={() => handleHoverOn()}
+                onMouseLeave={() => handleHoverOut()}
+                className={
+                  mobileOpen ? classes.mobileClose : classes.mobileOpen
+                }
+              >
+                <Sidebar
+                  headerHeight={200}
+                  listMenu={menu}
+                  open={openMenu === "open" || openTemp}
+                />
+              </Drawer>
+            )}
+
+            <WrapperMain
+              open={openMenu === "open" || openTemp}
+              drawerwidth={marginLeft}
+              className={classes.transitionWrapperMain}
+            >
+              {children}
+            </WrapperMain>
+          </Stack>
+        );
+      }
+    }
+  };
+  return <Fragment>{renderLayout()}</Fragment>;
 };
 
 export default BaseLayout;

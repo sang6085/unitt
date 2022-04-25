@@ -1,11 +1,11 @@
 import { Alert, Box, Grid, Snackbar, Typography, Drawer } from "@mui/material";
-import React from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { getScheduleById, updateScheduleById } from "../../services/ScheduleService";
 import FallBackComponent from "../../components/FallBackComponent/FallBackComponent";
 import { errorHandle } from "../../utils/helper";
-import FormWidget from "../../components/FormGeneration/FormWidget";
+import FormWidget from "../../components/FormGeneration/Form";
+import { useState, useEffect} from "react";
 
 interface IUpdateSchedule {
   id: number;
@@ -14,13 +14,13 @@ interface IUpdateSchedule {
 
 const UpdateSchedule = (props: IUpdateSchedule) => {
   const { id, toggleDrawer } = props;
-  const [loading, setLoading] = React.useState<boolean>(true);
-  const [openAlert, setOpenAlert] = React.useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
   const vertical = "top";
   const horizontal = "right";
-  const [data, setData] = React.useState<any>();
+  const [data, setData] = useState<any>();
 
-  React.useEffect(() => {
+  useEffect(() => {
     setLoading(true);
     getScheduleById(id).then((response) => {
       setData(response);
@@ -28,7 +28,7 @@ const UpdateSchedule = (props: IUpdateSchedule) => {
     });
   }, [id]);
 
-  const schema = {
+  const schema: any = {
     type: "object",
     required: ["name", "cycle"],
     properties: {

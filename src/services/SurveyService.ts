@@ -1,4 +1,4 @@
-import api from "../api/common";
+import api from "api/common";
 export const getTriggerSurvey = () => {
   return api.get(
     `${process.env.REACT_APP_PREFIX_API}/api/surveytrigger/gentriggerbylocation/1652`

@@ -1,19 +1,19 @@
-import { Box, Button, CircularProgress, IconButton, Tooltip } from "@mui/material";
-import React from "react";
+import { Box, CircularProgress, IconButton, Stack, Tooltip } from "@mui/material";
 
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router";
-import { makeStyles } from "@mui/styles";
 import { useTranslation } from "react-i18next";
-import { getDataPermission } from "../../services/PermissionManagerService";
+import { getDataPermission } from "services/PermissionManagerService";
 import { SubmitHandler } from "react-hook-form";
-import { CommonStyles } from "../../utils/styles";
-import StatusCard from "../../components/StatusCard/StatusCard";
-
-import TableComponent from "../../components/Table/Table";
-import Confirm from "../../components/Confirm/Confirm";
+import { CommonStyles } from "utils/styles";
+import StatusCard from "components/StatusCard/StatusCard";
+import { useState, useEffect, FC } from "react";
+import TableComponent from "components/Table/Table";
+import Confirm from "components/Confirm/Confirm";
+import { cancelToken } from "api/common";
+import ButtonComponent from "components/Button/Button";
 interface IFeatureSearch {
   search: string;
   id: number | string;
@@ -21,39 +21,21 @@ interface IFeatureSearch {
   featureName: string;
   featureType: string;
 }
-const useStyles = makeStyles({
-  boxHeader: {
-    display: "flex",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  box: {
-    display: "flex",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  title: {
-    minWidth: 200,
-    fontSize: "14px !important",
-    fontWeight: "bold",
-  },
-});
 
-const PermissionManager: React.FC = () => {
+const PermissionManager: FC = () => {
   const navigate = useNavigate();
-  const classes = useStyles();
   const styles = CommonStyles();
   const { t } = useTranslation();
-  const [data, setData] = React.useState<any>([]);
-  const [loading, setLoading] = React.useState<boolean>(true);
-  const [isOpenConfirm, setIsOpenConfirm] = React.useState<boolean>(false);
+  const [data, setData] = useState<any>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [isOpenConfirm, setIsOpenConfirm] = useState<boolean>(false);
 
   const onChangeConfirm: (value: boolean) => void = (value) => {
     setIsOpenConfirm(value);
   };
 
-  React.useEffect(() => {
-    async function getData() {
+  useEffect(() => {
+    function getData() {
       getDataPermission().subscribe((response: any) => {
         if (response.data.data) {
           setData(response?.data.data);
@@ -62,12 +44,25 @@ const PermissionManager: React.FC = () => {
       });
     }
     getData();
-  }, [loading]);
+    return () => {
+      //CancelToken in componentWillUnmount
+      cancelToken();
+    }
+  }, []);
 
   const columns = [
     {
       label: "#",
       name: "id",
+      options: {
+        customBodyRender: (value: any, tableMeta: any) => {
+          return (
+            <Box>
+              {tableMeta.rowIndex + 1}
+            </Box>
+          );
+        },
+      },
     },
     {
       name: t("permission_manager.action"),
@@ -75,41 +70,41 @@ const PermissionManager: React.FC = () => {
       options: {
         customBodyRender: (value: any, tableMeta: any) => {
           return (
-            <Box sx={{ display: "flex", flexDirection: "row" }}>
+            <Stack direction={'row'}>
               <Tooltip title={t("detail.view") as string}>
                 <IconButton
-                  className={styles.actionIcons}
+
                   size="small"
                   onClick={() =>
                     navigate(`/permission-manager/view/${data[tableMeta.rowIndex].id}`)
                   }
                 >
-                  <RemoveRedEyeIcon fontSize="small" />
+                  <RemoveRedEyeIcon className={styles.actionIcons} fontSize="small" />
                 </IconButton>
               </Tooltip>
 
               <Tooltip title={t("detail.edit") as string}>
                 <IconButton
-                  className={styles.actionIcons}
+
                   onClick={() =>
                     navigate(`/permission-manager/edit/${data[tableMeta.rowIndex].id}`)
                   }
                   size="small"
                 >
-                  <DriveFileRenameOutlineIcon fontSize="small" />
+                  <DriveFileRenameOutlineIcon className={styles.actionIcons} fontSize="small" />
                 </IconButton>
               </Tooltip>
 
               <Tooltip title={t("detail.delete") as string}>
                 <IconButton
-                  className={styles.actionIcons}
+
                   size="small"
                   onClick={() => setIsOpenConfirm(true)}
                 >
-                  <DeleteIcon fontSize="small" />
+                  <DeleteIcon className={styles.actionIcons} fontSize="small" />
                 </IconButton>
               </Tooltip>
-            </Box>
+            </Stack>
           );
         },
       },
@@ -159,9 +154,10 @@ const PermissionManager: React.FC = () => {
     filter: false,
     search: false,
     sort: false,
-    viewColumns: false,
+    viewColumns: true,
     pagination: true,
     selectableRows: "none",
+    responsive: "standard",
     rowHover: false,
     expandableRows: false,
     textLabels: {
@@ -172,15 +168,13 @@ const PermissionManager: React.FC = () => {
   };
   return (
     <Box>
-      <Box className={classes.boxHeader}>
-        <Box className="add-btn">
-          <Button onClick={() => navigate("/permission-manager/create")} variant="contained">
-            {t("button.add")}
-          </Button>
-        </Box>
+      <Box className="add-btn">
+        <ButtonComponent onClick={() => navigate("/permission-manager/create")} variant="contained">
+          {t("button.add")}
+        </ButtonComponent>
       </Box>
       <TableComponent
-        title={""}
+        title={t('permission_manager.title_table')}
         data={data}
         columns={columns}
         options={options}

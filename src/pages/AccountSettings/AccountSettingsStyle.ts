@@ -2,7 +2,10 @@ import { makeStyles } from "@mui/styles";
 
 export const useStyles = makeStyles({
   paperSpace: {
+    height: "100%",
     padding: 24,
+    display: "Flex",
+    flexDirection: "column",
   },
 
   inputTitle: {
@@ -16,11 +19,10 @@ export const useStyles = makeStyles({
     justifyContent: "flex-end",
     alignItems: "flex-end",
   },
-
-  button: {
-    color: "#fff !important",
-    fontSize: "13px !important",
-    paddingLeft: "32px !important",
-    paddingRight: "32px !important",
+  labelWidth: {
+    width: "100%",
   },
+  mt: {
+    marginTop: "1px"
+  }
 });

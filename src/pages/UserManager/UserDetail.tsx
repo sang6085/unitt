@@ -1,11 +1,8 @@
 /* eslint-disable jsx-a11y/alt-text */
-import { makeStyles } from "@material-ui/styles";
 import {
   Autocomplete,
   Box,
-  Button,
   Checkbox,
-  CircularProgress,
   FormLabel,
   Grid,
   IconButton,
@@ -16,14 +13,14 @@ import {
   Select,
   TextField,
   Typography,
-  Card,
+  Divider,
+  Paper,
 } from "@mui/material";
 import { useDropzone } from "react-dropzone";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import { useLocation, useParams } from "react-router-dom";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import React, { useState } from "react";
 import SaveIcon from "@mui/icons-material/Save";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -36,84 +33,18 @@ import * as yup from "yup";
 import { useTranslation } from "react-i18next";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import Confirm from "../../components/Confirm/Confirm";
-import { getAccountByIdMock } from "../../services/AccountService";
+import Confirm from "components/Confirm/Confirm";
 import { MUIDataTableOptions } from "mui-datatables";
-import { IInfo } from "./UserInterface";
-import TableComponent from "../../components/Table/Table";
-import { colors } from "../../utils/colors";
+import { IInfo } from "pages/UserManager/UserInterface";
+import TableComponent from "components/Table/Table";
+import { useStyle } from "pages/UserManager/UserStyle";
+import Progress from "components/Loading/Loading";
+import { cancelToken } from "api/common";
+import ButtonComponent from "components/Button/Button";
+import { getAccountById } from "services/AccountService";
+import { useState, useEffect } from "react";
 
 const label = { inputProps: { "aria-label": "Switch demo" } };
-
-const useStyle = makeStyles({
-  titleBox: {
-    margin: 0,
-    marginBottom: "8px",
-    display: "inline-block",
-    paddingRight: "20px",
-    paddingBottom: "3px",
-  },
-  required: {
-    "&::after": {
-      content: '"*"',
-      display: "inline-block",
-      marginLeft: "5px",
-      position: "relative",
-      bottom: "5px",
-      color: "red",
-    },
-  },
-  borderAvatar: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 16,
-    width: 140,
-    height: 140,
-    borderRadius: "50%",
-    padding: 8,
-    border: "1px dashed",
-  },
-  buttonUpload: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    height: 125,
-    width: 125,
-    paddingTop: "15px",
-  },
-  boxEmailVerified: {
-    display: "flex",
-    flexDirection: "column",
-    flexGrow: 1,
-    p: "16px 0",
-  },
-  icon: {
-    fontSize: "18px",
-    color: colors.primaryColor,
-    padding: 0,
-  },
-  hvBtnUpload: {
-    height: "100%",
-    width: "100%",
-    borderRadius: "50%",
-    position: "absolute",
-    top: 0,
-    opacity: 0,
-    "&:hover": {
-      display: "flex",
-      alignItems: "center",
-      flexDirection: "column",
-      justifyContent: "center",
-      transition: "opacity 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
-      opacity: 1,
-      color: "rgb(255, 255, 255)",
-      backgroundColor: "rgb(43,39, 47, 0.44)",
-    },
-  },
-});
 
 const genders = [
   { id: "male", name: "Male" },
@@ -128,11 +59,12 @@ const UserDetail = () => {
   const { t } = useTranslation();
   const location = useLocation();
   const [files, setFiles] = useState<any>([]);
-  const [birthday, setBirthday] = React.useState<Date | null>();
-  const [loading, setLoading] = React.useState<boolean>(true);
-  const [isOpenConfirm, setIsOpenConfirm] = React.useState<boolean>(false);
-  const [indexOrgForAccount, setIndexOrgForAccount] = React.useState<number>(0);
-  const [accountVal, setAccountVal] = React.useState<any>([]);
+  const [birthday, setBirthday] = useState<Date | null>();
+  const [group, setGroup] = useState<any>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [isOpenConfirm, setIsOpenConfirm] = useState<boolean>(false);
+  const [indexOrgForAccount, setIndexOrgForAccount] = useState<number>(0);
+  const [accountVal, setAccountVal] = useState<any>([]);
   const navigate = useNavigate();
   const { userId } = useParams();
   const type: string = location.pathname.split("/")[2];
@@ -179,7 +111,7 @@ const UserDetail = () => {
     mode: "all",
   });
 
-  const [groups] = React.useState<any>([
+  const [groups] = useState<any>([
     { id: "userName", name: "Tên đăng nhập" },
     { id: "fullName", name: "Họ tên" },
     { id: "email", name: "Email" },
@@ -188,7 +120,7 @@ const UserDetail = () => {
     { id: "phone", name: "Số điện thoại" },
   ]);
 
-  const [orgForAccount, setOrgForAccount] = React.useState<any>([
+  const [orgForAccount, setOrgForAccount] = useState<any>([
     {
       index: 1,
       id: 1,
@@ -204,6 +136,11 @@ const UserDetail = () => {
     {
       name: "index",
       label: "#",
+      options: {
+        customBodyRender: (value: any, tableMeta: any) => {
+          return <Typography>{tableMeta.rowIndex + 1}</Typography>;
+        },
+      },
     },
 
     {
@@ -316,6 +253,7 @@ const UserDetail = () => {
     search: false,
     viewColumns: false,
     selectableRows: "none",
+    responsive: "standard",
     pagination: false,
     rowHover: false,
     customToolbar: () => (
@@ -324,23 +262,21 @@ const UserDetail = () => {
           (orgForAccount.length === 2 ? (
             <IconButton
               onClick={() => handleAddOrgForAccount(false)}
-              className={classes.icon}
-              sx={{ marginLeft: "7px" }}
+              size="small"
             >
-              <KeyboardBackspaceIcon />
+              <KeyboardBackspaceIcon className={classes.icon} />
             </IconButton>
           ) : (
             <IconButton
               onClick={() => handleAddOrgForAccount(true)}
-              className={classes.icon}
-              sx={{ marginLeft: "7px" }}
+              size="small"
             >
-              <AddCircleIcon />
+              <AddCircleIcon className={classes.icon} />
             </IconButton>
           ))}
         {type !== "view" && (
-          <IconButton className={classes.icon} sx={{ marginLeft: "7px" }}>
-            <SaveIcon />
+          <IconButton size="small">
+            <SaveIcon className={classes.icon} />
           </IconButton>
         )}
       </>
@@ -370,6 +306,9 @@ const UserDetail = () => {
   const handleDelOrgForAccount = (rowIndex: number) => {
     let newOrgForAccount = [...orgForAccount];
     newOrgForAccount.splice(rowIndex, 1);
+    console.log(rowIndex);
+    console.log(newOrgForAccount);
+
     setOrgForAccount(newOrgForAccount);
     setIsOpenConfirm(false);
   };
@@ -393,6 +332,7 @@ const UserDetail = () => {
           preview: URL.createObjectURL(acceptedFiles[0]),
         })
       );
+      setAccountVal({ avatar: true });
     },
   });
 
@@ -403,9 +343,9 @@ const UserDetail = () => {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (type !== "add") {
-      getAccountByIdMock(Number(userId)).subscribe((resInfo: any) => {
+      getAccountById(Number(userId)).subscribe((resInfo: any) => {
         if (resInfo.data.success) {
           setAccountVal(resInfo.data.data);
           setOrgForAccount(resInfo.data.data.orgforAccount);
@@ -417,9 +357,9 @@ const UserDetail = () => {
           setValue("phone", resInfo.data.data.phone);
           setValue("password", resInfo.data.data.password);
           setValue("gender", resInfo.data.data.gender);
-          setValue("group", resInfo.data.data.group);
           setValue("enabled", resInfo.data.data.enabled);
           setValue("locked", resInfo.data.data.locked);
+          setGroup([{ id: 'positionName', name: 'Chức danh' }]);
           setLoading(false);
         }
       });
@@ -427,29 +367,26 @@ const UserDetail = () => {
       setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {
+      //CancelToken in componentWillUnmount
+      cancelToken();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return loading ? (
-    <CircularProgress
-      color="primary"
-      sx={{
-        position: "absolute",
-        right: "45%",
-      }}
-    />
+    <Progress />
   ) : (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <Card sx={{ pb: 2 }}>
+        <Paper elevation={0} className={classes.paper}>
+          <Typography variant="h6">Detail</Typography>
+          <Divider sx={{ mt: 1, mb: 2 }} />
           <form encType="multipart/form-data" onSubmit={handleSubmit(onSubmit)}>
-            <Grid
-              container
-              spacing={5}
-              sx={{ padding: "20px", paddingTop: "40px" }}
-            >
-              <Grid item xs={4}>
+            <Grid container spacing={2} className={classes.contentForm}>
+              <Grid item xs={12} md={4}>
                 <Grid container spacing={4}>
-                  <Grid item xs={12} sx={{ textAlign: "end" }}>
+                  <Grid item xs={12} sx={{ textAlign: "end", pr: 1 }}>
                     <FormControlLabel
                       control={
                         <Controller
@@ -474,12 +411,10 @@ const UserDetail = () => {
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <Box sx={{ display: "flex", justifyContent: "center" }}>
+                    <Box className={classes.itemCenter}>
                       <Box className={classes.borderAvatar}>
-                        <Button
-                          component="span"
+                        <ButtonComponent
                           className={classes.buttonUpload}
-                          sx={{ borderRadius: "50%" }}
                           onClick={() => {
                             open();
                           }}
@@ -493,11 +428,11 @@ const UserDetail = () => {
                                   ? accountVal.avatar
                                   : files.preview
                               }
-                              style={{
-                                height: 125,
-                                width: 125,
-                                borderRadius: "50%",
-                              }}
+                              className={
+                                accountVal.avatar === undefined
+                                  ? classes.noneImg
+                                  : classes.img
+                              }
                             />
                           </div>
                           <Box className={classes.hvBtnUpload}>
@@ -506,7 +441,7 @@ const UserDetail = () => {
                               {t("user_manager.upload")}
                             </Typography>
                           </Box>
-                        </Button>
+                        </ButtonComponent>
                       </Box>
                     </Box>
 
@@ -517,17 +452,13 @@ const UserDetail = () => {
                       {t("user_manager.max_size_of")} 3.1MB
                     </Typography>
                   </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    sx={{
-                      paddingLeft: "45px!important",
-                      paddingRight: "5px!important",
-                    }}
-                  >
+                  <Grid item xs={12}>
                     <Grid container spacing={2}>
-                      <Grid item xs={10}>
-                        <Typography gutterBottom sx={{ fontWeight: 500 }}>
+                      <Grid item xs={9}>
+                        <Typography
+                          gutterBottom
+                          className={classes.fontWeight500}
+                        >
                           {t("user_manager.receive_notification")}
                         </Typography>
                         <Typography variant="body2">
@@ -535,38 +466,44 @@ const UserDetail = () => {
                           notification
                         </Typography>
                       </Grid>
-                      <Grid item xs={2}>
+                      <Grid item xs={3} className={classes.itemEnd}>
                         <Switch {...label} disabled={type === "view"} />
                       </Grid>
-                      <Grid item xs={10}>
-                        <Typography gutterBottom sx={{ fontWeight: 500 }}>
+                      <Grid item xs={9}>
+                        <Typography
+                          gutterBottom
+                          className={classes.fontWeight500}
+                        >
                           {t("user_manager.receive_email")}
                         </Typography>
                         <Typography variant="body2">
                           Disable this will automatically send the user a email
                         </Typography>
                       </Grid>
-                      <Grid item xs={2}>
+                      <Grid item xs={3} className={classes.itemEnd}>
                         <Switch {...label} disabled={type === "view"} />
                       </Grid>
-                      <Grid item xs={10}>
-                        <Typography gutterBottom sx={{ fontWeight: 500 }}>
+                      <Grid item xs={9}>
+                        <Typography
+                          gutterBottom
+                          className={classes.fontWeight500}
+                        >
                           {t("user_manager.carry_over")}
                         </Typography>
                         <Typography variant="body2">
                           Apply disable account
                         </Typography>
                       </Grid>
-                      <Grid item xs={2}>
+                      <Grid item xs={3} className={classes.itemEnd}>
                         <Switch {...label} disabled={type === "view"} />
                       </Grid>
                     </Grid>
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item xs={8} sx={{ paddingRight: "16px" }}>
+              <Grid item xs={12} md={8}>
                 <Grid container spacing={2}>
-                  <Grid item xs={6}>
+                  <Grid item xs={12} sm={6}>
                     <FormLabel>{t("user_manager.employee_code")}</FormLabel>
 
                     <TextField
@@ -582,7 +519,7 @@ const UserDetail = () => {
                       helperText={errors.employeeCode?.message}
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={12} sm={6}>
                     <FormLabel>{t("user_manager.username")}</FormLabel>
 
                     <TextField
@@ -598,7 +535,7 @@ const UserDetail = () => {
                       helperText={errors.userName?.message}
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={12} sm={6}>
                     <FormLabel>{t("user_manager.full_name")}</FormLabel>
 
                     <TextField
@@ -615,7 +552,7 @@ const UserDetail = () => {
                     />
                   </Grid>
                   {type !== "view" && (
-                    <Grid item xs={6}>
+                    <Grid item xs={12} sm={6}>
                       <FormLabel>{t("user_manager.password")}</FormLabel>
 
                       <TextField
@@ -631,7 +568,7 @@ const UserDetail = () => {
                       />
                     </Grid>
                   )}
-                  <Grid item xs={6}>
+                  <Grid item xs={12} sm={6}>
                     <FormLabel>{t("user_manager.birthday")}</FormLabel>
 
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -652,7 +589,7 @@ const UserDetail = () => {
                       />
                     </LocalizationProvider>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={12} sm={6}>
                     <FormLabel>{t("user_manager.gender")}</FormLabel>
 
                     <Select
@@ -668,7 +605,7 @@ const UserDetail = () => {
                       ))}
                     </Select>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={12} sm={6}>
                     <FormLabel>{t("user_manager.email")}</FormLabel>
 
                     <TextField
@@ -684,7 +621,7 @@ const UserDetail = () => {
                       helperText={errors.email?.message}
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={12} sm={6}>
                     <FormLabel>{t("user_manager.phone_number")}</FormLabel>
 
                     <TextField
@@ -701,24 +638,21 @@ const UserDetail = () => {
                     />
                   </Grid>
                   {type !== "view" && (
-                    <Grid item xs={6}>
+                    <Grid item xs={12} sm={6}>
                       <FormLabel>{t("user_manager.group")}</FormLabel>
-
                       {
                         <Autocomplete
                           multiple
-                          {...register("group")}
-                          defaultValue={watch("group")}
+                          value={group}
+                          onChange={(event, newValue) => {
+                            setGroup(newValue);
+                            setValue("group", newValue);
+                          }}
+                          isOptionEqualToValue={(option, value) => option.id === value.id}
                           options={groups}
                           disableCloseOnSelect
-                          getOptionLabel={(option) => option.name}
+                          getOptionLabel={(option) => option?.name}
                           renderOption={(props, option, { selected }) => {
-                            for (let i = 0; i < watch("group").length; i++) {
-                              if (watch("group")[i].id === option.id) {
-                                selected = true;
-                              }
-                            }
-
                             return (
                               <li {...props}>
                                 <Checkbox
@@ -741,35 +675,29 @@ const UserDetail = () => {
                   )}
                 </Grid>
               </Grid>
-              <Grid
-                item
-                xs={12}
-                sx={{ display: "flex", justifyContent: "center" }}
-              >
-                <Button
-                  variant="outlined"
-                  sx={{ border: "1px solid #1976d2" }}
+              <Grid item xs={12} className={classes.itemBtnRight}>
+                <ButtonComponent
+                  variant="contained"
+                  color="secondary"
                   onClick={() => {
                     navigate(-1);
                   }}
                 >
                   {t("user_manager.cancel")}
-                </Button>
+                </ButtonComponent>
                 {type !== "view" && (
-                  <Button
+                  <ButtonComponent
                     variant="contained"
-                    sx={{
-                      marginLeft: "10px",
-                    }}
+                    className={classes.spacingBtn}
                     type="submit"
                   >
                     {t("user_manager.save")}
-                  </Button>
+                  </ButtonComponent>
                 )}
               </Grid>
             </Grid>
           </form>
-        </Card>
+        </Paper>
       </Grid>
       {type !== "add" && (
         <Grid item xs={12}>

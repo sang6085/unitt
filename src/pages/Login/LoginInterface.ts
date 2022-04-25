@@ -1,10 +1,10 @@
-export interface Notifications {
+export interface INotifications {
   totalUnread: number;
   totalData: number;
   datas: Notification[];
 }
 
-export interface Notification {
+export interface INotification {
   appInboxId: number;
   title: string;
   description: string;
@@ -27,12 +27,12 @@ export interface Notification {
   createdDate: Date;
   params?: object;
 }
-export interface AuthenticationToken {
+export interface IAuthenticationToken {
   accessToken: string;
   refreshToken: string;
 }
 
-export interface ProfileDTO {
+export interface IProfileDTO {
   userId: number;
   companyId: number;
   fullName: string;
@@ -43,11 +43,11 @@ export interface ProfileDTO {
   orgName: string;
 }
 
-export interface LoginSliceState {
+export interface ILoginSliceState {
   loading: boolean;
-  authToken?: AuthenticationToken;
+  authToken?: IAuthenticationToken;
   aadToken?: string;
-  notifications: Notifications;
+  notifications: INotifications;
 }
 
 export interface UpdatePasswordDTO {
@@ -55,7 +55,7 @@ export interface UpdatePasswordDTO {
   newPassword: string;
 }
 
-export interface UserDashboardSetting {
+export interface IUserDashboardSetting {
   id: number;
   chart: number;
   displayOrder: number;

@@ -9,8 +9,7 @@ import {
   Paper,
   TextField,
 } from "@mui/material";
-import React from "react";
-import { searchEvents } from "../../services/EventsService";
+import { searchEvents } from "services/EventsService";
 import FullCalendar, {
   DateSelectArg,
   EventApi,
@@ -20,83 +19,30 @@ import FullCalendar, {
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import { makeStyles } from "@mui/styles";
-import { useTheme } from "../../contexts/ThemeContext";
+import { useTheme } from "contexts/ThemeContext";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useStyles } from "pages/EventsManagement/EventsManagementStyle";
+import { useEffect, useState, useCallback } from "react";
 
-const useStyles = makeStyles({
-  calendarRoot: (props: { color: string }) => {
-    return {
-      "& .fc-button-primary": {
-        background: "none",
-        color: props.color,
-        border: "none",
-      },
-      "& .fc-button-primary:hover": {
-        background: "none",
-        color: props.color,
-        border: "none",
-      },
-      "& .fc-button-primary:active": {
-        background: "none",
-        color: props.color,
-        border: "none",
-      },
-      "& .fc-button-primary:disabled": {
-        background: props.color,
-        color: "#fff",
-        border: "none",
-      },
-      "& .fc-button-primary:disabled:hover": {
-        background: props.color,
-        color: "#fff",
-        borderColor: props.color,
-      },
-      "& .fc-button-primary:not(:disabled):active": {
-        background: "none",
-        color: props.color,
-        border: "none",
-        borderColor: "none",
-      },
-      "& .fc-button-primary:not(:disabled).fc-button-active": {
-        background: props.color,
-        color: "#fff",
-        border: "1px solid",
-        borderColor: props.color,
-      },
-      "& .fc-event-title": {
-        textOverflow: "ellipsis",
-      },
-      "& table": {
-        "& tr": {
-          "& th": {
-            background: "#fbfbfc",
-            height: 50,
-          },
-        },
-      },
-    };
-  },
-});
 
 const EventsManagement = () => {
   const useThemeContext = useTheme();
   const styles = useStyles({
     color: useThemeContext.colorTheme,
   });
-  const [loading, setLoading] = React.useState<boolean>(true);
-  const [initialEvents, setInitialEvents] = React.useState<EventInput[]>();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [initialEvents, setInitialEvents] = useState<EventInput[]>();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [currentEvents, setCurrentEvents] = React.useState<EventApi[]>();
+  const [currentEvents, setCurrentEvents] = useState<EventApi[]>();
 
   const { register, handleSubmit, reset } = useForm<{ newEvent: string }>();
 
   let eventGuid = 0;
 
-  const [eventToDel, setEventToDel] = React.useState<EventClickArg | undefined>(undefined);
-  const [eventToAdd, setEventToAdd] = React.useState<DateSelectArg | undefined>(undefined);
+  const [eventToDel, setEventToDel] = useState<EventClickArg | undefined>(undefined);
+  const [eventToAdd, setEventToAdd] = useState<DateSelectArg | undefined>(undefined);
 
-  React.useEffect(() => {
+  useEffect(() => {
     searchEvents({
       pageIndex: 1,
       pageSize: 10,
@@ -121,9 +67,9 @@ const EventsManagement = () => {
     });
   }, []);
 
-  const handleEvents = React.useCallback((events: EventApi[]) => setCurrentEvents(events), []);
+  const handleEvents = useCallback((events: EventApi[]) => setCurrentEvents(events), []);
 
-  const handleDateSelect = React.useCallback((selectInfo: DateSelectArg) => {
+  const handleDateSelect = useCallback((selectInfo: DateSelectArg) => {
     setEventToAdd(selectInfo);
   }, []);
 
@@ -131,7 +77,7 @@ const EventsManagement = () => {
     setEventToDel(undefined);
   };
 
-  const handleEventClick = React.useCallback((clickInfo: EventClickArg) => {
+  const handleEventClick = useCallback((clickInfo: EventClickArg) => {
     setEventToDel(clickInfo);
   }, []);
 
@@ -163,11 +109,6 @@ const EventsManagement = () => {
   return (
     <Box>
       <Box>
-        {/* <Box>
-          <Button variant="contained" onClick={() => console.log(currentEvents)}>
-            Add Meeting
-          </Button>
-        </Box> */}
         {!loading ? (
           <Paper sx={{ borderRadius: 2, p: 4 }} className={styles.calendarRoot}>
             <FullCalendar

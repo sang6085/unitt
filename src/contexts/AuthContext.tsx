@@ -1,19 +1,21 @@
 import React, { createContext, useContext } from "react";
-import { getAccessMenu, getProfile } from "../services/AccountService";
-import { AuthenticationToken } from "../pages/Login/LoginInterface";
-import { useAppDispatch, useAppSelector } from "../stores/Store";
-import { getVisitorId } from "../utils/helper";
+import { getAccessMenu, getProfile } from "services/AccountService";
+import { Observable } from "rxjs";
+import { IAuthenticationToken } from "pages/Login/LoginInterface";
+import { useAppDispatch, useAppSelector } from "stores/Store";
+import { getVisitorId } from "utils/helper";
+import { setProfile } from "pages/AccountSettings/AccountSlice";
 
 export interface IFunctionGroup {
   functionName: string;
   permission: string;
 }
 
-interface AuthProviderProps {
+interface IAuthProviderProps {
   children: React.ReactNode;
 }
 
-export interface AuthContextProps {
+export interface IAuthContextProps {
   token: string;
   refreshToken: string;
   accessMenu: IFunctionGroup[];
@@ -22,7 +24,7 @@ export interface AuthContextProps {
   visitorId: string;
 }
 
-const authContext = createContext<AuthContextProps>({
+const authContext = createContext<IAuthContextProps>({
   token: "",
   refreshToken: "",
   accessMenu: [],
@@ -31,12 +33,12 @@ const authContext = createContext<AuthContextProps>({
   visitorId: "",
 });
 
-export function AuthProvider({ children }: AuthProviderProps) {
+export function AuthProvider({ children }: IAuthProviderProps) {
   const dispatch = useAppDispatch();
   const [isAccessMenu, setAccessMenu] = React.useState<IFunctionGroup[]>([]);
   const [isLoading, setLoading] = React.useState<boolean>(true);
   const [visitorId, setVisitorId] = React.useState<string>("");
-  const authToken: AuthenticationToken | undefined = useAppSelector(
+  const authToken: IAuthenticationToken | undefined = useAppSelector(
     (state) => state.login.authToken
   );
   const auth = useAuthProvider(authToken, isLoading, isAccessMenu, visitorId);
@@ -45,7 +47,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
     async function getMenu() {
       if (authToken?.accessToken) {
         setVisitorId(await getVisitorId());
-        dispatch(getProfile()).subscribe({
+        const resGetProfile = () => (dispatch: any) => {
+          const res = new Observable((subscriber) => {
+            getProfile().subscribe((response: any) => {
+              if (response?.data.success) {
+                dispatch(setProfile(response.data.data));
+              }
+              subscriber.next(response);
+            });
+          });
+          return res;
+        };
+
+        dispatch(resGetProfile()).subscribe({
           next(response: any) {
             getAccessMenu(response.data.data.accountId).subscribe({
               next(response: any) {
@@ -87,7 +101,7 @@ export function useAuth() {
 }
 
 function useAuthProvider(
-  authToken: AuthenticationToken | undefined,
+  authToken: IAuthenticationToken | undefined,
   isLoading: boolean,
   accessMenuProps: IFunctionGroup[],
   visitorId: string
@@ -105,5 +119,5 @@ function useAuthProvider(
     keepLocation,
     loading,
     visitorId,
-  } as AuthContextProps;
+  } as IAuthContextProps;
 }

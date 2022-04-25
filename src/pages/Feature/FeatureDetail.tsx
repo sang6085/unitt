@@ -1,10 +1,13 @@
-import { Box, Button, FormLabel, Grid, Paper, Stack, Switch, TextField } from "@mui/material";
-import React from "react";
+import { Box, Divider, FormLabel, Grid, Paper, Stack, Switch, TextField, Typography } from "@mui/material";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useLocation, useParams } from "react-router";
-import Progress from "../../components/Loading/Loading";
-import { getFeatureById } from "../../services/FeatureService";
+import { cancelToken } from "api/common";
+import ButtonComponent from "components/Button/Button";
+import Progress from "components/Loading/Loading";
+import { getFeatureById } from "services/FeatureService";
+import {useStyles} from "pages/Feature/FeatureStyles"
+import { useEffect, useState, FC } from "react";
 interface IFormInput {
   id: number | string;
   featureId: string;
@@ -14,15 +17,16 @@ interface IFormInput {
   status: boolean;
 }
 
-const FeatureForm: React.FC = () => {
-  const [loading, setLoading] = React.useState<boolean>(true);
+const FeatureForm: FC = () => {
+  const [loading, setLoading] = useState<boolean>(true);
   const { t } = useTranslation();
+  const classes = useStyles()
   const location = useLocation();
   const { id } = useParams();
   const mode = location.pathname.slice(1).split("/")[1];
-  const [status, setStatus] = React.useState<boolean>(false);
+  const [status, setStatus] = useState<boolean>(false);
 
-  const { register, handleSubmit, setValue } = useForm<IFormInput>({
+  const { register, handleSubmit, setValue, reset } = useForm<IFormInput>({
     defaultValues: {
       id: "",
       featureId: "",
@@ -35,7 +39,7 @@ const FeatureForm: React.FC = () => {
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setLoading(true);
     if ((id && mode === "view") || mode === "edit") {
       getFeatureById({ id: id }).subscribe((res: any) => {
@@ -57,22 +61,28 @@ const FeatureForm: React.FC = () => {
       setValue("status", false);
       setLoading(false);
     }
+    return () => {
+      //CancelToken in componentWillUnmount
+      cancelToken();
+    }
   }, [id, mode, setValue]);
 
   return (
     <Box>
       {!loading ? (
-        <Paper sx={{ p: 4 }} elevation={0}>
+        <Paper className  ={classes.paper} elevation={0}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Box>
+              <Typography variant="h6">Detail</Typography>
+              <Divider className={classes.dividerDetail} />
               <Grid container spacing={3}>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                   <Box>
                     <FormLabel>{t("feature.id")}</FormLabel>
                     <TextField {...register("id")} type="text" size="small" fullWidth disabled />
                   </Box>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                   <Box>
                     <FormLabel>{t("feature.code_feature")}</FormLabel>
                     <TextField
@@ -84,7 +94,7 @@ const FeatureForm: React.FC = () => {
                     />
                   </Box>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                   <Box>
                     <FormLabel>{t("feature.name_feature")}</FormLabel>
                     <TextField
@@ -96,7 +106,7 @@ const FeatureForm: React.FC = () => {
                     />
                   </Box>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                   <Box>
                     <FormLabel>{t("feature.type_feature")}</FormLabel>
                     <TextField
@@ -108,7 +118,7 @@ const FeatureForm: React.FC = () => {
                     />
                   </Box>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                   <Box>
                     <FormLabel>{t("feature.description")}</FormLabel>
                     <TextField
@@ -120,7 +130,7 @@ const FeatureForm: React.FC = () => {
                     />
                   </Box>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                   <Stack direction="column">
                     <FormLabel>{t("feature.status")}</FormLabel>
                     <Switch
@@ -133,13 +143,13 @@ const FeatureForm: React.FC = () => {
               </Grid>
             </Box>
             {mode !== "view" ? (
-              <Stack direction="row" justifyContent={"center"} mt={3}>
-                <Button type="reset" variant="outlined" sx={{ mx: 1 }}>
+              <Stack direction="row" justifyContent={"flex-end"} mt={3}>
+                <ButtonComponent onClick={() => reset()} variant="contained" color="secondary" className={classes.btn}>
                   {t("button.reset")}
-                </Button>
-                <Button type="submit" variant="contained" sx={{ mx: 1 }}>
+                </ButtonComponent>
+                <ButtonComponent type="submit" variant="contained" className={classes.btn}>
                   {t("button.save")}
-                </Button>
+                </ButtonComponent>
               </Stack>
             ) : null}
           </form>

@@ -1,4 +1,11 @@
-import { FormControl, OutlinedInput as MInput, InputLabel, MenuItem, Select as MSelect, Icon } from "@mui/material";
+import {
+  FormControl,
+  OutlinedInput as MInput,
+  MenuItem,
+  Select as MSelect,
+  Icon,
+  FormLabel,
+} from "@mui/material";
 // import { styled } from "@mui/styles";
 import React from "react";
 import { getError } from "./utils";
@@ -13,7 +20,7 @@ const MenuProps = {
   },
 };
 
-const SelectWidget: React.FC<any> = (props) => {
+const SelecComponentt: React.FC<any> = (props) => {
   const { id, required, schema, value, onChange, rawErrors, options } = props;
 
   return (
@@ -22,6 +29,7 @@ const SelectWidget: React.FC<any> = (props) => {
       required={required}
       error={!!(rawErrors && rawErrors.length)}
       fullWidth
+      size="small"
       variant="outlined"
       sx={{
         my: 1,
@@ -31,11 +39,12 @@ const SelectWidget: React.FC<any> = (props) => {
         },
       }}
     >
-      <InputLabel id={`${schema.title}-label`}>{schema.title}</InputLabel>
+      <FormLabel id={`${schema.title}-label`}>{schema.title}</FormLabel>
       <MSelect
         id={id}
         value={value || ""}
         onChange={(event: any) => onChange(event.target.value)}
+        size="small"
         name={schema.title}
         input={<MInput name={schema.title} id={`${schema.title}-helper`} />}
         MenuProps={MenuProps}
@@ -53,8 +62,10 @@ const SelectWidget: React.FC<any> = (props) => {
           ))}
       </MSelect>
       {getError(rawErrors)}
+
+      {/* <FormHelperText sx={{ m: 0 }}>{rawErrors}</FormHelperText> */}
     </FormControl>
   );
 };
 
-export default SelectWidget;
+export default SelecComponentt;

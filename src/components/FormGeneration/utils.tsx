@@ -4,7 +4,7 @@ import React from "react";
 export const getError = (errors: [string]) => {
   if (errors) {
     return errors.map((info) => (
-      <FormHelperText style={{ color: "red", fontSize: 12, marginTop: 0, marginBottom: 8 }} key={info}>
+      <FormHelperText sx={{ color: "red", fontSize: 12, mt: 0, ml: 0, marginBottom: "8px" }} key={info}>
         {info}
       </FormHelperText>
     ));

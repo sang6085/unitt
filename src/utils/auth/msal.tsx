@@ -1,5 +1,5 @@
 import * as msal from '@azure/msal-browser';
-import { AADConfig, Config } from '../../configs/consts';
+import { AADConfig, Config } from 'configs/consts';
 
 const msalConfig = {
 	auth: {

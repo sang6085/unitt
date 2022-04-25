@@ -11,7 +11,6 @@ import {
   Button,
   SelectChangeEvent,
 } from "@mui/material";
-import React from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
@@ -19,11 +18,13 @@ import {
   getByIdEmailTemplates,
   insertEmailTemplate,
   updateEmailTemplate,
-} from "../../services/EmailTemplateService";
-import EditorComponent from "../../components/Editor/Editor";
+} from "services/EmailTemplateService";
+import EditorComponent from "components/Editor/Editor";
 import { ErrorBoundary } from "react-error-boundary";
-import FallBackComponent from "../../components/FallBackComponent/FallBackComponent";
-import { errorHandle } from "../../utils/helper";
+import FallBackComponent from "components/FallBackComponent/FallBackComponent";
+import { errorHandle } from "utils/helper";
+import { Fragment, useEffect, useState } from "react";
+import { useStyles } from "pages/EmailLogsForm/EmailLogsFormStyle";
 
 interface IData {
   templateCode: string;
@@ -35,20 +36,21 @@ interface IData {
 const EmailLogsForm = () => {
   const { t } = useTranslation();
   const location = useLocation();
-  const [value, setValue] = React.useState<string>("");
+  const classes=useStyles()
+  const [value, setValue] = useState<string>("");
 
-  const [id, setId] = React.useState<number>(-1);
-  const [data, setData] = React.useState<IData>({
+  const [id, setId] = useState<number>(-1);
+  const [data, setData] = useState<IData>({
     templateCode: "",
     templateName: "",
     templateType: "",
     subject: "",
   });
-  const [loading, setLoading] = React.useState<boolean>(true);
-  const [active, setActive] = React.useState<number>(1);
-  const [emailType, setEmailType] = React.useState<string>("event");
+  const [loading, setLoading] = useState<boolean>(true);
+  const [active, setActive] = useState<number>(1);
+  const [emailType, setEmailType] = useState<string>("event");
 
-  React.useEffect(() => {
+  useEffect(() => {
     function getData() {
       if (location.pathname.slice(1).split("/")[2]) {
         setId(Number(location.pathname.slice(1).split("/")[2]));
@@ -56,14 +58,16 @@ const EmailLogsForm = () => {
           (response: any) => {
             // console.log(response);
 
-            if (response.success) {
+            if (response) {
+              console.log("a",response.data.data.templateContent);
+              
               setData({
                 templateCode: response.data.templateCode,
                 templateName: response.data.templateName,
-                templateType: response.data.templateType,
+                templateType: response.data.data.templateType,
                 subject: response.data.subject,
               });
-              setValue(response.data.templateContent);
+              setValue(response.data.data.templateContent);
               setActive(response.data.actived);
             }
           }
@@ -111,14 +115,14 @@ const EmailLogsForm = () => {
     <form onSubmit={onSubmit}>
       {!loading ? (
         <Box>
-          <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 1 }}>
+          <Box className={classes.itemsEnd}>
             <Button variant="contained" type="submit">
               {id !== -1 ? t("button.save") : t("button.add")}
             </Button>
           </Box>
           <Paper sx={{ p: 4 }}>
             <Grid container spacing={1}>
-              <React.Fragment>
+              <Fragment>
                 <Grid item xs={2}>
                   {t("emailTemplates.code")}
                 </Grid>
@@ -133,8 +137,8 @@ const EmailLogsForm = () => {
                   />
                 </Grid>
                 <Grid item xs={3} />
-              </React.Fragment>
-              <React.Fragment>
+              </Fragment>
+              <Fragment>
                 <Grid item xs={2}>
                   {t("emailTemplates.template_name")}
                 </Grid>
@@ -149,8 +153,8 @@ const EmailLogsForm = () => {
                   />
                 </Grid>
                 <Grid item xs={3} />
-              </React.Fragment>{" "}
-              <React.Fragment>
+              </Fragment>{" "}
+              <Fragment>
                 <Grid item xs={2}>
                   {t("emailTemplates.type")}
                 </Grid>
@@ -169,8 +173,8 @@ const EmailLogsForm = () => {
                   </FormControl>
                 </Grid>
                 <Grid item xs={3} />
-              </React.Fragment>
-              <React.Fragment>
+              </Fragment>
+              <Fragment>
                 <Grid item xs={2}>
                   {t("emailTemplates.active")} / {t("emailTemplates.inactive")}
                 </Grid>
@@ -191,8 +195,8 @@ const EmailLogsForm = () => {
                   </ButtonGroup>
                 </Grid>
                 <Grid item xs={3} />
-              </React.Fragment>
-              <React.Fragment>
+              </Fragment>
+              <Fragment>
                 <Grid item xs={2}>
                   {t("emailTemplates.subject")}
                 </Grid>
@@ -207,7 +211,7 @@ const EmailLogsForm = () => {
                   />
                 </Grid>
                 <Grid item xs={3} />
-              </React.Fragment>
+              </Fragment>
             </Grid>
             <Box mt={2}>
               <ErrorBoundary FallbackComponent={FallBackComponent} onError={errorHandle}>

@@ -1,7 +1,6 @@
 import {
   Autocomplete,
   Box,
-  Button,
   Chip,
   FormControl,
   FormHelperText,
@@ -13,11 +12,11 @@ import {
   OutlinedInput,
   Paper,
   Select,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
-import { useStyles } from "./AccountSettingsStyle";
+import { useStyles } from "pages/AccountSettings/AccountSettingsStyle";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { useTranslation } from "react-i18next";
@@ -26,10 +25,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import { getAccountSettingMock } from "../../services/AccountService";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import Progress from "../../components/Loading/Loading";
+import Progress from "components/Loading/Loading";
+import { cancelToken } from "api/common";
+import { getAccountSettingMock } from "services/AccountService";
+import ButtonComponent from "components/Button/Button";
+import { useEffect, useState } from "react";
 interface IShowPassword {
   currentPassword: boolean;
   newPassword: boolean;
@@ -72,7 +74,7 @@ interface IInfo {
 const AccountSettings = () => {
   const classes = useStyles();
   const { t } = useTranslation();
-  const [showPassword, setShowPassword] = React.useState<IShowPassword>({
+  const [showPassword, setShowPassword] = useState<IShowPassword>({
     currentPassword: false,
     newPassword: false,
     confirmPassword: false,
@@ -127,11 +129,11 @@ const AccountSettings = () => {
     mode: "all",
   });
 
-  const [birthDate, setbirthDate] = React.useState<Date | null>(new Date("2014-08-18T21:11:54"));
-  const [skill, setSkill] = React.useState<string[]>([]);
-  const [loading, setLoading] = React.useState<boolean>(true);
+  const [birthDate, setbirthDate] = useState<Date | null>(new Date("2014-08-18T21:11:54"));
+  const [skill, setSkill] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  React.useEffect(() => {
+  useEffect(() => {
     getAccountSettingMock().subscribe((resInfo: any) => {
       setSkill(resInfo.data.data.skill);
       // setGender(resInfo.data.data.sex);
@@ -145,10 +147,14 @@ const AccountSettings = () => {
       setLoading(false);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loading]);
+    return () => {
+      //CancelToken in componentWillUnmount
+      cancelToken()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  
-  React.useEffect(() => {
+  useEffect(() => {
     setValue("skill", skill);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [skill]);
@@ -164,15 +170,15 @@ const AccountSettings = () => {
   const handleClickShowPassword = (name: string) => {
     name === "currentPassword"
       ? setShowPassword({
-          ...showPassword,
-          currentPassword: !showPassword.currentPassword,
-        })
+        ...showPassword,
+        currentPassword: !showPassword.currentPassword,
+      })
       : name === "newPassword"
-      ? setShowPassword({
+        ? setShowPassword({
           ...showPassword,
           newPassword: !showPassword.newPassword,
         })
-      : setShowPassword({
+        : setShowPassword({
           ...showPassword,
           confirmPassword: !showPassword.confirmPassword,
         });
@@ -182,320 +188,322 @@ const AccountSettings = () => {
     <Box>
       {!loading ? (
         <form encType="multipart/form-data" onSubmit={handleSubmit(onSubmit)}>
-          <Paper className={classes.paperSpace}>
-            <Typography variant="h6">{t("account_setting.basic_info")}</Typography>
-            <Grid container spacing={3} sx={{ marginTop: 1 }}>
-              <Grid item xs={6}>
-                <Box>
-                  <FormLabel>{t("account_setting.first_name")}</FormLabel>
-                  <TextField
-                    size="small"
-                    sx={{ borderRadius: 2 }}
-                    fullWidth
-                    placeholder="Alec"
-                    {...register("firstName")}
-                    error={errors && errors?.firstName?.message ? true : false}
-                    helperText={errors && errors?.firstName?.message}
-                  />
-                </Box>
-              </Grid>
-
-              <Grid item xs={6}>
-                <Box>
-                  <FormLabel>{t("account_setting.last_name")}</FormLabel>
-                  <TextField
-                    size="small"
-                    sx={{ borderRadius: 2 }}
-                    fullWidth
-                    placeholder="Thompson"
-                    {...register("lastName")}
-                    error={errors && errors?.lastName?.message ? true : false}
-                    helperText={errors && errors?.lastName?.message}
-                  />
-                </Box>
-              </Grid>
-
-              <Grid item xs={6}>
-                <Box>
-                  <FormLabel>{t("account_setting.gender")}</FormLabel>
-                  <Select
-                    {...register("gender")}
-                    labelId="im"
-                    id="im"
-                    value={watch("gender")}
-                    input={<OutlinedInput size="small" fullWidth />}
-                    MenuProps={MenuProps}
-                  >
-                    {im.map((gender) => (
-                      <MenuItem key={gender.id} value={gender.id}>
-                        {gender.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </Box>
-              </Grid>
-
-              <Grid item xs={6}>
-                <Box>
-                  <FormLabel>{t("account_setting.birth_day")}</FormLabel>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DesktopDatePicker
-                      {...register("birthDate")}
-                      inputFormat="MM/dd/yyyy"
-                      value={birthDate}
-                      onChange={handleChangeBirthDate}
-                      renderInput={(params) => (
-                        <TextField size="small" {...params} fullWidth {...register("birthDate")} />
-                      )}
-                    />
-                  </LocalizationProvider>
-                </Box>
-              </Grid>
-
-              <Grid item xs={6}>
-                <Box>
-                  <FormLabel>{t("account_setting.email")}</FormLabel>
-                  <TextField
-                    {...register("email")}
-                    type="email"
-                    size="small"
-                    sx={{ borderRadius: 2 }}
-                    fullWidth
-                    placeholder="example@gmail.com"
-                    error={errors && errors?.email?.message ? true : false}
-                    helperText={errors && errors?.email?.message}
-                  />
-                </Box>
-              </Grid>
-
-              <Grid item xs={6}>
-                <Box>
-                  <FormLabel>{t("account_setting.confirm_email")}</FormLabel>
-                  <TextField
-                    {...register("confirmEmail")}
-                    size="small"
-                    sx={{ borderRadius: 2 }}
-                    fullWidth
-                    placeholder="example@email.com"
-                    type="email"
-                    error={errors && errors?.confirmEmail?.message ? true : false}
-                    helperText={errors && errors?.confirmEmail?.message}
-                  />
-                </Box>
-              </Grid>
-
-              <Grid item xs={6}>
-                <Box>
-                  <FormLabel>{t("account_setting.location")}</FormLabel>
-                  <TextField
-                    {...register("location")}
-                    size="small"
-                    sx={{ borderRadius: 2 }}
-                    fullWidth
-                    placeholder="Sydney, A"
-                    error={errors && errors?.location?.message ? true : false}
-                    helperText={errors && errors?.location?.message}
-                  />
-                </Box>
-              </Grid>
-
-              <Grid item xs={6}>
-                <Box>
-                  <FormLabel>{t("account_setting.phone")}</FormLabel>
-                  <TextField
-                    {...register("phoneNumber")}
-                    size="small"
-                    sx={{ borderRadius: 2 }}
-                    fullWidth
-                    placeholder="+40 735 631 620"
-                    type="number"
-                    error={errors && errors?.phoneNumber?.message ? true : false}
-                    helperText={errors && errors?.phoneNumber?.message}
-                  />
-                </Box>
-              </Grid>
-
-              <Grid item xs={6}>
-                <Box>
-                  <FormLabel>{t("account_setting.language")}</FormLabel>
-                  <TextField
-                    {...register("language")}
-                    size="small"
-                    sx={{ borderRadius: 2 }}
-                    fullWidth
-                    placeholder="English"
-                    error={errors && errors?.language?.message ? true : false}
-                    helperText={errors && errors?.language?.message}
-                  />
-                </Box>
-              </Grid>
-
-              <Grid item xs={6}>
-                <Box>
-                  <FormLabel>{t("account_setting.skill")}</FormLabel>
-                  <Autocomplete
-                    multiple
-                    id="skill-mutiple"
-                    options={[]}
-                    value={skill}
-                    freeSolo
-                    fullWidth
-                    onChange={(e,v:any)=>setSkill([...v])}
-                    renderTags={(
-                      value: any[],
-                      getTagProps: (arg0: { index: any }) => JSX.IntrinsicAttributes
-                    ) =>
-                      value?.map((option: any, index: any) => {
-                        return (
-                          <Chip
-                            key={index}
-                            variant="outlined"
-                            label={option}
-                            size="small"
-                            {...getTagProps({ index })}
-                          />
-                        );
-                      })
-                    }
-                    renderInput={(params: any) => (
+          <Paper elevation={1} className={classes.paperSpace}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={8}>
+                <Typography variant="h6">{t("account_setting.basic_info")}</Typography>
+                <Grid container spacing={3} className={classes.mt}>
+                  <Grid item xs={12} sm={6}>
+                    <Box>
+                      <FormLabel>{t("account_setting.first_name")}</FormLabel>
                       <TextField
-                        {...params}
-                        fullWidth
                         size="small"
-                        error={errors && errors.skill ? true : false}
-                        helperText={errors && errors.skill ? "Đây là trường hợp bắt buộc !!!" : ""}
+                        fullWidth
+                        placeholder="Alec"
+                        {...register("firstName")}
+                        error={errors && errors?.firstName?.message ? true : false}
+                        helperText={errors && errors?.firstName?.message}
                       />
-                    )}
-                  />
-                </Box>
+                    </Box>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <Box>
+                      <FormLabel>{t("account_setting.last_name")}</FormLabel>
+                      <TextField
+                        size="small"
+                        fullWidth
+                        placeholder="Thompson"
+                        {...register("lastName")}
+                        error={errors && errors?.lastName?.message ? true : false}
+                        helperText={errors && errors?.lastName?.message}
+                      />
+                    </Box>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <Box>
+                      <FormLabel>{t("account_setting.gender")}</FormLabel>
+                      <Select
+                        {...register("gender")}
+                        labelId="im"
+                        id="im"
+                        value={watch("gender")}
+                        input={<OutlinedInput size="small" fullWidth />}
+                        MenuProps={MenuProps}
+                      >
+                        {im.map((gender) => (
+                          <MenuItem key={gender.id} value={gender.id}>
+                            {gender.name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </Box>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <Box>
+                      <FormLabel>{t("account_setting.birth_day")}</FormLabel>
+                      <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <DesktopDatePicker
+                          {...register("birthDate")}
+                          inputFormat="MM/dd/yyyy"
+                          value={birthDate}
+                          onChange={handleChangeBirthDate}
+                          renderInput={(params) => (
+                            <TextField
+                              size="small"
+                              {...params}
+                              fullWidth
+                              {...register("birthDate")}
+                            />
+                          )}
+                        />
+                      </LocalizationProvider>
+                    </Box>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <Box>
+                      <FormLabel>{t("account_setting.email")}</FormLabel>
+                      <TextField
+                        {...register("email")}
+                        type="email"
+                        size="small"
+                        fullWidth
+                        placeholder="example@gmail.com"
+                        error={errors && errors?.email?.message ? true : false}
+                        helperText={errors && errors?.email?.message}
+                      />
+                    </Box>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <Box>
+                      <FormLabel>{t("account_setting.confirm_email")}</FormLabel>
+                      <TextField
+                        {...register("confirmEmail")}
+                        size="small"
+                        fullWidth
+                        placeholder="example@email.com"
+                        type="email"
+                        error={errors && errors?.confirmEmail?.message ? true : false}
+                        helperText={errors && errors?.confirmEmail?.message}
+                      />
+                    </Box>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <Box>
+                      <FormLabel>{t("account_setting.location")}</FormLabel>
+                      <TextField
+                        {...register("location")}
+                        size="small"
+                        fullWidth
+                        placeholder="Sydney, A"
+                        error={errors && errors?.location?.message ? true : false}
+                        helperText={errors && errors?.location?.message}
+                      />
+                    </Box>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <Box>
+                      <FormLabel>{t("account_setting.phone")}</FormLabel>
+                      <TextField
+                        {...register("phoneNumber")}
+                        size="small"
+                        fullWidth
+                        placeholder="+40 735 631 620"
+                        type="number"
+                        error={errors && errors?.phoneNumber?.message ? true : false}
+                        helperText={errors && errors?.phoneNumber?.message}
+                      />
+                    </Box>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <Box>
+                      <FormLabel>{t("account_setting.language")}</FormLabel>
+                      <TextField
+                        {...register("language")}
+                        size="small"
+                        fullWidth
+                        placeholder="English"
+                        error={errors && errors?.language?.message ? true : false}
+                        helperText={errors && errors?.language?.message}
+                      />
+                    </Box>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <Box>
+                      <FormLabel>{t("account_setting.skill")}</FormLabel>
+                      <Autocomplete
+                        multiple
+                        id="skill-mutiple"
+                        options={[]}
+                        value={skill}
+                        freeSolo
+                        fullWidth
+                        onChange={(e, v: any) => setSkill([...v])}
+                        renderTags={(
+                          value: any[],
+                          getTagProps: (arg0: { index: any }) => JSX.IntrinsicAttributes
+                        ) =>
+                          value?.map((option: any, index: any) => {
+                            return (
+                              <Chip
+                                key={index}
+                                variant="outlined"
+                                label={option}
+                                size="small"
+                                {...getTagProps({ index })}
+                              />
+                            );
+                          })
+                        }
+                        renderInput={(params: any) => (
+                          <TextField
+                            {...params}
+                            fullWidth
+                            size="small"
+                            error={errors && errors.skill ? true : false}
+                            helperText={
+                              errors && errors.skill ? "Đây là trường hợp bắt buộc !!!" : ""
+                            }
+                          />
+                        )}
+                      />
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <Stack height="100%" flexDirection={"column"}>
+                  <Typography variant="h6">{t("account_setting.change_pw")}</Typography>
+                  <Grid container spacing={3} className={classes.mt}>
+                    <Grid item xs={12}>
+                      <Box>
+                        <FormLabel>{t("account_setting.current_pw")}</FormLabel>
+                        <FormControl variant="outlined" className={classes.labelWidth}>
+                          <OutlinedInput
+                            {...register("currentPassword")}
+                            fullWidth
+                            id="outlined-adornment-current-password"
+                            type={showPassword.currentPassword ? "text" : "password"}
+                            size="small"
+                            placeholder={t("account_setting.current_pw")}
+                            error={errors && errors?.currentPassword?.message ? true : false}
+                            endAdornment={
+                              <InputAdornment position="end">
+                                <IconButton
+                                  aria-label="toggle password visibility"
+                                  onClick={(event) => handleClickShowPassword("currentPassword")}
+                                  edge="end"
+                                  size="small"
+                                >
+                                  {showPassword.currentPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                              </InputAdornment>
+                            }
+                          />
+                          {errors?.currentPassword?.message && (
+                            <FormHelperText error id="accountId-error">
+                              {errors?.currentPassword?.message}
+                            </FormHelperText>
+                          )}
+                        </FormControl>
+                      </Box>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <Box>
+                        <FormLabel>{t("account_setting.new_pw")}</FormLabel>
+                        <FormControl variant="outlined" className={classes.labelWidth}>
+                          <OutlinedInput
+                            {...register("newPassword")}
+                            fullWidth
+                            id="outlined-adornment-new-password"
+                            type={showPassword.newPassword ? "text" : "password"}
+                            size="small"
+                            placeholder={t("account_setting.new_pw")}
+                            error={errors && errors?.newPassword?.message ? true : false}
+                            endAdornment={
+                              <InputAdornment position="end">
+                                <IconButton
+                                  aria-label="toggle password visibility"
+                                  onClick={(event) => handleClickShowPassword("newPassword")}
+                                  edge="end"
+                                  size="small"
+                                >
+                                  {showPassword.newPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                              </InputAdornment>
+                            }
+                          />
+                          {errors?.newPassword?.message && (
+                            <FormHelperText error id="accountId-error">
+                              {errors?.newPassword?.message}
+                            </FormHelperText>
+                          )}
+                        </FormControl>
+                      </Box>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <Box>
+                        <FormLabel>{t("account_setting.confirm_pw")}</FormLabel>
+                        <FormControl variant="outlined" className={classes.labelWidth}>
+                          <OutlinedInput
+                            {...register("confirmPassword")}
+                            fullWidth
+                            id="outlined-adornment-confirm-password"
+                            type={showPassword.confirmPassword ? "text" : "password"}
+                            size="small"
+                            placeholder={t("account_setting.confirm_pw")}
+                            error={errors && errors?.confirmPassword?.message ? true : false}
+                            endAdornment={
+                              <InputAdornment position="end">
+                                <IconButton
+                                  aria-label="toggle password visibility"
+                                  onClick={(event) => handleClickShowPassword("confirmPassword")}
+                                  edge="end"
+                                  size="small"
+                                >
+                                  {showPassword.confirmPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                              </InputAdornment>
+                            }
+                          />
+                          {errors?.confirmPassword?.message && (
+                            <FormHelperText error id="accountId-error">
+                              {errors?.confirmPassword?.message}
+                            </FormHelperText>
+                          )}
+                        </FormControl>
+                      </Box>
+                    </Grid>
+                  </Grid>
+                  <Stack mt={3} flexGrow={1} justifyContent="flex-end">
+                    <Box className={classes.buttonSpace}>
+                      <ButtonComponent
+                        variant="contained"
+                        type="submit"
+                      >
+                        {t("button.update")}
+                      </ButtonComponent>
+                    </Box>
+                  </Stack>
+                </Stack>
+
               </Grid>
             </Grid>
-          </Paper>
-          <Paper className={classes.paperSpace} sx={{ marginTop: 3 }}>
-            <Typography variant="h6">{t("account_setting.change_pw")}</Typography>
-
-            <Grid container spacing={3} sx={{ marginTop: 1 }}>
-              <Grid item xs={12}>
-                <Box>
-                  <FormLabel>{t("account_setting.current_pw")}</FormLabel>
-                  <FormControl variant="outlined" sx={{ width: "100%" }}>
-                    <OutlinedInput
-                      {...register("currentPassword")}
-                      fullWidth
-                      id="outlined-adornment-current-password"
-                      type={showPassword.currentPassword ? "text" : "password"}
-                      size="small"
-                      placeholder={t("account_setting.current_pw")}
-                      error={errors && errors?.currentPassword?.message ? true : false}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={(event) => handleClickShowPassword("currentPassword")}
-                            edge="end"
-                            size="small"
-                          >
-                            {showPassword.currentPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      }
-                    />
-                    {errors?.currentPassword?.message && (
-                      <FormHelperText error id="accountId-error">
-                        {errors?.currentPassword?.message}
-                      </FormHelperText>
-                    )}
-                  </FormControl>
-                </Box>
-              </Grid>
-
-              <Grid item xs={12}>
-                <Box>
-                  <FormLabel>{t("account_setting.new_pw")}</FormLabel>
-                  <FormControl variant="outlined" sx={{ width: "100%" }}>
-                    <OutlinedInput
-                      {...register("newPassword")}
-                      fullWidth
-                      id="outlined-adornment-new-password"
-                      type={showPassword.newPassword ? "text" : "password"}
-                      size="small"
-                      placeholder={t("account_setting.new_pw")}
-                      error={errors && errors?.newPassword?.message ? true : false}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={(event) => handleClickShowPassword("newPassword")}
-                            edge="end"
-                            size="small"
-                          >
-                            {showPassword.newPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      }
-                    />
-                    {errors?.newPassword?.message && (
-                      <FormHelperText error id="accountId-error">
-                        {errors?.newPassword?.message}
-                      </FormHelperText>
-                    )}
-                  </FormControl>
-                </Box>
-              </Grid>
-
-              <Grid item xs={12}>
-                <Box>
-                  <FormLabel>{t("account_setting.confirm_pw")}</FormLabel>
-                  <FormControl variant="outlined" sx={{ width: "100%" }}>
-                    <OutlinedInput
-                      {...register("confirmPassword")}
-                      fullWidth
-                      id="outlined-adornment-confirm-password"
-                      type={showPassword.confirmPassword ? "text" : "password"}
-                      size="small"
-                      placeholder={t("account_setting.confirm_pw")}
-                      error={errors && errors?.confirmPassword?.message ? true : false}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={(event) => handleClickShowPassword("confirmPassword")}
-                            edge="end"
-                            size="small"
-                          >
-                            {showPassword.confirmPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      }
-                    />
-                    {errors?.confirmPassword?.message && (
-                      <FormHelperText error id="accountId-error">
-                        {errors?.confirmPassword?.message}
-                      </FormHelperText>
-                    )}
-                  </FormControl>
-                </Box>
-              </Grid>
-            </Grid>
-
-            <Box sx={{ marginTop: 4 }}>
-              <Box sx={{ display: "flex" }}>
-                <Box className={classes.buttonSpace}>
-                  <Button
-                    variant="contained"
-                    size="small"
-                    className={classes.button}
-                    sx={{ fontWeight: 600 }}
-                    type="submit"
-                  >
-                    {t("button.update")}
-                  </Button>
-                </Box>
-              </Box>
-            </Box>
           </Paper>
         </form>
-      ) : <Progress />}
+      ) : (
+        <Progress />
+      )}
     </Box>
   );
 };

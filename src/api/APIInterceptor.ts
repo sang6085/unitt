@@ -1,11 +1,11 @@
 import axios from "axios";
 import { loadProgressBar } from "x-axios-progress-bar";
 import 'x-axios-progress-bar/dist/nprogress.css'
-import { LocalStorageKey } from "../configs/consts";
+import { LocalStorageKey } from "configs/consts";
 
-import { storeType } from "../stores/Store";
-import { logout } from "../services/AccountService";
-import { setErrorApi } from "../pages/BaseLayout/BaseSlice";
+import { storeType } from "stores/Store";
+import { logout } from "services/AccountService";
+import { setErrorApi } from "pages/BaseLayout/BaseSlice";
 
 const interceptor = (store: storeType): void => {
   const { dispatch } = store;
@@ -30,7 +30,6 @@ const interceptor = (store: storeType): void => {
       return Promise.resolve(res);
     },
     (error) => {
-      console.log('error', error);
       if (error.response) {
         const status = error.response.status;
         if (status === 401) {

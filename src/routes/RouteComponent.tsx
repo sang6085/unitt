@@ -2,10 +2,10 @@ import React, { FC } from "react";
 import { Navigate } from "react-router-dom";
 import { RouteProps, useLocation } from "react-router";
 import { useTranslation } from "react-i18next";
-import { IFunctionGroup, useAuth } from "../contexts/AuthContext";
-import { AppURL } from "../configs/consts";
-import { PageUrl, setPageUrl } from "../pages/BaseLayout/BaseSlice";
-import { useAppDispatch } from "../stores/Store";
+import { IFunctionGroup, useAuth } from "contexts/AuthContext";
+import { AppURL } from "configs/consts";
+import { PageUrl, setPageUrl } from "pages/BaseLayout/BaseSlice";
+import { useAppDispatch } from "stores/Store";
 
 interface IRouteComponent extends RouteProps {
   titleId: string;

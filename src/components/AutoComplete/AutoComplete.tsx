@@ -2,11 +2,11 @@ import React from "react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 
-export interface optionAutoComplete {
+export interface IOptionAutoComplete {
   id: any;
   name: string;
 }
-interface AutoCompleteComponentProps {
+interface IAutoCompleteComponentProps {
   data: any[];
   variant?: "filled" | "outlined" | "standard";
   label?: string;
@@ -17,7 +17,7 @@ interface AutoCompleteComponentProps {
   value?: any;
   name?: string;
 }
-const AutoCompleteComponent: React.FC<AutoCompleteComponentProps> = (props) => {
+const AutoCompleteComponent: React.FC<IAutoCompleteComponentProps> = (props) => {
   const onChange = (event: React.ChangeEvent<{}>, selected: any | null) => {
     props.onChange && props.onChange(selected?.id);
   };
@@ -36,7 +36,7 @@ const AutoCompleteComponent: React.FC<AutoCompleteComponentProps> = (props) => {
       onChange={onChange}
       fullWidth={props.fullWidth}
       options={props.data}
-	  defaultValue={props.value}
+	    defaultValue={props.value}
       getOptionLabel={(option) => option.name}
       //getOptionSelected={(option, value) => option.name === value.name}
       size={props.size}

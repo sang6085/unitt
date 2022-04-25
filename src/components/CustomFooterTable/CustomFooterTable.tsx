@@ -1,19 +1,19 @@
 import React from "react";
-import {  MenuItem, Pagination, Select, Typography } from "@mui/material";
+import { MenuItem, Pagination, Select, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-
+import { useEffect, useState } from "react";
+import { useStyles } from "components/CustomFooterTable/CustomFooterTableStyle";
 
 interface IPFooter {
-  page?: any;
+  page?: number;
   rowsPerPage?: any;
   changeRowsPerPage?: any;
   changePage?: any;
   pageSize?: number;
-  count?: any;
+  count?: number;
   setPageSize?: any;
   rowsPerPageOptions?: Number[];
 }
-
 
 const CustomFooterTable: React.FC<IPFooter> = ({
   count,
@@ -22,10 +22,9 @@ const CustomFooterTable: React.FC<IPFooter> = ({
   setPageSize,
   rowsPerPageOptions,
 }) => {
-
-
-  const [quantity, setQuantity] = React.useState<any>([]);
-  React.useEffect(() => {
+  const [quantity, setQuantity] = useState<any>([]);
+  const classes = useStyles();
+  useEffect(() => {
     // quantityPage();
     async function quantityPage() {
       let arr = [];
@@ -45,43 +44,18 @@ const CustomFooterTable: React.FC<IPFooter> = ({
   };
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     // console.log(value)
-    changePage(value - 1)
+    changePage(value - 1);
   };
 
   return (
-    <Box
-      sx={{
-        my: 1,
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        px: 2,
-      }}
-    >
-      <Box
-        sx={{
-          display: "flex",
-          flex: 1,
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Pagination count={quantity.length} size="large" onChange={handleChange} color="primary" />
-      </Box>
-      <Box
-        sx={{
-          my: 1,
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-        }}
-      >
-        <Typography sx={{ mr: 2 }} component={'span'}>Rows per page</Typography>
+    <Box className={classes.wrapperFooter}>
+      <Box className={classes.rowsPerPage}>
+        <Typography className={classes.mr} component={"span"}>
+          Rows per page
+        </Typography>
         <Select
           variant="standard"
           value={pageSize}
-          label="Age"
           onChange={(e: any) => handleChangeRowsPerPage(e)}
         >
           {rowsPerPageOptions?.map((item: any, index: any) => (
@@ -90,6 +64,16 @@ const CustomFooterTable: React.FC<IPFooter> = ({
             </MenuItem>
           ))}
         </Select>
+      </Box>
+      <Box className={classes.itemsCenter}>
+        <Pagination
+          showFirstButton
+          showLastButton
+          count={quantity.length}
+          size="small"
+          onChange={handleChange}
+          color="primary"
+        />
       </Box>
     </Box>
   );

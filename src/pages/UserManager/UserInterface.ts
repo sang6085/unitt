@@ -1,20 +1,19 @@
+export interface User {
+  index?: number;
+  id?: number;
+  employeeCode?: string;
+  userName?: string;
+  fullName?: string;
+  birthday?: string;
+  email?: string;
+  phone?: string;
+  position?: string;
+  organization?: string;
+  enabled?: boolean;
+  locked?: boolean;
+}
 
-  export interface User {
-    index?: number,
-    id?: number,
-    employeeCode?: string,
-    userName?: string,
-    fullName?: string,
-    birthday?: string,
-    email?: string,
-    phone?: string,
-    position?: string,
-    organization?: string,
-    enabled?: boolean,
-    locked?: boolean
-  }
-  
-  export interface IInfo {
+export interface IInfo {
   employeeCode: string;
   userName: string;
   fullName: string;
@@ -26,14 +25,14 @@
   locked: boolean;
   enabled: boolean;
   group: any;
-  }
+}
 
-  export interface IUserSearch {
-    search: string;
-    id: number | string;
-    userName: string;
-    fullName: string;
-    email: string;
-    organization: string;
-    phone: string;
-  }
+export interface IUserSearch {
+  search: string;
+  id: number | string;
+  userName: string;
+  fullName: string;
+  email: string;
+  organization: string;
+  phone: string;
+}

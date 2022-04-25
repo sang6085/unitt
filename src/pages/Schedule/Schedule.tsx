@@ -1,14 +1,14 @@
 import { Box, IconButton, Tooltip } from "@mui/material";
-import React from "react";
-import TableComponent from "../../components/Table/Table";
+import TableComponent from "components/Table/Table";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { getSchedule } from "../../services/ScheduleService";
-import UpdateSchedule from "./UpdateSchedule";
+import { getSchedule } from "services/ScheduleService";
+import UpdateSchedule from "pages/Schedule/UpdateSchedule";
+import { useState, useEffect } from "react";
 
 const Schedule = () => {
-  const [data, setData] = React.useState<any>([]);
-  const [idUpdate, setIdUpdate] = React.useState<number>(-1);
+  const [data, setData] = useState<any>([]);
+  const [idUpdate, setIdUpdate] = useState<number>(-1);
 
   const onCloseUpdate = () => {
     setIdUpdate(-1);
@@ -18,9 +18,11 @@ const Schedule = () => {
     setIdUpdate(id);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     getSchedule().then((response) => {
       setData(response);
+      console.log(response);
+      
     });
   }, []);
 

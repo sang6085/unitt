@@ -1,4 +1,4 @@
-import api from "../api/common";
+import api from "api/common";
 
 interface IFeatureId { 
   id: number | string

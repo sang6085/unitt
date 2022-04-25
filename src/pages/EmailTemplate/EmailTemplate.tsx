@@ -7,35 +7,37 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { searchEmailTemplate } from "../../services/EmailTemplateService";
-import TableComponent from "../../components/Table/Table";
+import { searchEmailTemplate } from "services/EmailTemplateService";
+import TableComponent from "components/Table/Table";
 import MoreHorizTwoToneIcon from "@mui/icons-material/MoreHorizTwoTone";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useTranslation } from "react-i18next";
 import { ErrorBoundary } from "react-error-boundary";
-import { errorHandle } from "../../utils/helper";
-import FallBackComponent from "../../components/FallBackComponent/FallBackComponent";
+import { errorHandle } from "utils/helper";
+import FallBackComponent from "components/FallBackComponent/FallBackComponent";
+import { useEffect, useState, MouseEvent } from "react";
+import { useStyles } from "pages/EmailTemplate/EmailTemplateStyle";
 
 const ProductPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const classes=useStyles()
 
-  const [data, setData] = React.useState<any>([]);
-  const [total, setTotal] = React.useState<number>(0);
+  const [data, setData] = useState<any>([]);
+  const [total, setTotal] = useState<number>(0);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [page, setPage] = React.useState<number>(1);
+  const [page, setPage] = useState<number>(1);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [pageSize, setPageSize] = React.useState<number>(10);
-  const [loading, setLoading] = React.useState<boolean>(true);
+  const [pageSize, setPageSize] = useState<number>(10);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const [idEdit, setIdEdit] = React.useState<number>(0);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [idEdit, setIdEdit] = useState<number>(0);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>, id: number) => {
+  const handleClick = (event: MouseEvent<HTMLButtonElement>, id: number) => {
     if (!open) {
       setAnchorEl(event.currentTarget);
       setIdEdit(id);
@@ -45,7 +47,7 @@ const ProductPage = () => {
     setAnchorEl(null);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function getData() {
       searchEmailTemplate({
         isDesc: true,
@@ -54,7 +56,7 @@ const ProductPage = () => {
         pageSize: pageSize,
       }).subscribe((response: any) => {
         console.log(response);
-        if (response) {
+        if (response.data) {
           setData(response.data.data);
           setTotal(response.data.totalCount);
           setLoading(false);
@@ -108,11 +110,11 @@ const ProductPage = () => {
             <Box>
               <IconButton
                 size="large"
-                onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
+                onClick={(event: MouseEvent<HTMLButtonElement>) =>
                   handleClick(event, data[tableMeta?.rowIndex].id)
                 }
               >
-                <MoreHorizTwoToneIcon fontSize="inherit" sx={{ color: "#e7970d" }} />
+                <MoreHorizTwoToneIcon fontSize="inherit" className={classes.MoreHorizTwoToneIcon} />
               </IconButton>
             </Box>
           );
@@ -123,7 +125,6 @@ const ProductPage = () => {
 
   const options: any = {
     filterType: "checkbox",
-    // serverSide: true,
     download: false,
     print: false,
     filter: false,
@@ -131,16 +132,6 @@ const ProductPage = () => {
     search: false,
     viewColumns: false,
     rowsPerPageOptions: [10, 20, 30],
-    // onPageChange: (page: number) => {
-    //   setData([]);
-    //   setLoading(true);
-    //   setPage(page + 1);
-    // },
-    // onRowsPerPageChange: (pageSize: number) => {
-    //   setData([]);
-    //   setLoading(true);
-    //   setPageSize(pageSize);
-    // },
     textLabels: {
       body: {
         noMatch: loading && <CircularProgress color="primary" />,
@@ -158,7 +149,7 @@ const ProductPage = () => {
 
   return (
     <Box>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
+      <Box className={classes.itemsEnd}>
         <Button variant="contained" startIcon={<AddIcon />} onClick={changeCreatePage}>
           {t("button.add")}
         </Button>
@@ -173,11 +164,11 @@ const ProductPage = () => {
         }}
       >
         <MenuItem onClick={changeEditPage}>
-          <EditIcon sx={{ mr: 1 }} />
+          <EditIcon />
           {t("button.edit")}
         </MenuItem>
-        <MenuItem onClick={handleClose} sx={{ color: "#dc3545" }}>
-          <DeleteOutlineIcon sx={{ mr: 1 }} />
+        <MenuItem onClick={handleClose} className={classes.iconDelete}>
+          <DeleteOutlineIcon />
           {t("button.delete")}
         </MenuItem>
       </Menu>

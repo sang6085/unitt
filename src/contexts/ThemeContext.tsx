@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useState } from "react";
-import { LocalStorageKey } from "../configs/consts";
+import { LocalStorageKey } from "configs/consts";
 
-interface ThemeProviderProps  {
+interface IThemeProviderProps  {
   children: React.ReactNode;
 }
-interface ThemeContextData {
+interface IThemeContextData {
   modeTheme: "light" | "dark";
   colorTheme: string;
   navTheme: string;
@@ -17,7 +17,7 @@ interface ThemeContextData {
   setLayout: (layoutRequest: "boxed" | "collapsed" | "topNav") => void;
 }
 
-export const ThemeContext = createContext<ThemeContextData>({
+export const ThemeContext = createContext<IThemeContextData>({
   modeTheme: "light",
   colorTheme: "#349eff",
   navTheme: "",
@@ -30,7 +30,7 @@ export const ThemeContext = createContext<ThemeContextData>({
   setLayout: () => {},
 });
 
-export function ThemesProvider({ children }: ThemeProviderProps) {
+export function ThemesProvider({ children }: IThemeProviderProps) {
   return <ThemeContext.Provider value={useThemesProvider()}>{children}</ThemeContext.Provider>;
 }
 

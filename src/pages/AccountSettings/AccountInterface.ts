@@ -1,4 +1,4 @@
-export interface UserInfo extends UserProfile {
+export interface IUserInfo extends IUserProfile {
   accountId: number;
   userName: string;
   fullName: string;
@@ -6,12 +6,12 @@ export interface UserInfo extends UserProfile {
   fingerprint: string; 
   pushNotification?: string;
   pushEmail?: string;
-  companyInfo?: CompanyInfo;
+  companyInfo?: ICompanyInfo;
   locationInfo: string;
-  deviceInfo?: DeviceInfo;
+  deviceInfo?: IDeviceInfo;
   languageType?: string;
   groupCode?: string;
-  lstMenu?: ListMenu<ChildrenMenu>;
+  lstMenu?: IListMenu<IChildrenMenu>;
   columnSettingVisitor?: string;
   columnSettingAccount?: null;
   language: string;
@@ -23,11 +23,11 @@ export interface UserInfo extends UserProfile {
   groups?: any;
   ownerAccountId?: number;
   showWelcomPage?: boolean;
-  licenseInfo?: LicenseInfo;
+  licenseInfo?: ILicenseInfo;
   isEventTicket?: boolean;
 }
 
-export interface UserProfile {
+export interface IUserProfile {
   firstName?: string;
   lastName?: string;
   jobTitle?: number;
@@ -38,7 +38,7 @@ export interface UserProfile {
   phoneJson?: string;
 }
 
-export interface CompanyInfo {
+export interface ICompanyInfo {
   companyName: string;
   companyId: number;
   address: string;
@@ -48,7 +48,7 @@ export interface CompanyInfo {
   eventPluginState: number;
 }
 
-export interface DeviceInfo {
+export interface IDeviceInfo {
   name: string;
   type: string;
   os_version: string;
@@ -62,7 +62,7 @@ export interface DeviceInfo {
   deviceId: string;
 }
 
-export interface Menu {
+export interface IMenu {
   code: string;
   label: string;
   codePage: number;
@@ -87,15 +87,15 @@ export interface Menu {
   deleted_Date: string;
   totalCount: number;
 }
-export interface ListMenu<T> extends Menu {
+export interface IListMenu<T> extends IMenu {
   children: T[];
 }
 
-export interface ChildrenMenu extends Menu {
+export interface IChildrenMenu extends IMenu {
   children: [];
 }
 
-export interface BrandInfo {
+export interface IBrandInfo {
   id: number;
   companyId: number;
   branchId: number;
@@ -108,7 +108,7 @@ export interface BrandInfo {
   isActive: number;
 }
 
-export interface LicenseInfo {
+export interface ILicenseInfo {
   duration: null;
   effectedDate: string;
   expiredDate: string;

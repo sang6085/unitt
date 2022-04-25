@@ -1,8 +1,6 @@
-import React from "react";
 import { Box } from "@mui/system";
-import { getEmployee } from "../../services/EmployeeService";
+import { getEmployee } from "services/EmployeeService";
 import {
-  // Alert,
   Button,
   CircularProgress,
   IconButton,
@@ -12,28 +10,31 @@ import {
 } from "@mui/material";
 import MUIDataTable from "mui-datatables";
 import { useTranslation } from "react-i18next";
-import avatar from "../../assets/images/default_avatar.png";
+import avatar from "assets/images/default_avatar.png";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import SearchIcon from "@mui/icons-material/Search";
-import CustomFooterTable from "../../components/CustomFooterTable/CustomFooterTable";
+import CustomFooterTable from "components/CustomFooterTable/CustomFooterTable";
+import { useStyles } from "pages/Employee/EmployeeStyle";
+import { FC, useEffect, useState, useRef, FormEvent } from "react";
 
-const Employee: React.FC = () => {
+const Employee: FC = () => {
   const { t } = useTranslation();
-  const [dataEmployee, setDataEmployee] = React.useState<any>([]);
-  const [isLoading, setIsLoading] = React.useState<boolean>(true);
-  const [total, setTotal] = React.useState<number>();
-  const [pageNumber, setPageNumber] = React.useState<number>(1);
-  const [pageSize, setPageSize] = React.useState<number>(10);
-  const [order] = React.useState<{
+  const classes = useStyles();
+  const [dataEmployee, setDataEmployee] = useState<any>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [total, setTotal] = useState<number>();
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(10);
+  const [order] = useState<{
     isDesc: boolean;
   }>({
     isDesc: false,
   });
-  const [keyWord, setKeyWord] = React.useState<string>("");
-  const keyWordRef = React.useRef<any>("");
-  const [open, setOpen] = React.useState(false);
-  React.useEffect(() => {
+  const [keyWord, setKeyWord] = useState<string>("");
+  const keyWordRef = useRef<any>("");
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
     async function getDataEmployees() {
       getEmployee({
         allDepartment: true,
@@ -58,7 +59,7 @@ const Employee: React.FC = () => {
     getDataEmployees();
   }, [isLoading, pageSize, total, pageNumber, order.isDesc, keyWord]);
 
-  const SearchEmployee = (e: React.FormEvent<HTMLFormElement>) => {
+  const SearchEmployee = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setKeyWord(keyWordRef.current?.value as string);
     setIsLoading(true);
@@ -74,16 +75,15 @@ const Employee: React.FC = () => {
           return (
             <Box>
               <img
-                style={{
-                  height: 52,
-                  width: 52,
-                  borderRadius: 40,
-                }}
+                className={classes.imgAvatar}
                 src={
-                  tableIndex?.tableData[tableIndex.rowIndex][1].avatarFileName === null ||
-                  tableIndex?.tableData[tableIndex.rowIndex][1].avatarFileName === ""
+                  tableIndex?.tableData[tableIndex.rowIndex][1]
+                    .avatarFileName === null ||
+                  tableIndex?.tableData[tableIndex.rowIndex][1]
+                    .avatarFileName === ""
                     ? avatar
-                    : tableIndex?.tableData[tableIndex.rowIndex][1].avatarFileName
+                    : tableIndex?.tableData[tableIndex.rowIndex][1]
+                        .avatarFileName
                 }
                 alt="avatar"
               />
@@ -98,7 +98,9 @@ const Employee: React.FC = () => {
       options: {
         sort: true,
         customBodyRender: (value: any, tableIndex: any) => {
-          return <Box>{tableIndex?.tableData[tableIndex.rowIndex][1].fullName}</Box>;
+          return (
+            <Box>{tableIndex?.tableData[tableIndex.rowIndex][1].fullName}</Box>
+          );
         },
       },
     },
@@ -108,7 +110,9 @@ const Employee: React.FC = () => {
       options: {
         sort: true,
         customBodyRender: (value: any, tableIndex: any) => {
-          return <Box>{tableIndex?.tableData[tableIndex.rowIndex][1].email}</Box>;
+          return (
+            <Box>{tableIndex?.tableData[tableIndex.rowIndex][1].email}</Box>
+          );
         },
       },
     },
@@ -118,7 +122,9 @@ const Employee: React.FC = () => {
       options: {
         sort: true,
         customBodyRender: (value: any, tableIndex: any) => {
-          return <Box>{tableIndex?.tableData[tableIndex.rowIndex][1].phone}</Box>;
+          return (
+            <Box>{tableIndex?.tableData[tableIndex.rowIndex][1].phone}</Box>
+          );
         },
       },
     },
@@ -128,7 +134,11 @@ const Employee: React.FC = () => {
       options: {
         sort: true,
         customBodyRender: (value: any, tableIndex: any) => {
-          return <Box>{tableIndex?.tableData[tableIndex.rowIndex][4]?.jobtitleName}</Box>;
+          return (
+            <Box>
+              {tableIndex?.tableData[tableIndex.rowIndex][4]?.jobtitleName}
+            </Box>
+          );
         },
       },
     },
@@ -138,7 +148,11 @@ const Employee: React.FC = () => {
       options: {
         sort: true,
         customBodyRender: (value: any, tableIndex: any) => {
-          return <Box>{tableIndex?.tableData[tableIndex.rowIndex][4]?.departmentName}</Box>;
+          return (
+            <Box>
+              {tableIndex?.tableData[tableIndex.rowIndex][4]?.departmentName}
+            </Box>
+          );
         },
       },
     },
@@ -149,26 +163,18 @@ const Employee: React.FC = () => {
         sort: true,
         customBodyRender: (value: any, tableIndex: any) => {
           return (
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <Box
-                sx={{
-                  background: "lightBlue",
-                  width: 10,
-                  height: 10,
-                  borderRadius: 40,
-                  mr: 2,
-                }}
-              ></Box>
-              {tableIndex?.tableData[tableIndex.rowIndex][4]?.office === null ? (
+            <Box className={classes.wrapperJobInfo}>
+              <Box className={classes.jobInfo}></Box>
+              {tableIndex?.tableData[tableIndex.rowIndex][4]?.office ===
+              null ? (
                 <Box>Office</Box>
               ) : (
-                <Box>{tableIndex?.tableData[tableIndex.rowIndex][4]?.office[0]?.name}</Box>
+                <Box>
+                  {
+                    tableIndex?.tableData[tableIndex.rowIndex][4]?.office[0]
+                      ?.name
+                  }
+                </Box>
               )}
             </Box>
           );
@@ -182,7 +188,7 @@ const Employee: React.FC = () => {
         sort: true,
         customBodyRender: (value: any, tableIndex: any) => {
           return (
-            <Box sx={{ display: "flex", justifyContent: "space-around" }}>
+            <Box className={classes.wrapperAction}>
               <Tooltip title="edit" arrow>
                 <IconButton>
                   <EditIcon />
@@ -190,7 +196,7 @@ const Employee: React.FC = () => {
               </Tooltip>
               <Tooltip title="delete" arrow>
                 <IconButton onClick={() => setOpen(!open)}>
-                  <DeleteForeverIcon sx={{ color: "red" }} />
+                  <DeleteForeverIcon className={classes.iconAction} />
                 </IconButton>
               </Tooltip>
             </Box>
@@ -220,13 +226,6 @@ const Employee: React.FC = () => {
       setIsLoading(true);
       setPageSize(pageSize);
     },
-    // onColumnSortChange: (changedColumn: string, direction: string) => {
-    //   setDataEmployee([]);
-    //   setIsLoading(true);
-    //   setOrder({
-    //     isDesc: direction === "desc" ? true : false,
-    //   });
-    // },
     customFooter: (
       count: any,
       page: any,
@@ -257,7 +256,7 @@ const Employee: React.FC = () => {
     <Box>
       <Paper elevation={3}>
         <form onSubmit={SearchEmployee}>
-          <Box sx={{ py: 4, px: 2, display: "flex", flexDirection: "row" }}>
+          <Box className={classes.boxSearch}>
             <TextField
               inputRef={keyWordRef}
               size="small"
@@ -267,22 +266,24 @@ const Employee: React.FC = () => {
               }}
               placeholder="Search for a user"
             />
-            <Button type="submit" sx={{ ml: 2, width: "15%" }} variant="contained">
+            <Button
+              type="submit"
+              className={classes.btnSearch}
+              variant="contained"
+            >
               {t(`employee.search`)}
             </Button>
           </Box>
         </form>
       </Paper>
       {dataEmployee && (
-        <MUIDataTable title="" columns={mainColumns} data={dataEmployee} options={options} />
+        <MUIDataTable
+          title=""
+          columns={mainColumns}
+          data={dataEmployee}
+          options={options}
+        />
       )}
-      {/* <Alert
-        open={open}
-        setOpen={setOpen}
-        text={"You won't be able to revert after deletion"}
-        title={"Do you really want to delete this product?"}
-        type="warning"
-      /> */}
     </Box>
   );
 };

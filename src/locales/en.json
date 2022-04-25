@@ -71,7 +71,11 @@
     "user_manager": "User Manager",
     "user_detail": "User Detail",
     "edit_user": "Edit user",
-    "add_user": "Add user"
+    "add_user": "Add user",
+    "job_manager": "Job Manager",
+    "job_logs_manager": "Job Logs Manager",
+    "email_manager": "Email Manager",
+    "dynamic_form": "Dynamic Form"
   },
   "user_manager": {
     "search_results": "Search Results",
@@ -100,11 +104,49 @@
     "org_main": "Org Main",
     "password": "Password",
     "group": "Group",
-    "upload": "Upload",
+    "upload": "Upload photo",
     "organization_for_account": "Organization for Account",
     "active": "Active",
     "allowed":"Allowed",
     "max_size_of": "max size of"
+  },
+  "job_manager":{
+    "date_start": "Data start",
+    "to": "To",
+    "status": "Status",
+    "name": "Name",
+    "job_name": "Job name",
+    "description":"Description",
+    "cron_expression": "Cron expression",
+    "next_fire_time":"Next fire time",
+    "previous_fire_time":"Previous fire time",
+    "cronjob_expression_detail_info":"Cronjob expression detail info",
+    "expression": "Expression",
+    "meaning": "Meaning",
+    "run":"Run",
+    "pause": "Pause",
+    "running": "Running",
+    "paused": "Paused"
+ },
+ "job_logs_manager":{
+     "date_start": "Data start",
+    "to": "To",
+    "status": "Status",
+    "name": "Job name",
+    "job_name": "Job name",
+    "description":"Description",
+    "error":"Error",
+    "date_create": "Date create",
+    "schedule_name": "Schedule name",
+    "schedule_type": "Schedule type",
+    "time":"Time",
+    "immediate":"Immediate",
+    "one_time": "One time",
+    "recurring": "Recurring",
+    "run":"Run",
+    "pause": "Pause",
+    "running": "Running",
+    "paused": "Paused"
   },
   "button": {
     "save": "Save",
@@ -115,6 +157,7 @@
     "return": "Return",
     "reset": "Reset",
     "reject": "Reject",
+    "append": "Append",
     "approve": "Approve",
     "search": "Search",
     "apply": "Apply",
@@ -135,7 +178,9 @@
     "density": "Density",
     "export": "Export",
     "hide_all": "Hide All",
+    "hidden": "Hidden",
     "show_all": "Show All",
+    "show_more": "Show More",
     "create_acc": "Create account",
     "update": "Update"
   },
@@ -154,10 +199,21 @@
     "require_password": "must be between 6 and 20 characters.",
     "wrong_current_password": "Current password is not correct!"
   },
+  "email_manager":{
+    "status": "Status",
+    "send_date": "Send date",
+    "receive_address": "Receive address",
+    "subject": "Subject",
+    "content": "Content",
+    "attachment": "Attachment(s)",
+    "to": "To",
+    "cc": "CC"
+  },
   "error": {
     "-99": "[Code -99] Error",
     "error": "Error",
     "field_required": "Please fill this field !!!",
+    "field_email": "Please fill this field an email !!!",
     "notstrong": "Not strong",
     "strong": "Strong"
   },
@@ -194,7 +250,8 @@
       "delete": "Delete",
       "delete_aria": "Delete Selected Rows"
     },
-    "action": "Action"
+    "action": "Action",
+    "search_results": "Search Results"
   },
   "login": {
     "login": "Login",
@@ -291,6 +348,7 @@
     "Action": "Action",
     "Visit": "Check",
     "permission_feature": "Permission feature"
+    
   },
   "layout": {
     "chooselayout": "Choose Layout",
@@ -378,6 +436,7 @@
   },
 
   "permission_manager": {
+    "title_table": "Search Results",
     "name": "Information permission",
     "title": "Permission Manager",
     "update_permission": "Update permission",
@@ -397,10 +456,14 @@
     "active": "Active",
     "add_btn": "Add",
     "non_active": "Inactive",
-    "action": "Action"
+    "action": "Action",
+    "title_detail": "Detail",
+    "title_edit" : "Edit",
+    "title_create": "Create"
   },
 
   "group_manager": {
+    "title_table": "Search Results",
     "title": "Group Manager",
     "title_view": "Detail group",
     "code_permission": "Code permission",
@@ -419,20 +482,13 @@
     "action": "Action",
     "name_account": "Name Account",
     "fullname": "Full Name",
-    "email": "Email"
+    "email": "Email",
+    "title_detail": "Detail",
+    "title_edit" : "Edit",
+    "title_create": "Create"
   },
   "filter": {
-    "search": "Search",
-    "action": "Action",
-    "code_feature": "Code feature",
-    "name_feature": "Name feature",
-    "description": "Description",
-    "type_feature": "Type feature",
-    "add_btn": "Add",
-    "save_btn": "Save",
-    "delete_btn": "Delete",
-    "id": "ID",
-    "status": "Status"
+    "search": "Search"
   },
   "feature": {
     "view": "View Feature",
@@ -443,9 +499,6 @@
     "name_feature": "Name",
     "description": "Description",
     "type_feature": "Type ",
-    "add_btn": "Add",
-    "save_btn": "Save",
-    "delete_btn": "Delete",
     "id": "ID",
     "status": "Status"
   },
@@ -456,7 +509,10 @@
     "action": "Action",
     "code": "Code",
     "sort": "Sort",
-    "status": "Status"
+    "status": "Status",
+    "title_table": "Search Results",
+    "group": "Group",
+    "menu":"Menu"
   },
   "account_setting": {
     "basic_info": "Basic info",
@@ -480,5 +536,30 @@
     "note_two": "Min 6 characters",
     "note_three": "One number (2 are recommended)",
     "note_four": "Change it often"
+  },
+  "system_settings":{
+    "system_setting": "System settings",
+    "keys":"Keys",
+    "values": "Values",
+    "description": "Description",
+    "view": "View Menu",
+    "edit": "Edit Menu",
+    "create": "Add Menu",
+    "title_detail": "Detail",
+    "title_edit" : "Edit",
+    "title_create": "Create",
+    "close_btn": "Cancel",
+    "btn_save": "Save"
+  },
+  "dynamic_form": {
+    "action": "Action",
+    "title": "Title",
+    "type": "Type",
+    "format": "Format",
+    "regex": "Regex Code",
+    "error_message": "Error Message",
+    "hide": "Hide",
+    "require": "Require",
+    "option": "Option"
   }
 }

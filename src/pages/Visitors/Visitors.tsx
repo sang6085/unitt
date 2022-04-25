@@ -1,6 +1,5 @@
 import { Box, } from "@mui/material";
-import React from "react";
-import Ticket from "../../components/Ticket/Ticket";
+import Ticket from "components/Ticket/Ticket";
 
 const ticketData = {
   serial: "O000121003482",

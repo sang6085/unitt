@@ -1,16 +1,18 @@
-import React from "react";
-import { Box, Button, CircularProgress, IconButton, Tooltip } from "@mui/material";
-import { getFeature } from "../../services/FeatureService";
+import { Box, CircularProgress, IconButton, Tooltip } from "@mui/material";
+import { getFeature } from "services/FeatureService";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { MUIDataTableOptions } from "mui-datatables";
 import { SubmitHandler } from "react-hook-form";
-import TableComponent from "../../components/Table/Table";
+import TableComponent from "components/Table/Table";
 import { useTranslation } from "react-i18next";
-import { CommonStyles } from "../../utils/styles";
+import { CommonStyles } from "utils/styles";
 import { useNavigate } from "react-router";
-import Confirm from "../../components/Confirm/Confirm";
+import Confirm from "components/Confirm/Confirm";
+import { cancelToken } from "api/common";
+import ButtonComponent from "components/Button/Button";
+import { useEffect, useState } from "react";
 
 export interface IDrawerInfo {
   id: number;
@@ -27,22 +29,26 @@ interface IFeatureSearch {
 
 const Feature = () => {
   const navigate = useNavigate();
-  const [data, setData] = React.useState([]);
+  const [data, setData] = useState([]);
   const { t } = useTranslation();
   const styles = CommonStyles();
-  const [loading, setLoading] = React.useState(true);
-  const [isOpenConfirm, setIsOpenConfirm] = React.useState<boolean>(false);
+  const [loading, setLoading] = useState(true);
+  const [isOpenConfirm, setIsOpenConfirm] = useState<boolean>(false);
 
   const onChangeConfirm: (value: boolean) => void = (value) => {
     setIsOpenConfirm(value);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     getFeature().subscribe((res: any) => {
       setData(res.data);
       setLoading(false);
     });
-  }, [loading]);
+    return () => {
+      //CancelToken in componentWillUnmount
+      cancelToken();
+    }
+  }, []);
 
   const onSubmit: SubmitHandler<IFeatureSearch> = (data) => console.log(data);
 
@@ -135,12 +141,14 @@ const Feature = () => {
 
   const options: MUIDataTableOptions = {
     filterType: "checkbox",
-    search: false,
     download: false,
+    responsive: "standard",
     print: false,
-    viewColumns: false,
-    filter: false,
+    filter: false, 
+    search: false,
+    viewColumns: true,
     rowHover: false,
+    sort: false,
     selectableRows: "none",
     textLabels: {
       body: {
@@ -152,13 +160,13 @@ const Feature = () => {
   return (
     <Box>
       <Box className="add-btn">
-        <Button variant="contained" onClick={onNavigatCreate}>
+        <ButtonComponent variant="contained" onClick={onNavigatCreate}>
           {t("button.add")}
-        </Button>
+        </ButtonComponent>
       </Box>
 
       <TableComponent
-        title=""
+        title={t("table.search_results")}
         data={data}
         columns={columns}
         options={options}

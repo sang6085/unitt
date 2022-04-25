@@ -1,5 +1,5 @@
 import { createAsyncThunk, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
-import { LocalStorageKey } from "../../configs/consts";
+import { LocalStorageKey } from "configs/consts";
 
 const usersAdapter = createEntityAdapter();
 

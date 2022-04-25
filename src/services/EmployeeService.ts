@@ -1,7 +1,7 @@
 // import axios from "axios";
-import api from "../api/common";
+import api from "api/common";
 
-export interface RequestEmployee {
+export interface IRequestEmployee {
   allDepartment: boolean;
   allJobTitle: boolean;
   branchIds: number[];
@@ -14,7 +14,7 @@ export interface RequestEmployee {
   pageSize: number;
 }
 
-export const getEmployee = (requestBody: RequestEmployee) => {
+export const getEmployee = (requestBody: IRequestEmployee) => {
   return api.get(
     `${process.env.REACT_APP_PREFIX_API3}/get-employee`
   )

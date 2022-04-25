@@ -3,12 +3,12 @@ import {
   createAsyncThunk,
   createEntityAdapter,
 } from "@reduxjs/toolkit";
-import { LocalStorageKey } from "../../configs/consts";
-import { LoginSliceState } from "./LoginInterface";
+import { LocalStorageKey } from "configs/consts";
+import { ILoginSliceState } from "pages/Login/LoginInterface";
 
 const usersAdapter = createEntityAdapter();
 
-const initialState: LoginSliceState = usersAdapter.getInitialState({
+const initialState: ILoginSliceState = usersAdapter.getInitialState({
   authToken: {
     accessToken: localStorage.getItem(LocalStorageKey.TOKEN) ?? "",
     refreshToken: localStorage.getItem(LocalStorageKey.REFRESH_TOKEN) ?? "",

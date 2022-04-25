@@ -1,82 +1,9 @@
-import React, { FC } from "react";
-import {
-  Grid,
-  Box,
-  Typography,
-  Paper,
-  Button,
-  Menu,
-  MenuItem,
-} from "@mui/material";
-
-import CardComponent from "../../components/Card/Card";
-import ChartComponent from "../../components/Chart/Chart";
-import { makeStyles } from "@mui/styles";
+import { Grid, Box, Typography, Paper, Button, Menu, MenuItem, Stack } from "@mui/material";
+import { useState, FC, MouseEvent } from "react";
+import CardComponent from "components/Card/Card";
+import ChartComponent from "components/Chart/Chart";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-
-const useStyles = makeStyles({
-  containerDB: {
-    width: "100%",
-    height: `calc(100vh - 100px)`,
-    overFlowY: "auto",
-    padding: "0 24px 8px 24px",
-    marginBottom: "8px",
-  },
-  paper: {
-    borderRadius: "15px !important",
-    paddingTop: "25px",
-    paddingBottom: "25px",
-    paddingLeft: "15px",
-    paddingRight: "15px",
-  },
-  boxTextSaleOverview: {
-    display: "flex",
-    alignItems: "center",
-    marginTop: "5px",
-  },
-  boxIconActive: {
-    paddingRight: 10,
-    marginTop: 20,
-  },
-  fourInfo: {
-    display: "flex",
-    alignItems: "center",
-  },
-  iconActive: {
-    marginRight: "10px !important",
-    padding: 10,
-    color: "white",
-    width: "22px",
-    height: "22px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 5,
-  },
-  typoFourInfo: {
-    fontSize: "12px !important",
-  },
-  imgBg: {
-    display: "flex",
-    justifyContent: "center",
-    "& img": {
-      width: "90%",
-    },
-  },
-  elevation: {
-    backgroundColor: "rgb(255, 255, 255)",
-    color: "rgb(33, 43, 54)",
-    transition: "box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
-    backgroundImage: "none",
-    overFlow: "hidden",
-    position: "relative",
-    boxShadow:
-      "rgb(145 158 171 / 20%) 0px 0px 2px 0px, rgb(145 158 171 / 12%) 0px 12px 24px -4px",
-    zIndex: 0,
-    alignItems: "center",
-    padding: "24px",
-  },
-});
+import { useStyles } from "pages/DashBoard/DashboardStyle";
 
 const DashBoardPage: FC = () => {
   const classes = useStyles();
@@ -91,12 +18,7 @@ const DashBoardPage: FC = () => {
         width: 340,
         markers: {},
       },
-      colors: [
-        "rgb(200, 250, 205)",
-        "rgb(91, 229, 132)",
-        "rgb(0, 171, 85)",
-        "rgb(0, 123, 85)",
-      ],
+      colors: ["rgb(200, 250, 205)", "rgb(91, 229, 132)", "rgb(0, 171, 85)", "rgb(0, 123, 85)"],
       plotOptions: {
         pie: {
           donut: {
@@ -127,17 +49,7 @@ const DashBoardPage: FC = () => {
         curve: "smooth",
       },
       xaxis: {
-        categories: [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-        ],
+        categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep"],
       },
       legend: {
         position: "top",
@@ -358,7 +270,6 @@ const DashBoardPage: FC = () => {
             toolbar: {
               show: false,
               type: "bar",
-              
             },
             sparkline: {
               enabled: true,
@@ -435,50 +346,35 @@ const DashBoardPage: FC = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   return (
     <Box>
       {/* Fours Card */}
-      <Grid container sx={{ display: "flex", justifyContent: "flex-end" }}>
-        <Grid item xs={12} sx={{ zIndex: 1 }}>
-          <Box sx={{ mb: 3 }}>
-            <Grid container spacing={2}>
-              {dataCard.map((item: any, index: any) => (
-                <Grid item xs={4} key={index}>
-                  <CardComponent
-                    title={item.title}
-                    number={item.number}
-                    smallNumber={item.smallNumber}
-                    typeNumber={item.typeNumber}
-                    symbol={item.symbol}
-                    chart={item.chart}
-                  />
-                </Grid>
-              ))}
-            </Grid>
-          </Box>
-        </Grid>
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid item xs={4}>
+      <Grid container spacing={2} className={classes.boxCard}>
+        {dataCard.map((item: any, index: any) => (
+          <Grid item xs={12} md={4} key={index}>
+            <CardComponent
+              title={item.title}
+              number={item.number}
+              smallNumber={item.smallNumber}
+              typeNumber={item.typeNumber}
+              symbol={item.symbol}
+              chart={item.chart}
+            />
+          </Grid>
+        ))}
+        <Grid item xs={12} md={4}>
           <Paper className={classes.elevation} square>
             <Box>
-              <Typography variant="h6" sx={{ fontWeight: 700 }}>
+              <Typography variant="h6" className={classes.titleChar}>
                 Current Download
               </Typography>
             </Box>
-            <Box
-              sx={{
-                height: "392px",
-                marginTop: "40px",
-                justifyContent: "center",
-                display: "flex",
-              }}
-            >
+            <Box className={classes.boxChartDonut}>
               <ChartComponent
                 options={chartDonut.options}
                 series={chartDonut.series}
@@ -489,14 +385,14 @@ const DashBoardPage: FC = () => {
             </Box>
           </Paper>
         </Grid>
-        <Grid item xs={8} sx={{ zIndex: 1 }}>
+        <Grid item xs={12} md={8} sx={{ zIndex: 1 }}>
           <Paper className={classes.elevation} square>
-            <Box sx={{ display: "flex" }}>
+            <Stack direction="row">
               <Box sx={{ flexGrow: 1 }}>
-                <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                <Typography variant="h6" className={classes.titleChar}>
                   Area Installed
                 </Typography>
-                <Typography variant="body1" sx={{ color: "rgb(99, 115, 129)" }}>
+                <Typography variant="body1" className={classes.colorTitleChar}>
                   (+43%) than last year
                 </Typography>
               </Box>
@@ -507,10 +403,7 @@ const DashBoardPage: FC = () => {
                   disableElevation
                   onClick={handleClick}
                   endIcon={<KeyboardArrowDownIcon />}
-                  sx={{
-                    color: "rgb(33, 43, 54)",
-                    backgroundColor: "rgb(244, 246, 248)",
-                  }}
+                  className={classes.dropdownYear}
                 >
                   2019
                 </Button>
@@ -531,15 +424,15 @@ const DashBoardPage: FC = () => {
                   </MenuItem>
                 </Menu>
               </Box>
-            </Box>
+            </Stack>
 
-            <Box sx={{ height: "392px", marginTop: "40px" }}>
+            <Box className={classes.boxChartLine}>
               <ChartComponent
                 options={chartLine.options}
                 series={chartLine.series}
                 type="line"
-                height="230%"
-                width={750}
+                height="200%"
+                width="100%"
               />
             </Box>
           </Paper>

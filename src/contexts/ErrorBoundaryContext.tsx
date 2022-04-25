@@ -1,5 +1,5 @@
 import React from "react";
-import FallBackComponent from "../components/FallBackComponent/FallBackComponent";
+import FallBackComponent from "components/FallBackComponent/FallBackComponent";
 
 const ErrorBoundaryContext = React.createContext(() => {});
 

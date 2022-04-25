@@ -8,7 +8,6 @@ import {
 } from "@mui/material";
 import React from "react";
 import CloseIcon from "@mui/icons-material/Close";
-import makeStyles from "@mui/styles/makeStyles";
 import { useTranslation } from "react-i18next";
 interface IConfirm {
   isOpen?: boolean;
@@ -16,15 +15,7 @@ interface IConfirm {
   title?: string;
   content?: string;
 }
-const useStyles = makeStyles({
-  closeButton: {
-    position: "absolute",
-    right: 0,
-    zIndex: 1,
-  },
-});
 const Confirm: React.FC<IConfirm> = (props) => {
-  const classes = useStyles();
   const handleConfirm = (value: boolean) => {
     props.isConfirm?.(value);
   };
@@ -36,7 +27,7 @@ const Confirm: React.FC<IConfirm> = (props) => {
       maxWidth="lg"
     >
       <IconButton
-        className={classes.closeButton}
+        sx={{ position: "absolute", right: 0, zIndex: 1 }}
         onClick={() => handleConfirm(false)}
       >
         <CloseIcon />
@@ -46,8 +37,8 @@ const Confirm: React.FC<IConfirm> = (props) => {
       <DialogActions>
         <Button
           onClick={() => handleConfirm(false)}
-          variant="outlined"
-          sx={{ border: "1px solid #1976d2" }}
+          variant="contained"
+          color="secondary"
           size="small"
         >
           {t("confirm_delete.cancel")}

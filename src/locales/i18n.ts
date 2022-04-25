@@ -1,14 +1,14 @@
 import i18next from 'i18next';
-import { Languages, LocalStorageKey } from '../configs/consts';
+import { Languages, LocalStorageKey } from 'configs/consts';
 import merge from 'lodash/merge';
 
 import viLocale from 'date-fns/locale/vi';
 import enLocale from 'date-fns/locale/en-US';
 
-import viCommon from './vi.json';
-import enCommon from './en.json';
-import viGTXN from './vi.json';
-import enGTXN from './en.json';
+import viCommon from 'locales/vi.json';
+import enCommon from 'locales/en.json';
+import viGTXN from 'locales/vi.json';
+import enGTXN from 'locales/en.json';
 
 const en = { translation: merge(enGTXN, enCommon) };
 const vi = { translation: merge(viGTXN, viCommon) };
